@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<zodb-users>
+ <user user_id="Plumi" login_name="Plumi"
+       password_hash="{SSHA}0H5Sr4tRJUFoMiBOv/0BtFzmD2LoTFdeSYT6"/>
+</zodb-users>

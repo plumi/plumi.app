@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<object name="portal_skins" meta_type="Plone Skins Tool" allow_any="False"
+   cookie_persistence="False" default_skin="PlumiSkin"
+   request_varname="plone_skin">
+ <object name="plumi_qplonecomments" meta_type="Filesystem Directory View"
+    directory="Products.PlumiSkin:skins/plumi_qplonecomments"/>
+ <object name="plumi_scripts" meta_type="Filesystem Directory View"
+    directory="Products.PlumiSkin:skins/plumi_scripts"/>
+ <object name="plumi_templates" meta_type="Filesystem Directory View"
+    directory="Products.PlumiSkin:skins/plumi_templates"/>
+   
+ <skin-path name="plumi.app" based-on="plumi.skin">
+  <layer name="plumi_scripts"  insert-after="custom"/>
+  <layer name="plumi_qplonecomments" insert-after="custom"/>
+  <layer name="plumi_templates" insert-after="custom"/>
+ </skin-path>
+</object>

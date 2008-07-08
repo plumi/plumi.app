@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/genericsetup"
+    xmlns:zope="http://namespaces.zope.org/zope"
+    i18n_domain="plumi">
+
+  <!-- Generic Setup Profile -->
+  <registerProfile
+        name="default"
+        title="Plumi"
+        directory="profiles/default"
+        description="The default settings of Plumi portals"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+</configure>
+
