@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<object name="portal_workflow" meta_type="Plone Workflow Tool">
- <bindings>
-  <!-- Events set to the folder_workflow, Members can publish events directly -->
-  <type type_id="Event">
-   <bound-workflow workflow_id="folder_workflow"/>
-  </type>
- </bindings>
-</object>
