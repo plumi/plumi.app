@@ -6,7 +6,7 @@
   <!-- Generic Setup Profile -->
   <registerProfile
         name="default"
-        title="Plumi"
+        title="Plumi application setup"
         directory="profiles/default"
         description="The default settings of Plumi portals"
         provides="Products.GenericSetup.interfaces.EXTENSION"
