@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'plumi.app'
-path = name.split('.') + ['version.txt']
 version = "0.1"
 readme = open("README.txt").read()
 history = ""
