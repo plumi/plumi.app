@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="Plone Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <action-provider name="portal_actions">
+  <action title="Review List" action_id="review_list" category="portal_tabs"
+     condition_expr="python:1"
+     url_expr="string:${portal_url}/full_review_list" visible="True">
+   <permission>Manage portal</permission>
+  </action>
+  <action title="About us" action_id="about-us" category="portal_tabs"
+     condition_expr="python:1" url_expr="string:${portal_url}/about-us"
+     visible="True">
+   <permission>View</permission>
+  </action>
+  <action title="Contact" action_id="contact-info" category="portal_tabs"
+     condition_expr="python:1" url_expr="string:${portal_url}/contact-info"
+     visible="True">
+   <permission>View</permission>
+  </action>
+  <action title="Help" action_id="help-and-tutorials" category="portal_tabs"
+     condition_expr="python:1"
+     url_expr="string:${portal_url}/help-and-tutorials" visible="True">
+   <permission>View</permission>
+  </action>
+  <action title="Support Us" action_id="support-us" category="portal_tabs"
+     condition_expr="python:1" url_expr="string:${portal_url}/support-us"
+     visible="True">
+   <permission>View</permission>
+  </action>
+  <action title="Get Involved" action_id="get-involved" category="portal_tabs"
+     condition_expr="python:1" url_expr="string:${portal_url}/get-involved"
+     visible="True">
+   <permission>View</permission>
+  </action>
+ </action-provider>
+</object>

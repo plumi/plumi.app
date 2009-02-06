@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<zodb-roles title="">
+ <role role_id="Manager" title="" description="">
+  <principal principal_id="Plumi"/>
+ </role>
+</zodb-roles>
