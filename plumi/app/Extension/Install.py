@@ -3,7 +3,7 @@ from Products.CMFCore.utils import getToolByName
 
 PRODUCT_DEPENDENCIES = ('qPloneComments', )
                         
-EXTENSION_PROFILES = ('example.policy:default',)
+EXTENSION_PROFILES = ('plumi.app:default',)
 
 def install(self, reinstall=False):
     """Install a set of products (which themselves may either use Install.py
