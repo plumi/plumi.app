@@ -8,7 +8,7 @@ history = ""
 
 setup(name = name,
       version = version,
-      description = 'Plumi application setup',
+      description = 'Plumi Application Setup Product',
       long_description = readme[readme.find('\n\n'):] + '\n' + history,
       keywords = 'plone CMS zope',
       author = 'Souheil Chelfouh',
@@ -23,6 +23,8 @@ setup(name = name,
       zip_safe = False,
       install_requires=[
           'setuptools',
+	  'plumi.content',
+	  'plumi.skin',
       ],
       classifiers = [
         'Development Status :: 4 - Beta',
