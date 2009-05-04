@@ -12,5 +12,8 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+  <include package="plumi.skin" />
+  <include package="plumi.content" />
+
 </configure>
 
