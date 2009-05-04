@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/genericsetup"
+    xmlns:five="http://namespaces.zope.org/five"
     xmlns:zope="http://namespaces.zope.org/zope"
     i18n_domain="plumi">
 
@@ -11,6 +12,8 @@
         description="The default settings of Plumi portals"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
+
+   <five:registerPackage package="." initialize=".initialize" />
 
   <include package="plumi.skin" />
   <include package="plumi.content" />
