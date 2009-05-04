@@ -1,7 +1,7 @@
 import transaction
 from Products.CMFCore.utils import getToolByName
 
-PRODUCT_DEPENDENCIES = ('qPloneComments', )
+PRODUCT_DEPENDENCIES = ('qPloneComments','plone.skin','plone.content' )
                         
 EXTENSION_PROFILES = ('plumi.app:default',)
 
