@@ -26,6 +26,8 @@ setup(name='plumi.app',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'plumi.content',
+          'plumi.skin',
       ],
       entry_points="""
       # -*- Entry points: -*-
