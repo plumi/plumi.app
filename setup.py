@@ -1,39 +1,33 @@
 from setuptools import setup, find_packages
-from os.path import join
+import os
 
-name = 'plumi.app'
 version = '0.1'
-readme = open("README.txt").read()
-history = ""
 
-setup(name = name,
-      version = version,
-      description = 'Plumi Application Setup Product',
-      long_description = readme[readme.find('\n\n'):] + '\n' + history,
-      keywords = 'plone CMS zope',
-      author = 'Souheil Chelfouh',
-      author_email = 'trollfot@gmail.com',
-      url = 'http://plumi.org/',
-      download_url = 'https://svn.plone.org/svn/collective/plumi.app/trunk',
-      license = 'GPL',
-      packages = find_packages(),
-      namespace_packages = ['plumi.app', 'plumi'],
-      include_package_data = True,
-      platforms = 'Any',
-      zip_safe = False,
+setup(name='plumi.app',
+      version=version,
+      description="Plumi application setup",
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+        "Framework :: Plone",
+        "Programming Language :: Python",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        ],
+      keywords='plone plumi web',
+      author='Andy Nicholson',
+      author_email='andy@engagemedia.org',
+      url='https://svn.plone.org/svn/collective/plumi.app/trunk',
+      license='GPL',
+      packages=find_packages(exclude=['ez_setup']),
+      namespace_packages=['plumi', 'plumi.app'],
+      include_package_data=True,
+      zip_safe=False,
       install_requires=[
           'setuptools',
-	  'plumi.content',
-	  'plumi.skin',
+          # -*- Extra requirements: -*-
       ],
-      classifiers = [
-        'Development Status :: 4 - Beta',
-        'Environment :: Web Environment',
-        'Framework :: Plone',
-        'Intended Audience :: Other Audience',
-	'Topic :: Software Development :: Libraries :: Python Modules',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-      ],
-)
+      entry_points="""
+      # -*- Entry points: -*-
+      """,
+      )
