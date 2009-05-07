@@ -1,7 +1,8 @@
 import transaction
 from Products.CMFCore.utils import getToolByName
 
-PRODUCT_DEPENDENCIES = ('qPloneComments','plumi.skin','plumi.content','plone.app.blob', 'qRSS2Syndication', 'ATVideo', 'PressRoom',)
+#install plumi.skin last
+PRODUCT_DEPENDENCIES = ('qPloneComments','plumi.content','plone.app.blob', 'qRSS2Syndication', 'ATVideo', 'PressRoom','plumi.skin')
 #Vaporisation? DataFieldGrid?
                         
 EXTENSION_PROFILES = ('plumi.app:default',)
