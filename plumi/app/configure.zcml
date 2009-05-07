@@ -13,10 +13,9 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-   <five:registerPackage package="." initialize=".initialize" />
-
   <include package="plumi.skin" />
   <include package="plumi.content" />
+  <include package="plumi.app.policy" />
 
 </configure>
 
