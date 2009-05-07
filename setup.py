@@ -14,7 +14,7 @@ setup(name='plumi.app',
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
-      keywords='plone plumi web',
+      keywords='plone plumi policy',
       author='Andy Nicholson',
       author_email='andy@engagemedia.org',
       url='https://svn.plone.org/svn/collective/plumi.app/trunk',
@@ -26,8 +26,6 @@ setup(name='plumi.app',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'plumi.content',
-          'plumi.skin',
       ],
       entry_points="""
       # -*- Entry points: -*-

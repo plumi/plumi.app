@@ -1,4 +1,4 @@
 Introduction
 ============
 
-Plumi application setup policy product
+Plumi application setup - policy product
