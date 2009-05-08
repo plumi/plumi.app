@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<kupu-settings>
+  <config captioning="False" userefbrowser="False"
+          linkbyuid="False" filtersourceedit="True">
+    <table>plain|Subdued grid</table>
+    <table>invisible|Invisible grid</table>
+    <table>listing|Fancy listing</table>
+    <table>grid listing|Fancy grid listing</table>
+    <table>vertical listing|Fancy vertical listing</table>
+    <style>Heading|h2</style>
+    <style>Subheading|h3</style>
+    <style>Literal|pre</style>
+    <style>Discreet|p|discreet</style>
+    <style>Pull-quote|div|pullquote</style>
+    <style>Call-out|p|callout</style>
+    <style>Highlight|span|visualHighlight</style>
+    <style>Odd row|tr|odd</style>
+    <style>Even row|tr|even</style>
+    <style>Heading cell|th|</style>
+    <style>Page break (print only)|div|pageBreak</style>
+    <style>Clear floats|div|visualClear</style>
+    <filter attributes=""
+            tags="center tt big small basefont font"/>
+    <filter attributes="lang valign halign border frame rules cellspacing cellpadding bgcolor"
+            tags=""/>
+    <filter attributes="width height" tags="table th td"/>
+    <filterstyle>text-align</filterstyle>
+    <filterstyle>list-style-type</filterstyle>
+    <filterstyle>float</filterstyle>
+  </config>
+  <library src="string:${globals_view/navigationRootUrl|portal_url}/kupucollection.xml"
+           uri="string:${globals_view/navigationRootUrl|portal_url}"
+           id="root"
+           icon="string:${globals_view/navigationRootUrl|portal_url}/misc_/CMFPlone/plone_icon"
+           title="string:Home">
+  </library>
+  <library src="string:${folder_url}/kupucollection.xml"
+           uri="string:${folder_url}" id="current"
+           icon="string:${folder/getIcon}"
+           title="string:Current folder">
+  </library>
+  <library src="string:${portal_url}/kupumyitems.xml"
+           uri="string:${portal_url}/kupumyitems.xml"
+           id="myitems"
+           icon="string:${portal_url}/kupuimages/kupusearch_icon.gif"
+           title="string:My recent items">
+  </library>
+  <library src="string:${portal_url}/kupurecentitems.xml"
+           uri="string:${portal_url}/kupurecentitems.xml"
+           id="recentitems"
+           icon="string:${portal_url}/kupuimages/kupusearch_icon.gif"
+           title="string:Recent items">
+  </library>
+  <defaultlibrary>current</defaultlibrary>
+  <resource id="collection" mode="whitelist">
+    <type>Plone Site</type>
+    <type>Large Plone Folder</type>
+    <type>Folder</type>
+    <type>ATEngageVideoFolder</type>
+    <type>Callout Folder</type>
+    <type>Topic</type>
+    <type>PressRoom</type>
+  </resource>
+  <resource id="containsanchors" mode="blacklist">
+    <type>ATBooleanCriterion</type>
+    <type>ATCurrentAuthorCriterion</type>
+    <type>ATDateCriteria</type>
+    <type>ATDateRangeCriterion</type>
+    <type>ATEngageVideo</type>
+    <type>ATEngageVideoFolder</type>
+    <type>ATListCriterion</type>
+    <type>ATMediaFileTool</type>
+    <type>ATPathCriterion</type>
+    <type>ATPortalTypeCriterion</type>
+    <type>ATReferenceCriterion</type>
+    <type>ATSelectionCriterion</type>
+    <type>ATSimpleIntCriterion</type>
+    <type>ATSimpleStringCriterion</type>
+    <type>ATSortCriterion</type>
+    <type>ATVideo</type>
+    <type>AliasVocabulary</type>
+    <type>BitTorrentFile</type>
+    <type>Call Out</type>
+    <type>Callout Folder</type>
+    <type>ChangeSet</type>
+    <type>Discussion Item</type>
+    <type>Favorite</type>
+    <type>File</type>
+    <type>Folder</type>
+    <type>Image</type>
+    <type>Large Plone Folder</type>
+    <type>Link</type>
+    <type>PlumiVideo</type>
+    <type>PressClip</type>
+    <type>PressContact</type>
+    <type>PressRelease</type>
+    <type>PressRoom</type>
+    <type>SimpleVocabulary</type>
+    <type>SimpleVocabularyTerm</type>
+    <type>SortedSimpleVocabulary</type>
+    <type>TempFolder</type>
+    <type>Topic</type>
+    <type>TreeVocabulary</type>
+    <type>TreeVocabularyTerm</type>
+    <type>VdexFileVocabulary</type>
+    <type>VdexLangstring</type>
+    <type>VdexMediaDescriptor</type>
+    <type>VdexRelationEndPoint</type>
+    <type>VdexTerm</type>
+    <type>VdexVocabulary</type>
+    <type>VocabularyLibrary</type>
+  </resource>
+  <resource id="linkable" mode="blacklist">
+    <type>ATBooleanCriterion</type>
+    <type>ATCurrentAuthorCriterion</type>
+    <type>ATDateCriteria</type>
+    <type>ATDateRangeCriterion</type>
+    <type>ATEngageVideoFolder</type>
+    <type>ATListCriterion</type>
+    <type>ATMediaFileTool</type>
+    <type>ATPathCriterion</type>
+    <type>ATPortalTypeCriterion</type>
+    <type>ATReferenceCriterion</type>
+    <type>ATRelativePathCriterion</type>
+    <type>ATSelectionCriterion</type>
+    <type>ATSimpleIntCriterion</type>
+    <type>ATSimpleStringCriterion</type>
+    <type>ATSortCriterion</type>
+    <type>ATVideo</type>
+    <type>AliasVocabulary</type>
+    <type>BitTorrentFile</type>
+    <type>Callout Folder</type>
+    <type>ChangeSet</type>
+    <type>Discussion Item</type>
+    <type>Favorite</type>
+    <type>Link</type>
+    <type>Plone Site</type>
+    <type>PlumiVideo</type>
+    <type>SimpleVocabulary</type>
+    <type>SimpleVocabularyTerm</type>
+    <type>SortedSimpleVocabulary</type>
+    <type>TempFolder</type>
+    <type>TreeVocabulary</type>
+    <type>TreeVocabularyTerm</type>
+    <type>VdexFileVocabulary</type>
+    <type>VdexLangstring</type>
+    <type>VdexMediaDescriptor</type>
+    <type>VdexRelationEndPoint</type>
+    <type>VdexTerm</type>
+    <type>VdexVocabulary</type>
+    <type>VocabularyLibrary</type>
+  </resource>
+  <resource id="media" mode="whitelist">
+    <type>Image</type>
+  </resource>
+  <resource id="mediaobject" mode="whitelist">
+    <type>Image</type>
+  </resource>
+  <defaultresource>linkable</defaultresource>
+  <preview portaltype="Image" scalefield="image"
+           preview="string:${object_url}/image_thumb"/>
+  <preview portaltype="News Item" scalefield="image"
+           preview="string:${object_url}/image_thumb"/>
+  <globaltoolbar></globaltoolbar>
+  <toolbar>
+    <element visible="True" id="save-button"/>
+    <element visible="True" id="bg-basicmarkup"/>
+    <element visible="True" id="bold-button"/>
+    <element visible="True" id="italic-button"/>
+    <element visible="False" id="bg-subsuper"/>
+    <element visible="False" id="subscript-button"/>
+    <element visible="False" id="superscript-button"/>
+    <element visible="False" id="bg-colorchooser"/>
+    <element visible="False" id="forecolor-button"/>
+    <element visible="False" id="hilitecolor-button"/>
+    <element visible="True" id="bg-justify"/>
+    <element visible="True" id="justifyleft-button"/>
+    <element visible="True" id="justifycenter-button"/>
+    <element visible="True" id="justifyright-button"/>
+    <element visible="True" id="bg-list"/>
+    <element visible="True" id="list-ol-addbutton"/>
+    <element visible="True" id="list-ul-addbutton"/>
+    <element visible="True" id="definitionlist"/>
+    <element visible="True" id="bg-indent"/>
+    <element visible="True" id="outdent-button"/>
+    <element visible="True" id="indent-button"/>
+    <element visible="True" id="bg-drawers"/>
+    <element visible="True" id="imagelibdrawer-button"/>
+    <element visible="True" id="linklibdrawer-button"/>
+    <element visible="True" id="linkdrawer-button"/>
+    <element visible="False" id="embed-tab"/>
+    <element visible="True" id="anchors-button"/>
+    <element visible="True" id="manage-anchors-tab"/>
+    <element visible="False" id="toc-tab"/>
+    <element visible="True" id="tabledrawer-button"/>
+    <element visible="True" id="bg-remove"/>
+    <element visible="True" id="removeimage-button"/>
+    <element visible="True" id="removelink-button"/>
+    <element visible="False" id="bg-undo"/>
+    <element visible="False" id="undo-button"/>
+    <element visible="False" id="redo-button"/>
+    <element visible="False" id="spellchecker"/>
+    <element visible="True" id="source"/>
+    <element visible="True" id="styles"/>
+    <element visible="False" id="ulstyles"/>
+    <element visible="True" id="olstyles"/>
+    <element visible="True" id="zoom"/>
+  </toolbar>
+</kupu-settings>
