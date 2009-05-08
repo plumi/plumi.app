@@ -7,7 +7,7 @@
   </type>
 
   <!-- News workflow - Members can publish events directly -->
-  <type type_id="News">
+  <type type_id="News Item">
    <bound-workflow workflow_id="simple_publication_workflow"/>
   </type>
 
