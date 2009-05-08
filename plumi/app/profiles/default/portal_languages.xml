@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <object>
- <default_language value="en-us"/>
+ <default_language value="en-au"/>
  <use_path_negotiation value="False"/>
  <use_cookie_negotiation value="False"/>
  <use_request_negotiation value="False"/>
@@ -9,6 +9,6 @@
  <display_flags value="False"/>
  <start_neutral value="False"/>
  <supported_langs>
-  <element value="en-us"/>
+  <element value="en-au"/>
  </supported_langs>
 </object>
