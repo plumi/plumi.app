@@ -7,8 +7,10 @@
   <element value="folder_listing"/>
   <element value="news_listing"/>
  </property>
- <property name="email_from_address" type="string"></property>
- <property name="email_from_name" type="string">Site Administrator</property>
+ <property name="email_from_address"
+    type="string">contact@plumi.org</property>
+ <property name="email_from_name"
+    type="string">default Plumi Site Administrator</property>
  <property name="validate_email" type="boolean">False</property>
  <property name="email_charset" type="string">utf-8</property>
  <property name="enable_permalink" type="boolean">False</property>

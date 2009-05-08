@@ -62,7 +62,7 @@
   <property name="localTimeFormat" type="string">%b %d, %Y</property>
   <property name="localLongTimeFormat"
      type="string">%b %d, %Y %I:%M %p</property>
-  <property name="default_language" type="string">en-us</property>
+  <property name="default_language" type="string">en-au</property>
   <property name="default_charset" type="string">utf-8</property>
   <property name="use_folder_tabs" type="lines">
    <element value=""/>
@@ -142,7 +142,7 @@
    <element value="PlumiVideo"/>
   </property>
   <property name="verify_login_name" type="boolean">True</property>
-  <property name="many_users" type="boolean">False</property>
+  <property name="many_users" type="boolean">True</property>
   <property name="many_groups" type="boolean">False</property>
   <property name="enable_livesearch" type="boolean">True</property>
   <property name="default_page_types" type="lines">
