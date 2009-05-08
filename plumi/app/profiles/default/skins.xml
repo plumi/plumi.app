@@ -2,7 +2,6 @@
 <object name="portal_skins" meta_type="Plone Skins Tool" allow_any="False"
    cookie_persistence="False" default_skin="Plumi 0.3 Skin"
    request_varname="plone_skin">
-   
- <skin-path name="plumi.app" based-on="Plumi 0.3 Skin">
- </skin-path>
+    <!-- just setting the default skin here, see above 'Plumi 0.3 Skin'
+        The skin definition itself is inside plumi.skin egg -->
 </object>

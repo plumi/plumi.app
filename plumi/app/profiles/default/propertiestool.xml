@@ -1,5 +1,16 @@
 <?xml version="1.0"?>
 <object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="content_licensing_properties" meta_type="Plone Property Sheet">
+  <property name="DefaultSiteCopyright" type="string">Copyright 2009</property>
+   <property name="DefaultSiteLicense" type="lines">
+    <element value="Creative Commons License"/>
+    <element value="Attribution-Noncommercial-Share Alike 3.0"/>
+    <element value="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
+    <element value="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png"/>
+    </property>
+</object>
+
+
  <object name="navtree_properties" meta_type="Plone Property Sheet">
   <property name="title">NavigationTree properties</property>
   <property name="sortAttribute"

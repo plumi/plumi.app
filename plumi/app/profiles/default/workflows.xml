@@ -1,9 +1,22 @@
 <?xml version="1.0"?>
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
  <bindings>
-  <!-- Events set to the folder_workflow, Members can publish events directly -->
+  <!-- Events workflow - Members can publish events directly -->
   <type type_id="Event">
-   <bound-workflow workflow_id="folder_workflow"/>
+   <bound-workflow workflow_id="simple_publication_workflow"/>
   </type>
+
+  <!-- News workflow - Members can publish events directly -->
+  <type type_id="News">
+   <bound-workflow workflow_id="simple_publication_workflow"/>
+  </type>
+
+
+  <!-- PlumiVideo set to the community_workflow -->
+  <type type_id="PlumiVideo">
+   <bound-workflow workflow_id="plone_workflow"/>
+  </type>
+
+
  </bindings>
 </object>
