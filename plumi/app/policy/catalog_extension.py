@@ -1,10 +1,11 @@
 """This package adds extensions to portal_catalog.
 """
 from Acquisition import aq_inner
-from Products.CMFPlone.CatalogTool import registerIndexableAttribute
 from Products.ATContentTypes.interface.image import IImageContent
-from zope.interface import providedBy
+from zope.interface import providedBy, Interface
+from plone.indexer.decorator import indexer
 
+@indexer(Interface)
 def hasImageAndCaption(object, portal, **kw):
     if not IImageContent.providedBy(object):
         return None
@@ -15,7 +16,4 @@ def hasImageAndCaption(object, portal, **kw):
                 'caption': caption and caption() or u''}
         
     return {'image': False, 'caption': u''}
-
-print "registering new index for plumi.app"
-registerIndexableAttribute('hasImageAndCaption', hasImageAndCaption)
 

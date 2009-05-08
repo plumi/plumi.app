@@ -2,6 +2,8 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="plumi.app.policy">
+ 
+  <adapter factory='.catalog_extension.hasImageAndCaption' name='hasImageAndCaption' />
 
   <five:registerPackage package="." initialize=".initialize" />
 
