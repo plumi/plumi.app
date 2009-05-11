@@ -2,10 +2,10 @@ import transaction
 from Products.CMFCore.utils import getToolByName
 
 #install plumi.skin last
-PRODUCT_DEPENDENCIES = ('Marshall','plumi.content','plone.app.blob', 'plumi.skin')
+PRODUCT_DEPENDENCIES = ('ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob', 'plumi.skin')
 
 # These are deprecated products, and will be removed in plumi 0.5.x
-PRODUCT_DEPENDENCIES_LEGACY=('qPloneComments','qRSS2Syndication','ATVideo','PressRoom')
+PRODUCT_DEPENDENCIES_LEGACY=('qPloneComments','qRSS2Syndication',)
 #Vaporisation? DataFieldGrid?
                         
 EXTENSION_PROFILES = ('plumi.app:default',)
