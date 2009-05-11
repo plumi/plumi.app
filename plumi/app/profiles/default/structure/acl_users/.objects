@@ -1,2 +1,0 @@
-source_users,Products.PlonePAS.plugins.user.UserManager
-portal_role_manager,Products.PlonePAS.plugins.role.GroupAwareRoleManager
