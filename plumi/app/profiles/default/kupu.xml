@@ -54,21 +54,16 @@
   </library>
   <defaultlibrary>current</defaultlibrary>
   <resource id="collection" mode="whitelist">
-    <type>Callout Folder</type>
     <type>Topic</type>
     <type>Folder</type>
     <type>Large Plone Folder</type>
     <type>Plone Site</type>
-    <type>PressRoom</type>
-    <type>ATEngageVideoFolder</type>
   </resource>
   <resource id="containsanchors" mode="blacklist">
     <type>ATBooleanCriterion</type>
     <type>ATCurrentAuthorCriterion</type>
     <type>ATDateCriteria</type>
     <type>ATDateRangeCriterion</type>
-    <type>ATEngageVideo</type>
-    <type>ATEngageVideoFolder</type>
     <type>ATListCriterion</type>
     <type>ATMediaFileTool</type>
     <type>ATPathCriterion</type>
@@ -78,11 +73,8 @@
     <type>ATSimpleIntCriterion</type>
     <type>ATSimpleStringCriterion</type>
     <type>ATSortCriterion</type>
-    <type>ATVideo</type>
     <type>AliasVocabulary</type>
     <type>BitTorrentFile</type>
-    <type>Call Out</type>
-    <type>Callout Folder</type>
     <type>ChangeSet</type>
     <type>Discussion Item</type>
     <type>Favorite</type>
@@ -91,11 +83,9 @@
     <type>Image</type>
     <type>Large Plone Folder</type>
     <type>Link</type>
-    <type>PlumiVideo</type>
     <type>PressClip</type>
     <type>PressContact</type>
     <type>PressRelease</type>
-    <type>PressRoom</type>
     <type>SimpleVocabulary</type>
     <type>SimpleVocabularyTerm</type>
     <type>SortedSimpleVocabulary</type>
@@ -116,7 +106,6 @@
     <type>ATCurrentAuthorCriterion</type>
     <type>ATDateCriteria</type>
     <type>ATDateRangeCriterion</type>
-    <type>ATEngageVideoFolder</type>
     <type>ATListCriterion</type>
     <type>ATMediaFileTool</type>
     <type>ATPathCriterion</type>
@@ -127,10 +116,8 @@
     <type>ATSimpleIntCriterion</type>
     <type>ATSimpleStringCriterion</type>
     <type>ATSortCriterion</type>
-    <type>ATVideo</type>
     <type>AliasVocabulary</type>
     <type>BitTorrentFile</type>
-    <type>Callout Folder</type>
     <type>ChangeSet</type>
     <type>Discussion Item</type>
     <type>Favorite</type>
@@ -152,11 +139,9 @@
   </resource>
   <resource id="media" mode="whitelist">
     <type>Image</type>
-    <type>PlumiVideo</type>
   </resource>
   <resource id="mediaobject" mode="whitelist">
     <type>Image</type>
-    <type>PlumiVideo</type>
   </resource>
   <defaultresource>linkable</defaultresource>
   <preview portaltype="Image" scalefield="image"

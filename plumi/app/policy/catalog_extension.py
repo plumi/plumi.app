@@ -6,7 +6,7 @@ from zope.interface import providedBy, Interface
 from plone.indexer.decorator import indexer
 
 @indexer(Interface)
-def hasImageAndCaption(object, portal, **kw):
+def hasImageAndCaption(object):
     if not IImageContent.providedBy(object):
         return None
     

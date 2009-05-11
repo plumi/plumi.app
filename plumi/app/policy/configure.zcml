@@ -5,6 +5,4 @@
  
   <adapter factory='.catalog_extension.hasImageAndCaption' name='hasImageAndCaption' />
 
-  <five:registerPackage package="." initialize=".initialize" />
-
 </configure>

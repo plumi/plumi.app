@@ -2,7 +2,10 @@ import transaction
 from Products.CMFCore.utils import getToolByName
 
 #install plumi.skin last
-PRODUCT_DEPENDENCIES = ('qPloneComments','plumi.content','plone.app.blob', 'qRSS2Syndication', 'ATVideo', 'PressRoom','plumi.skin')
+PRODUCT_DEPENDENCIES = ('Marshall','plumi.content','plone.app.blob', 'plumi.skin')
+
+# These are deprecated products, and will be removed in plumi 0.5.x
+PRODUCT_DEPENDENCIES_LEGACY=('qPloneComments','qRSS2Syndication','ATVideo','PressRoom')
 #Vaporisation? DataFieldGrid?
                         
 EXTENSION_PROFILES = ('plumi.app:default',)
@@ -26,6 +29,14 @@ def install(self, reinstall=False):
     portal_setup = getToolByName(self, 'portal_setup')
 
     for product in PRODUCT_DEPENDENCIES:
+        if reinstall and portal_quickinstaller.isProductInstalled(product):
+            portal_quickinstaller.reinstallProducts([product])
+            transaction.savepoint()
+        elif not portal_quickinstaller.isProductInstalled(product):
+            portal_quickinstaller.installProduct(product)
+            transaction.savepoint()
+
+    for product in PRODUCT_DEPENDENCIES_LEGACY:
         if reinstall and portal_quickinstaller.isProductInstalled(product):
             portal_quickinstaller.reinstallProducts([product])
             transaction.savepoint()
