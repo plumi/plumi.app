@@ -2,12 +2,20 @@
 <object name="portal_properties" meta_type="Plone Properties Tool">
  <object name="content_licensing_properties" meta_type="Plone Property Sheet">
   <property name="DefaultSiteCopyright" type="string">Copyright 2009</property>
-   <property name="DefaultSiteLicense" type="lines">
+  <property name="Jurisdiction" select_variable="jurisdiction_options"
+        type="selection">au</property>
+
+  <property name="DefaultSiteLicense" type="lines">
     <element value="Creative Commons License"/>
     <element value="Attribution-Noncommercial-Share Alike 3.0"/>
     <element value="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
     <element value="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png"/>
-    </property>
+  </property>
+  <property name="SupportedLicenses" type="lines">
+          <element value="license_gnuFree"/>
+           <element value="license_cc"/>
+  </property>
+
 </object>
 
 

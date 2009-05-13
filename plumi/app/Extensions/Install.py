@@ -1,8 +1,10 @@
 import transaction
+import logging
 from Products.CMFCore.utils import getToolByName
+from plumi.app import app_installation_tasks
 
 #install plumi.skin last
-PRODUCT_DEPENDENCIES = ('ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob', 'plumi.skin')
+PRODUCT_DEPENDENCIES = ('Vaporisation','ATVocabularyManager','ATCountryWidget','ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob', 'plumi.skin')
 
 # These are deprecated products, and will be removed in plumi 0.5.x
 PRODUCT_DEPENDENCIES_LEGACY=('qPloneComments','qRSS2Syndication',)
@@ -24,10 +26,11 @@ def install(self, reinstall=False):
     the execution of an extension profile (i.e. we cannot do this during
     the importVarious step for this profile).
     """
-    
+    logger = logging.getLogger('plumi.app')
+    logger.info('starting install')
     portal_quickinstaller = getToolByName(self, 'portal_quickinstaller')
     portal_setup = getToolByName(self, 'portal_setup')
-
+    logger.info('starting product dependencies')
     for product in PRODUCT_DEPENDENCIES:
         if reinstall and portal_quickinstaller.isProductInstalled(product):
             portal_quickinstaller.reinstallProducts([product])
@@ -35,7 +38,7 @@ def install(self, reinstall=False):
         elif not portal_quickinstaller.isProductInstalled(product):
             portal_quickinstaller.installProduct(product)
             transaction.savepoint()
-
+    logger.info('starting dependencies legacy')
     for product in PRODUCT_DEPENDENCIES_LEGACY:
         if reinstall and portal_quickinstaller.isProductInstalled(product):
             portal_quickinstaller.reinstallProducts([product])
@@ -43,9 +46,14 @@ def install(self, reinstall=False):
         elif not portal_quickinstaller.isProductInstalled(product):
             portal_quickinstaller.installProduct(product)
             transaction.savepoint()
-    
+    logger.info('starting extension profiles')
     for extension_id in EXTENSION_PROFILES:
         portal_setup.runAllImportStepsFromProfile('profile-%s' % extension_id, purge_old=False)
         product_name = extension_id.split(':')[0]
         portal_quickinstaller.notifyInstalled(product_name)
         transaction.savepoint()
+    #run custom setup code.
+    logger.info('starting custom setup code')
+    app_installation_tasks(self)
+    logger.info('end install')
+
