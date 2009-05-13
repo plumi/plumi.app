@@ -1,0 +1,26 @@
+DONE : ContentLicensing setup -- propertiestools.xml
+
+DONE: product logging, product setup code
+
+DONE: Configure ATVocabularyManager portal vocabs
+
+DONE: Configure ATCountryWidget countries
+
+DONE: Catalog Indexes ... linked to content types!
+DONE: Smart Folder indexes, metadata
+taxonomical hierarchy of smart folders, each with genre/country/topic/ etc critieria.
+
+Implement remaining ATVideo installer tasks
+
+Implement PlumiSkin installer tasks
+    (Collections - latest videos, featured videos etc )
+
+Review ATVideo installer and dependencies
+
+Review 'Plumi' externals, to see how to phase out ie move products to eggs
+
+Review default content structure
+
+Review default members content structure
+
+Release 0.3.0-alpha egg
