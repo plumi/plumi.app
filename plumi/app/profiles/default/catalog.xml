@@ -1,4 +1,22 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
+ <!-- metadata -->
  <column value="hasImageAndCaption"/>
+ <column value="getGenre"/>
+ <column value="getCategories"/>
+ <column value="getCountries"/>
+
+
+ <!-- indexes -->
+ <index name="getGenre" meta_type="KeywordIndex">
+    <indexed_attr value="getGenre"/>
+ </index>
+ <index name="getCategories" meta_type="KeywordIndex">
+    <indexed_attr value="getCategories"/>
+ </index>
+ <index name="getCountries" meta_type="KeywordIndex">
+    <indexed_attr value="getCountries"/>
+ </index>
+
+
 </object>

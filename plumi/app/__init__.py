@@ -78,9 +78,13 @@ def app_installation_tasks(self):
       
         #add our areas
         countrytool.manage_countries_addArea('South East Asia')
-        countrytool.manage_countries_addCountryToArea('South East Asia', ['SG','TH','VN','ID','PH','LA','MY','KH','BN','MM'])
+        countrytool.manage_countries_addCountryToArea('South East Asia', ['SG','TH','VN','ID','PH','LA','MY','KH','BN','MM','HK','MO'])
         countrytool.manage_countries_sortArea('South East Asia')
      
         countrytool.manage_countries_addArea('Oceania')
-        countrytool.manage_countries_addCountryToArea('Oceania', ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ'])
+        countrytool.manage_countries_addCountryToArea('Oceania', ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ',])
         countrytool.manage_countries_sortArea('Oceania')
+
+    logger.info('starting taxonomy hierarchy setup')
+    
+

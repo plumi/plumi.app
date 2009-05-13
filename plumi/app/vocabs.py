@@ -1,6 +1,8 @@
 
 vocab_set = {}
 
+taxonomy_sub_folder={'topic':'video_categories','genre':'video_genre','callouts':'submission_categories','countries':''}
+
 vocab_set['video_categories'] = (
          ('poverty', u'Poverty / Development'),
          ('indigenous', u'Indigenous'),
