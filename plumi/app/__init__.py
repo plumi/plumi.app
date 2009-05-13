@@ -8,7 +8,6 @@ except ImportError:
 import logging
 
 from plumi.app.vocabs  import vocab_set as vocabs
-from Products.CMFCore.utils import getToolByName
 
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
@@ -24,6 +23,7 @@ def app_installation_tasks(self):
 
     logger.info('starting app_installation_tasks. self is %s' %self)
 
+    from Products.CMFCore.utils import getToolByName
     #ATVocabManager setup
     logger.info('Starting ATVocabManager configuration')
     from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
