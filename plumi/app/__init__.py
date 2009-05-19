@@ -92,7 +92,8 @@ def app_installation_tasks(self):
 
     #
     #
-    # Taxonomy - topics    
+    # Taxonomy - smart folder hierarchy setup - genres/categories/countries/ for videos
+    # submission categories for 'callouts'
     logger.info('starting taxonomy hierarchy setup')
     
     # we start in 'taxonomy', and shld already have sub-folders constructed
@@ -120,7 +121,7 @@ def app_installation_tasks(self):
         genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
         fldr = getattr(genre_fldr,new_smart_fldr_id)
          
-        # Filter results to ATEngageVideo
+        # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
         #Have to use the name of the Title of the Type you want to filter.
         type_criterion.setValue("Plumi Video")
@@ -140,7 +141,7 @@ def app_installation_tasks(self):
 
         #XXX make the folder published
 
-    #XXX categories aka topics
+    #video categories aka topics
     categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
     if categ_fldr is None:
         logger.error('No categories folder!')
@@ -157,12 +158,12 @@ def app_installation_tasks(self):
         categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
         fldr = getattr(categ_fldr,new_smart_fldr_id)
 
-        # Filter results to ATEngageVideo
+        # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
         type_criterion.setValue("Plumi Video")
         # Filter results to this individual category
         type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
-        #match against the ID of the vocab term. see getCategories in engage.py (ATEngageVideo object)
+        #match against the ID of the vocab term. see getCategories in content objects
         type_criterion.setValue(vocab[0])
         #match if any vocab term is present in the video's selected categories
         type_criterion.setOperator('or')
@@ -176,7 +177,89 @@ def app_installation_tasks(self):
 
         #XXX make the folder published.
 
-    #XXX call submission categories
-    #XXX countries
+    #Countries
+    #get the countries from the countrytool!
+    # nb: this means that the setup method for the countries should be called BEFORE
+    # this one
+    countrytool = getToolByName(self,CountryUtils.id)
+    cdict = list()
+    countries_fldr = getattr(taxonomy_fldr,COUNTRIES_FOLDER,None)
+    if countries_fldr is None:
+            logger.error('Countries folder is missing!')
+            return
 
+    for area in countrytool._area_list:
+        for country in area.countries:
+            cdict.append([country.isocc,country.name])
+
+    for country in cdict:
+        new_smart_fldr_id = country[0]
+        try:
+            # Remove existing instance if there is one
+            countries_fldr.manage_delObjects([new_smart_fldr_id])
+        except:
+            pass
+        #make the new SmartFolder
+        countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1],description=topic_description_string % country[1]) 
+        fldr = getattr(countries_fldr,new_smart_fldr_id)
+
+        # Filter results to  Plumi Video
+        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+        type_criterion.setValue("Plumi Video")
+
+        # Filter results to this individual category
+        type_criterion = fldr.addCriterion('getCountries', 'ATListCriterion' )
+        #
+        #match against the ID of the vocab term. see getCategories in content objects
+        type_criterion.setValue(country[0])
+        #match if any vocab term is present in the video's selected categories
+        type_criterion.setOperator('or')
+        ## add criteria for showing only published videos
+        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+        #sort on reverse date order
+        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+        sort_crit.setReversed(True)
+        #XXX publish folder
+
+    #CallOut submission categories
+    # Callouts smart folders
+    #
+    topic_description_string = "CallOuts for Topic - %s "
+    submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
+    if submissions_fldr is None:
+            logger.error('callout submissions folder is missing!')
+            return
+
+    for submission_categ in vocabs['submission_categories']:
+        new_smart_fldr_id = submission_categ[0]
+        try:
+            # Remove existing instance if there is one
+            submissions_fldr.manage_delObjects([new_smart_fldr_id])
+        except:
+            pass
+
+        #make the new SmartFolder
+        submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1], description=topic_description_string % submission_categ[1])
+        fldr = getattr(submissions_fldr,new_smart_fldr_id)
+        # Filter results to Callouts
+        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+        #the title of the type, not the class name, or portal_type 
+        type_criterion.setValue("Plumi Call Out")
+
+        # Filter results to this individual category
+        type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
+        #
+        #match against the ID of the vocab term. see getCategories in callout.py (Callout object)
+        type_criterion.setValue(submission_categ[0])
+        #match if any vocab term is present in the video's selected categories
+        type_criterion.setOperator('or')
+
+        ## add criteria for showing only published videos
+        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+        #sort on reverse date order
+        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+        sort_crit.setReversed(True)
+        #XXX publish the folder
 
