@@ -6,10 +6,10 @@ except ImportError:
     __path__ = extend_path(__path__, __name__)
 
 import logging
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 from plumi.app.vocabs  import vocab_set as vocabs
-from plumi.app import config
-from plumi.app.config import TOPLEVEL_TAXONOMY_FOLDER , GENRE_FOLDER, CATEGORIES_FOLDER, COUNTRIES_FOLDER, SUBMISSIONS_FOLDER
+from plumi.app.config import TOPLEVEL_TAXONOMY_FOLDER , GENRE_FOLDER, CATEGORIES_FOLDER, COUNTRIES_FOLDER, SUBMISSIONS_FOLDER, SE_ASIA_COUNTRIES
 
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
@@ -18,6 +18,14 @@ def initialize(context):
 
     logger.info('ending  initialize')
 
+def publishObject(wftool,obj):
+    logger=logging.getLogger('plumi.app')
+    try:
+        logger.info('publishing %s ' % obj)
+        wftool.doActionFor(obj,action='publish')
+    except WorkflowException:
+        logger.error('caught workflow exception!') 
+        pass
 
 def app_installation_tasks(self):
     """Custom Plumi setup code"""
@@ -35,6 +43,7 @@ def app_installation_tasks(self):
     logger.info('Starting ATVocabManager configuration')
     portal=getToolByName(self,'portal_url').getPortalObject()
     atvm = getToolByName(portal, ATVOCABULARYTOOL)
+    wftool = getToolByName(self,'portal_workflow')
      
     for vkey in vocabs.keys():
         # create vocabulary if it doesnt exist:
@@ -53,6 +62,8 @@ def app_installation_tasks(self):
                 vocab.invokeFactory('SimpleVocabularyTerm', ikey)
                 logger.debug("adding vocabulary item %s %s" % (ikey,value))
                 vocab[ikey].setTitle(value)
+        #reindex
+        vocab.reindexObject()
 
     #
     #
@@ -62,7 +73,7 @@ def app_installation_tasks(self):
     #common code
     countrytool.manage_countries_reset()
         
-    if config.SE_ASIA_COUNTRIES:
+    if SE_ASIA_COUNTRIES:
         logger.info('starting custom se-asia countries ATCountryWidget configuration')
         #Add countries missing from the standard installs
         # 
@@ -102,12 +113,14 @@ def app_installation_tasks(self):
     if taxonomy_fldr is None:
         logger.error('No taxonomy folder!')
         return
+    publishObject(wftool,taxonomy_fldr)
+
     #genre
     genre_fldr = getattr(taxonomy_fldr, GENRE_FOLDER,None)
     if genre_fldr is None:
         logger.error('No genre folder!')
         return
-
+    publishObject(wftool,genre_fldr)
     #description string for new smart folders
     topic_description_string = 'Channel for %s on ' + '%s' % self.Title()
     for vocab in vocabs['video_genre']:
@@ -139,13 +152,15 @@ def app_installation_tasks(self):
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
 
-        #XXX make the folder published
+        #make the folder published
+        publishObject(wftool,fldr)
 
     #video categories aka topics
     categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
     if categ_fldr is None:
         logger.error('No categories folder!')
         return
+    publishObject(wftool,categ_fldr)
 
     for vocab in vocabs['video_categories']:
         new_smart_fldr_id = vocab[0]
@@ -175,7 +190,8 @@ def app_installation_tasks(self):
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
 
-        #XXX make the folder published.
+        #make the folder published.
+        publishObject(wftool,fldr)
 
     #Countries
     #get the countries from the countrytool!
@@ -187,6 +203,7 @@ def app_installation_tasks(self):
     if countries_fldr is None:
             logger.error('Countries folder is missing!')
             return
+    publishObject(wftool,countries_fldr)
 
     for area in countrytool._area_list:
         for country in area.countries:
@@ -220,17 +237,17 @@ def app_installation_tasks(self):
         #sort on reverse date order
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
-        #XXX publish folder
+        #publish folder
+        publishObject(wftool,fldr)
 
     #CallOut submission categories
-    # Callouts smart folders
     #
     topic_description_string = "CallOuts for Topic - %s "
     submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
     if submissions_fldr is None:
             logger.error('callout submissions folder is missing!')
             return
-
+    publishObject(wftool,submissions_fldr)
     for submission_categ in vocabs['submission_categories']:
         new_smart_fldr_id = submission_categ[0]
         try:
@@ -261,5 +278,6 @@ def app_installation_tasks(self):
         #sort on reverse date order
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
-        #XXX publish the folder
+        #publish the folder
+        publishObject(wftool,fldr)
 
