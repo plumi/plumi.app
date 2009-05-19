@@ -141,6 +141,41 @@ def app_installation_tasks(self):
         #XXX make the folder published
 
     #XXX categories aka topics
+    categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
+    if categ_fldr is None:
+        logger.error('No categories folder!')
+        return
+
+    for vocab in vocabs['video_categories']:
+        new_smart_fldr_id = vocab[0]
+        try:
+            # Remove existing instance if there is one
+            categ_fldr.manage_delObjects([new_smart_fldr_id])
+        except:
+            pass
+        #make the new SmartFolder
+        categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
+        fldr = getattr(categ_fldr,new_smart_fldr_id)
+
+        # Filter results to ATEngageVideo
+        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+        type_criterion.setValue("Plumi Video")
+        # Filter results to this individual category
+        type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
+        #match against the ID of the vocab term. see getCategories in engage.py (ATEngageVideo object)
+        type_criterion.setValue(vocab[0])
+        #match if any vocab term is present in the video's selected categories
+        type_criterion.setOperator('or')
+        ## add criteria for showing only published videos
+        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+        #sort on reverse date order
+        #XXX old getfirstpublishedtransition time 
+        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+        sort_crit.setReversed(True)
+
+        #XXX make the folder published.
+
     #XXX call submission categories
     #XXX countries
 
