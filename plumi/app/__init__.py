@@ -9,6 +9,7 @@ import logging
 
 from plumi.app.vocabs  import vocab_set as vocabs
 from plumi.app import config
+from plumi.app.config import TOPLEVEL_TAXONOMY_FOLDER , GENRE_FOLDER, CATEGORIES_FOLDER, COUNTRIES_FOLDER, SUBMISSIONS_FOLDER
 
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
@@ -28,6 +29,8 @@ def app_installation_tasks(self):
     from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
     from Products.ATCountryWidget.CountryTool import CountryUtils, Country
 
+    #
+    #
     #ATVocabManager setup
     logger.info('Starting ATVocabManager configuration')
     portal=getToolByName(self,'portal_url').getPortalObject()
@@ -51,6 +54,8 @@ def app_installation_tasks(self):
                 logger.debug("adding vocabulary item %s %s" % (ikey,value))
                 vocab[ikey].setTitle(value)
 
+    #
+    #
     #ATCountryWidget setup
     #reset the country tool
     countrytool = getToolByName(self, CountryUtils.id)
@@ -85,6 +90,58 @@ def app_installation_tasks(self):
         countrytool.manage_countries_addCountryToArea('Oceania', ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ',])
         countrytool.manage_countries_sortArea('Oceania')
 
+    #
+    #
+    # Taxonomy - topics    
     logger.info('starting taxonomy hierarchy setup')
     
+    # we start in 'taxonomy', and shld already have sub-folders constructed
+    #to hold the topics objects (smart folders), via generic setup XML
+    taxonomy_fldr = getattr(self,TOPLEVEL_TAXONOMY_FOLDER,None) 
+    if taxonomy_fldr is None:
+        logger.error('No taxonomy folder!')
+        return
+    #genre
+    genre_fldr = getattr(taxonomy_fldr, GENRE_FOLDER,None)
+    if genre_fldr is None:
+        logger.error('No genre folder!')
+        return
+
+    #description string for new smart folders
+    topic_description_string = 'Channel for %s on ' + '%s' % self.Title()
+    for vocab in vocabs['video_genre']:
+        new_smart_fldr_id = vocab[0]
+        try:
+            # Remove existing instance if there is one
+            genre_fldr.manage_delObjects([new_smart_fldr_id])
+        except:
+            pass
+        #make the new SmartFolder
+        genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
+        fldr = getattr(genre_fldr,new_smart_fldr_id)
+         
+        # Filter results to ATEngageVideo
+        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+        #Have to use the name of the Title of the Type you want to filter.
+        type_criterion.setValue("Plumi Video")
+         
+        # Filter results to this individual genre
+        type_criterion = fldr.addCriterion('getGenre', 'ATSimpleStringCriterion' )
+        #match against the ID of the vocab term. see getGenre in content types 
+        type_criterion.setValue(vocab[0])
+        ## add criteria for showing only published videos
+        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+        
+        #XXX used to have a custom getFirstPublishedTransitionTime 
+        #sort on reverse date order, using the first published time transition
+        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+        sort_crit.setReversed(True)
+
+        #XXX make the folder published
+
+    #XXX categories aka topics
+    #XXX call submission categories
+    #XXX countries
+
 
