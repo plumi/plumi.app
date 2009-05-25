@@ -7,6 +7,9 @@ except ImportError:
 
 import logging
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.Five.component import enableSite
+from zope.app.component.interfaces import ISite
+from plone.app.controlpanel.security import ISecuritySchema
 
 from plumi.app.vocabs  import vocab_set as vocabs
 from plumi.app.config import TOPLEVEL_TAXONOMY_FOLDER , GENRE_FOLDER, CATEGORIES_FOLDER, COUNTRIES_FOLDER, SUBMISSIONS_FOLDER, SE_ASIA_COUNTRIES
@@ -37,11 +40,20 @@ def app_installation_tasks(self):
     from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
     from Products.ATCountryWidget.CountryTool import CountryUtils, Country
 
+    portal=getToolByName(self,'portal_url').getPortalObject()
+    if not ISite.providedBy(portal):
+        enableSite(portal)
+
+    #site security setup!
+    secSchema = ISecuritySchema(portal)
+    secSchema.set_enable_self_reg(True)
+    secSchema.set_enable_user_pwd_choice(True)
+    secSchema.set_enable_user_folders(True)
+
     #
     #
     #ATVocabManager setup
     logger.info('Starting ATVocabManager configuration')
-    portal=getToolByName(self,'portal_url').getPortalObject()
     atvm = getToolByName(portal, ATVOCABULARYTOOL)
     wftool = getToolByName(self,'portal_workflow')
      
