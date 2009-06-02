@@ -1,14 +1,13 @@
 import transaction
 import logging
 from Products.CMFCore.utils import getToolByName
-from plumi.app import app_installation_tasks
+from plumi.app.install import app_installation_tasks
 
 #install plumi.skin last
-PRODUCT_DEPENDENCIES = ('vaporisation','ATVocabularyManager','ATCountryWidget','ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob')
+PRODUCT_DEPENDENCIES = ('LinguaPlone','plone.contentratings','vaporisation','ATVocabularyManager','ATCountryWidget','ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob', 'plumi.skin')
 
 # These are deprecated products, and will be removed in plumi 0.5.x
 PRODUCT_DEPENDENCIES_LEGACY=('qPloneComments','qRSS2Syndication',)
-#Vaporisation? DataFieldGrid?
                         
 EXTENSION_PROFILES = ('plumi.app:default',)
 
