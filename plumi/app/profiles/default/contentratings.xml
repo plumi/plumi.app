@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<contentratings>
+ <categories/>
+ <assignments>
+  <type portal_type="Document">
+   <category value=""/>
+  </type>
+  <type portal_type="PlumiVideo">
+   <category value=""/>
+  </type>
+ </assignments>
+</contentratings>
