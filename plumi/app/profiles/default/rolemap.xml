@@ -4,7 +4,6 @@
     <role name="Anonymous"/>
     <role name="Authenticated"/>
     <role name="Contributor"/>
-    <role name="DiscussionManager"/>
     <role name="Editor"/>
     <role name="Manager"/>
     <role name="Member"/>
@@ -168,10 +167,6 @@
       <role name="Editor"/>
       <role name="Manager"/>
       <role name="Owner"/>
-    </permission>
-    <permission name="Moderate Discussion" acquire="True">
-      <role name="DiscussionManager"/>
-      <role name="Manager"/>
     </permission>
     <permission name="Modify portal content" acquire="True">
       <role name="Editor"/>
