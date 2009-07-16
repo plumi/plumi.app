@@ -243,10 +243,5 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
-    <permission name="plumi.content: Add PlumiVideo"
-                acquire="False">
-      <role name="Contributor"/>
-      <role name="Manager"/>
-    </permission>
   </permissions>
 </rolemap>

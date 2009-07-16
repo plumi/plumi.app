@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from plumi.app.install import app_installation_tasks
 
 #install plumi.skin last
-PRODUCT_DEPENDENCIES = ('LinguaPlone','plone.contentratings','vaporisation','ATVocabularyManager','ATCountryWidget','ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob', 'collective.contentlicensing', 'plumi.skin')
+PRODUCT_DEPENDENCIES = ('LinguaPlone','plone.contentratings','vaporisation','ATVocabularyManager','ATCountryWidget','ContentLicensing','PressRoom','Marshall','collective.flowplayer','plumi.content','plone.app.blob', 'collective.contentlicensing', 'plone.app.imaging', 'plumi.skin')
 
 # These are deprecated products, and will be removed in plumi 0.5.x
 PRODUCT_DEPENDENCIES_LEGACY=('qPloneComments','qRSS2Syndication',)
