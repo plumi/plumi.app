@@ -145,6 +145,7 @@
     </permission>
     <permission name="FTP access" acquire="True">
       <role name="Manager"/>
+      <role name="Member"/>
       <role name="Owner"/>
     </permission>
     <permission name="List folder contents" acquire="True">
