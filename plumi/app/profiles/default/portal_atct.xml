@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <atcttool>
     <topic_indexes>
-       <index name="getGenre" description="The genre of content" enabled="True" friendlyName="Genre">
+       <index name="getGenre" description="The genre of content" enabled="True" friendlyName="Video Genre">
         <criteria>ATBooleanCriterion</criteria>
         <criteria>ATCurrentAuthorCriterion</criteria>
         <criteria>ATDateRangeCriterion</criteria>
@@ -13,7 +13,7 @@
         <criteria>ATSimpleIntCriterion</criteria>
         <criteria>ATSimpleStringCriterion</criteria>
       </index>
-    <index name="getCategories" description="The categories of content" enabled="True" friendlyName="Categories">
+    <index name="getCategories" description="The categories of content" enabled="True" friendlyName="Video Categories">
         <criteria>ATBooleanCriterion</criteria>
         <criteria>ATCurrentAuthorCriterion</criteria>
         <criteria>ATDateRangeCriterion</criteria>
@@ -37,10 +37,24 @@
         <criteria>ATSimpleIntCriterion</criteria>
         <criteria>ATSimpleStringCriterion</criteria>
       </index>
+       <index name="getSubmissionCategories" description="The category of the callout" enabled="True" friendlyName="Submission Category">
+        <criteria>ATBooleanCriterion</criteria>
+        <criteria>ATCurrentAuthorCriterion</criteria>
+        <criteria>ATDateRangeCriterion</criteria>
+        <criteria>ATFriendlyDateCriteria</criteria>
+        <criteria>ATListCriterion</criteria>
+        <criteria>ATPortalTypeCriterion</criteria>
+        <criteria>ATReferenceCriterion</criteria>
+        <criteria>ATSelectionCriterion</criteria>
+        <criteria>ATSimpleIntCriterion</criteria>
+        <criteria>ATSimpleStringCriterion</criteria>
+      </index>
+ 
     </topic_indexes>
      <topic_metadata>
-        <metadata name="getGenre" description="The genre of content" enabled="True" friendlyName="Genre"/>
-        <metadata name="getCategories" description="The categories of content" enabled="True" friendlyName="Categories"/>
+        <metadata name="getGenre" description="The genre of content" enabled="True" friendlyName="Video Genre"/>
+        <metadata name="getCategories" description="The categories of content" enabled="True" friendlyName="Video Categories"/>
         <metadata name="getCountries" description="The country of origin of content" enabled="True" friendlyName="Countries"/>
+	<metadata name="getSubmissionCategories" description="The category of the callout" enabled="True" friendlyName="Submission Category"/>
      </topic_metadata>
 </atcttool> 

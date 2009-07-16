@@ -5,6 +5,7 @@
  <column value="getGenre"/>
  <column value="getCategories"/>
  <column value="getCountries"/>
+ <column value="getSubmissionCategories"/>
 
 
  <!-- indexes -->
@@ -17,6 +18,10 @@
  <index name="getCountries" meta_type="KeywordIndex">
     <indexed_attr value="getCountries"/>
  </index>
+ <index name="getSubmissionCategories" meta_type="KeywordIndex">
+    <indexed_attr value="getSubmissionCategories"/>
+ </index>
+
 
 
 </object>

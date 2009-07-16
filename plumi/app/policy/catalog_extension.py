@@ -16,4 +16,3 @@ def hasImageAndCaption(object):
                 'caption': caption and caption() or u''}
         
     return {'image': False, 'caption': u''}
-

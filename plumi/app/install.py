@@ -285,7 +285,7 @@ def app_installation_tasks(self):
         type_criterion.setValue("Plumi Call Out")
 
         # Filter results to this individual category
-        type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
+        type_criterion = fldr.addCriterion('getSubmissionCategories', 'ATListCriterion' )
         #
         #match against the ID of the vocab term. see getCategories in callout.py (Callout object)
         type_criterion.setValue(submission_categ[0])
