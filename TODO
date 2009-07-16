@@ -15,6 +15,8 @@ DONE:   site security policies (member folders , self reg)
         notifyMemberAreaCreated script - copies initial member folder objects.
         use latest plone.app.memberschema egg for member profiles
 
+Turn on RSS syndication by default.
+
 setup languages in portal_languages [ for use in linguaplone ]
 
 Implement PlumiSkin installer tasks
@@ -22,7 +24,7 @@ Implement PlumiSkin installer tasks
 
 Review ATVideo installer and dependencies
 
-Review 'Plumi' externals, to see how to phase out ie move products to eggs
+DONE Review 'Plumi' externals, to see how to phase out ie move products to eggs. Plumi 0.2.x completely removed by default in buildout.cfg
 
 Review default content structure
 
