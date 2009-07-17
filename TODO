@@ -1,33 +1,22 @@
 DONE : ContentLicensing setup -- propertiestools.xml
-
 DONE: product logging, product setup code
-
 DONE: Configure ATVocabularyManager portal vocabs
-
 DONE: Configure ATCountryWidget countries
-
 DONE: Catalog Indexes ... linked to content types!
 DONE: Smart Folder indexes, metadata
 DONE: taxonomical hierarchy of smart folders, each with genre/country/topic/ etc critieria.
-
-    Implement remaining ATVideo installer tasks::
 DONE:   site security policies (member folders , self reg)
-        notifyMemberAreaCreated script - copies initial member folder objects.
-        use latest plone.app.memberschema egg for member profiles
+DONE    notifyMemberAreaCreated script - copies initial member folder objects.
+NOT DONE use latest plone.app.memberschema egg for member profiles ( ** potentially after alpha release)
+DONE Review 'Plumi' externals, to see how to phase out ie move products to eggs. Plumi 0.2.x completely removed by default in buildout.cfg
+DONE	Collections of taxonomy - callouts submission categories, video genres, video categories, countries
 
 Turn on RSS syndication by default.
-
+Collections for front page - latest videos, featured videos, latest news and event
 setup languages in portal_languages [ for use in linguaplone ]
 
-Implement PlumiSkin installer tasks
-    (Collections - latest videos, featured videos etc )
-
 Review ATVideo installer and dependencies
-
-DONE Review 'Plumi' externals, to see how to phase out ie move products to eggs. Plumi 0.2.x completely removed by default in buildout.cfg
-
 Review default content structure
-
 Review default members content structure
 
-Release 0.3.0-alpha egg
+release egg for plumi 0.3.0 : plumi.app 0.1 alpha 1 egg
