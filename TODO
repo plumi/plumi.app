@@ -9,10 +9,12 @@ DONE:   site security policies (member folders , self reg)
 DONE    notifyMemberAreaCreated script - copies initial member folder objects.
 NOT DONE use latest plone.app.memberschema egg for member profiles ( ** potentially after alpha release)
 DONE Review 'Plumi' externals, to see how to phase out ie move products to eggs. Plumi 0.2.x completely removed by default in buildout.cfg
-DONE	Collections of taxonomy - callouts submission categories, video genres, video categories, countries
+DONE Collections of taxonomy - callouts submission categories, video genres, video categories, countries
+DONE Collections for front page - latest videos, featured videos, latest news and event
+		DONE set new layout options for these Collection/Topic (video_listing_view)
 
+default homepage setting to - featured_videos_homepage view
 Turn on RSS syndication by default.
-Collections for front page - latest videos, featured videos, latest news and event
 setup languages in portal_languages [ for use in linguaplone ]
 
 Review ATVideo installer and dependencies
