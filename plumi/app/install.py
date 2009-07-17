@@ -234,6 +234,9 @@ def app_installation_tasks(self):
         return
     publishObject(wftool,taxonomy_fldr)
 
+    layout_name = "video_listing_view"
+
+
     #
     # 1 of 4: video genre
     #
@@ -274,6 +277,7 @@ def app_installation_tasks(self):
         sort_crit.setReversed(True)
 
         #make the folder published
+   	fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
 
     #
@@ -314,6 +318,7 @@ def app_installation_tasks(self):
         sort_crit.setReversed(True)
 
         #make the folder published.
+	fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
 
 
@@ -367,6 +372,7 @@ def app_installation_tasks(self):
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
         #publish folder
+	fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
 
     #
@@ -409,5 +415,6 @@ def app_installation_tasks(self):
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
         #publish the folder
+	fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
 
