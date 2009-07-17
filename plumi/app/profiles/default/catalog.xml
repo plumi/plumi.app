@@ -2,6 +2,9 @@
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
  <!-- metadata -->
  <column value="hasImageAndCaption"/>
+ <column value="isTranscodedPlumiVideoObj"/>
+ <column value="isPublishablePlumiVideoObj"/>
+
  <column value="getGenre"/>
  <column value="getCategories"/>
  <column value="getCountries"/>
