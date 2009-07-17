@@ -19,9 +19,9 @@ allow_module('plumi.app.member_area.py')
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
     logger=logging.getLogger('plumi.app')
-    logger.info('beginning initialize')
-
-    logger.info('ending  initialize')
+    logger.debug('beginning initialize')
+    # this is called at Zope instance startup, ie not installation.
+    logger.debug('ending  initialize')
 
 def publishObject(wftool,obj):
     logger=logging.getLogger('plumi.app')
@@ -40,6 +40,15 @@ def app_installation_tasks(self):
     portal=getToolByName(self,'portal_url').getPortalObject()
     if not ISite.providedBy(portal):
         enableSite(portal)
+
+    # modify site properties
+
+    # XXX turn on RSS site wide
+    # XXX turn it on in default_member_content
+    # XXX 
+
+    # XXX doesnt work here?! - we could do this in profiles/default/properties.xml, however, we could make some programmatic checks here, if needed.
+    portal.manage_changeProperties(**{"layout" : 'featured_videos_homepage'})
 
     #site security setup!
     secSchema = ISecuritySchema(portal)
@@ -124,7 +133,8 @@ def app_installation_tasks(self):
     #
     #
     # Taxonomy - smart folder hierarchy setup - genres/categories/countries/ for videos
-    # submission categories for 'callouts'
+    # 	we automatically [RE]create collections , hierarchically, for all available vocabulary items
+    #
     logger.info('starting taxonomy hierarchy setup')
     
     # we start in 'taxonomy', and shld already have sub-folders constructed
@@ -135,7 +145,9 @@ def app_installation_tasks(self):
         return
     publishObject(wftool,taxonomy_fldr)
 
-    #genre
+    #
+    # 1 of 4: video genre
+    #
     genre_fldr = getattr(taxonomy_fldr, GENRE_FOLDER,None)
     if genre_fldr is None:
         logger.error('No genre folder!')
@@ -175,7 +187,9 @@ def app_installation_tasks(self):
         #make the folder published
         publishObject(wftool,fldr)
 
-    #video categories aka topics
+    #
+    # 2 of 4: video categories aka topic
+    #
     categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
     if categ_fldr is None:
         logger.error('No categories folder!')
@@ -213,10 +227,16 @@ def app_installation_tasks(self):
         #make the folder published.
         publishObject(wftool,fldr)
 
+
+    #
+    # 3 of 4: video countries
+    #
+   
     #Countries
     #get the countries from the countrytool!
     # nb: this means that the setup method for the countries should be called BEFORE
     # this one
+
     countrytool = getToolByName(self,CountryUtils.id)
     cdict = list()
     countries_fldr = getattr(taxonomy_fldr,COUNTRIES_FOLDER,None)
@@ -260,7 +280,8 @@ def app_installation_tasks(self):
         #publish folder
         publishObject(wftool,fldr)
 
-    #CallOut submission categories
+    #
+    #4 of 4 : CallOut submission categories
     #
     topic_description_string = "CallOuts for Topic - %s "
     submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
