@@ -16,6 +16,11 @@ from Products.Five.component import enableSite
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
+#i18n
+from zope import i18n
+_ = i18n.MessageFactory("plumi.app")
+
+
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
     logger=logging.getLogger('plumi.app')
@@ -129,6 +134,90 @@ def app_installation_tasks(self):
         countrytool.manage_countries_addArea('Oceania')
         countrytool.manage_countries_addCountryToArea('Oceania', ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ',])
         countrytool.manage_countries_sortArea('Oceania')
+
+    #
+    # Collections for display 
+    # latestvideos / featured-videos / news-and-events
+    #
+
+    #The front page, @@featured_videos_homepage, contains
+    #links to 'featured-videos' which is a smart folder containing
+    #all the videos with keyword 'featured' and 'lastestvideos'
+    #which is a smart folder of the latest videos. this method will
+    #simply install them.
+
+    # Items to deploy on install.
+    items = (dict(id      = 'featured-videos',
+                  title   = _(u'Featured Videos'),
+                  desc    = _(u'Videos featured by the editorial team.'),
+                  layout  = "video_listing_view",
+                  exclude = True),
+
+             dict(id      = 'latestvideos',
+                  title   = _(u'Latest Videos'),
+                  desc    = _(u'Latest videos contributed by the users.'),
+                  layout  = "video_listing_view",
+                  exclude = False),
+
+	     dict(id      = 'news_and_events',
+                  title   = _(u'News and Events'),
+                  desc    = _(u'Latest news and events on the site.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+		
+
+		)
+
+    # Items creation
+    for item in items:
+        try:
+            self.manage_delObjects([item['id']])
+        except:
+            ## This is nasty to silence it all
+            pass
+
+        # We create the element
+        self.invokeFactory('Topic',
+                           id = item['id'],
+                           title = item['title'],
+                           description = item['desc'].translate({}))
+
+        # We change its ownership and wf status
+        fv = getattr(self, item['id'])
+        publishObject(wftool, fv)
+
+        # Filter results to ATEngageVideo
+        # Have to use the name of the Title (and ATEngageVideo will be re-named by configATEngageVideo to Video!)
+        # this will actually use ALL objects with title 'Video', which means atm, ATEngageVideo and ATVideo
+        type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
+	if item['id'] is 'news_and_events':
+		type_criterion.setValue( ("News Item","Event") )
+	else:
+		type_criterion.setValue("Plumi Video")
+
+        # Filter results to this 'keyword' field, the kw being 'featured'
+        if item['id'] is 'featured-videos':
+            type_criterion = fv.addCriterion('Subject', 'ATSimpleStringCriterion')
+            type_criterion.setValue('featured')
+
+        # Sort on reverse publication date order
+	# XXX port functionality
+        #sort_crit = fv.addCriterion('getFirstPublishedTransitionTime',"ATSortCriterion")
+	sort_crit = fv.addCriterion('created',"ATSortCriterion")
+        sort_crit.setReversed(True)
+
+        ## add criteria for showing only published videos
+        state_crit = fv.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit.setValue('published')
+
+        if item['exclude'] is True:
+            fv.setExcludeFromNav(True)
+
+        if item['layout'] is not None:
+            fv.setLayout(item['layout'])
+
+        fv.reindexObject()
+
 
     #
     #
