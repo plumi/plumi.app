@@ -48,20 +48,40 @@ def app_installation_tasks(self):
 
     # modify site properties
 
-    # XXX turn on RSS site wide
-    # XXX turn it on in default_member_content
-    # XXX 
+    #turn on RSS site wide
+    portal_syn = getToolByName(portal,'portal_syndication',None)
+    try:
+        portal_syn.enableSyndication(portal) 
+    except:
+        #throws exceptions if already enabled!
+    	pass
+	
+    # turn it on in default_member_content
+    # XXX might need to loop over all folders inside this folder?
+    default_member_folder = getattr(portal,'default_member_folder',None)
+    try:
+        portal_syn.enableSyndication(default_member_folder) 
+    except:
+        #throws exceptions if already enabled!
+    	pass
+
+    # XXX set default homepage 
 
     # XXX doesnt work here?! - we could do this in profiles/default/properties.xml, however, we could make some programmatic checks here, if needed.
-    portal.manage_changeProperties(**{"layout" : 'featured_videos_homepage'})
+    #portal.manage_changeProperties(**{"layout" : 'featured_videos_homepage'})
+    portal.setLayout('featured_videos_homepage')
 
+    #
     #site security setup!
+    #
     secSchema = ISecuritySchema(portal)
     secSchema.set_enable_self_reg(True)
     secSchema.set_enable_user_pwd_choice(True)
     secSchema.set_enable_user_folders(True)
 
+    #
     #setup languages for the site - this is portal languages, not linguaplone
+    #
     lang = getToolByName(self, 'portal_languages')
     lang.supported_langs = LANGUAGES
     lang.setDefaultLanguage('en-au')
@@ -73,8 +93,8 @@ def app_installation_tasks(self):
     lang.use_request_negotiation = 1
 
     #
-    #
     #ATVocabManager setup
+    #
     logger.info('Starting ATVocabManager configuration')
     atvm = getToolByName(portal, ATVOCABULARYTOOL)
     wftool = getToolByName(self,'portal_workflow')
