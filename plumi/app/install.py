@@ -57,18 +57,16 @@ def app_installation_tasks(self):
     	pass
 	
     # turn it on in default_member_content
-    # XXX might need to loop over all folders inside this folder?
-    default_member_folder = getattr(portal,'default_member_folder',None)
-    try:
-        portal_syn.enableSyndication(default_member_folder) 
-    except:
-        #throws exceptions if already enabled!
-    	pass
+    # need to loop over all folders inside this folder
+    default_member_content = getattr(portal,'default_member_content',None)
+    for thing in default_member_content.objectValues():
+        try:
+        	portal_syn.enableSyndication(thing) 
+        except:
+		#throws exceptions if already enabled!
+		pass
 
-    # XXX set default homepage 
-
-    # XXX doesnt work here?! - we could do this in profiles/default/properties.xml, however, we could make some programmatic checks here, if needed.
-    #portal.manage_changeProperties(**{"layout" : 'featured_videos_homepage'})
+    #set default homepage 
     portal.setLayout('featured_videos_homepage')
 
     #
