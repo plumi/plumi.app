@@ -1,0 +1,9 @@
+trunk (2009-07-24)
+==================
+
+  - Dev work for Plumi 3.0 releases [Andy Nicholson]
+
+0.1 (2009-07-24)
+================
+
+  - Initial Release for Plumi 3.0 alpha 1 release [Andy Nicholson]
