@@ -15,11 +15,10 @@ DONE set new layout options for these Collection/Topic (video_listing_view)
 DONE default homepage setting to - featured_videos_homepage view
 DONE Turn on RSS syndication by default.
 DONE set all default member folders to have RSS Syndication on
+DONE release egg for plumi 0.3.0 : plumi.app 0.1 alpha 1 egg
 
 setup languages in portal_languages [ for use in linguaplone ]
-
 Review ATVideo installer and dependencies
 Review default content structure
 Review default members content structure
 
-release egg for plumi 0.3.0 : plumi.app 0.1 alpha 1 egg
