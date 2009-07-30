@@ -2,7 +2,7 @@
 <object name="content_type_registry" meta_type="Content Type Registry">
  <predicate name="video_ext" content_type_name="PlumiVideo"
     predicate_type="extension">
-  <argument value="mov,wmv,rm,swf,flv,mpg"/>
+  <argument value="avi,qt,mov,mpeg,mp4,mpg,asf,wmv,3gp,m4v,ogm,ogg,divx,flv,rm,swf,vob"/>
  </predicate>
  <predicate name="video" content_type_name="PlumiVideo"
     predicate_type="major_minor">
