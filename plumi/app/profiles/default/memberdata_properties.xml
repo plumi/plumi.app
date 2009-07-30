@@ -19,30 +19,31 @@
  <property name="postcode" type="string"></property>
  <property name="phone" type="string"></property>
  <property name="url" type="string"></property>
- <property name="genre_interests_selection" type="lines">
-  <element value="documentary"/>
-  <element value="experimental"/>
-  <element value="fiction"/>
-  <element value="animation"/>
-  <element value="music"/>
-  <element value="newsreport"/>
- </property>
  <property name="userbio" type="string"></property>
- <property name="genre_interests" select_variable="genre_interests_selection"
-    type="multiple selection"/>
+
+ <property name="genre_interests_selection" type="lines">
+  <element value="Documentary"/>
+  <element value="Experimental"/>
+  <element value="Fiction"/>
+  <element value="Animation"/>
+  <element value="Music"/>
+  <element value="NewsReport"/>
+ </property>
+ <property name="genre_interests" select_variable="genre_interests_selection" type="multiple selection"/>
+
  <property name="activities_selection" type="lines">
   <element value="Production"/>
   <element value="Distribution"/>
   <element value="Screening"/>
  </property>
- <property name="activities" select_variable="activities_selection"
-    type="multiple selection"/>
+ <property name="activities" select_variable="activities_selection" type="multiple selection"/>
+
  <property name="media_formats_selection" type="lines">
   <element value="TV"/>
   <element value="DVD"/>
   <element value="Web"/>
   <element value="Film"/>
  </property>
- <property name="media_formats" select_variable="media_formats_selection"
-    type="multiple selection"/>
+ <property name="media_formats" select_variable="media_formats_selection" type="multiple selection"/>
+
 </object>
