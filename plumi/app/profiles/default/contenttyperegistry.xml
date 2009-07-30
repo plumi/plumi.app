@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <object name="content_type_registry" meta_type="Content Type Registry">
- <predicate name="video_ext" content_type_name="ATEngageVideo"
+ <predicate name="video_ext" content_type_name="PlumiVideo"
     predicate_type="extension">
   <argument value="mov,wmv,rm,swf,flv,mpg"/>
  </predicate>
- <predicate name="video" content_type_name="ATEngageVideo"
+ <predicate name="video" content_type_name="PlumiVideo"
     predicate_type="major_minor">
   <argument value="video"/>
   <argument value=""/>
