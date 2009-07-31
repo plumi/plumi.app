@@ -1,26 +1,32 @@
 """This package adds extensions to portal_catalog.
 """
-from Acquisition import aq_inner
-from Products.ATContentTypes.interface.image import IImageContent
+
 from zope.interface import providedBy, Interface
-from plone.indexer.decorator import indexer
-
+from Acquisition import aq_inner
+from Products.CMFPlone.CatalogTool import registerIndexableAttribute
+from Products.CMFCore.utils import getToolByName
 from plumi.content.interfaces import IPlumiVideo
+import logging
 
-@indexer(Interface)
-def hasImageAndCaption(object):
-    if not IImageContent.providedBy(object):
+def hasImageAndCaption(object,portal, **kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    logger.info('hasImageAndCaption - have %s ' % object )
+    if not IPlumiVideo.providedBy(object):
         return None
-    
-    if object.getImage():
-        caption = getattr(aq_inner(object), "getImageCaption", None)
-        return {'image': True,
-                'caption': caption and caption() or u''}
-        
-    return {'image': False, 'caption': u''}
+   
+    if object.getThumbnailImage() is not None:
+	caption = object.getThumbnailImageDescription() or u''
+        md = {'image': True, 'caption': caption }
+    else:     
+	md = {'image': False, 'caption': u''}
 
-@indexer(Interface)
+    logger.info(' hasImageAndCaption returning %s' % md)
+    return md
+
 def isTranscodedPlumiVideoObj(object, portal, **kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    logger.debug(' isTranscodedPlumiVideoObj - have %s ' % object )
+
     if not IPlumiVideo.providedBy(object):
         return None
     # XXX reimplement this.
@@ -40,8 +46,10 @@ def isTranscodedPlumiVideoObj(object, portal, **kw):
 
     return { 'transcoding_status':video_status[0], 'indytube_html':indytube_html }
 
-@indexer(Interface)
 def isPublishablePlumiVideoObj(object, portal, **kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    logger.debug(' isPublishablePlumiVuideoObj - have %s ' % object )
+
     if not IPlumiVideo.providedBy(object):
         return None
 
@@ -88,6 +96,10 @@ def isPublishablePlumiVideoObj(object, portal, **kw):
     else:
         d = {'published': False }
 
-    portal.plone_log("Returning metadata %s " % d)
     return d
 
+#
+# Register these indexable attributes
+registerIndexableAttribute('hasImageAndCaption', hasImageAndCaption)
+registerIndexableAttribute('isTranscodedPlumiVideoObj', isTranscodedPlumiVideoObj)
+registerIndexableAttribute('isPublishablePlumiVideoObj', isPublishablePlumiVideoObj)

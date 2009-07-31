@@ -3,6 +3,4 @@
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="plumi.app.policy">
  
-  <adapter factory='.catalog_extension.hasImageAndCaption' name='hasImageAndCaption' />
-
 </configure>
