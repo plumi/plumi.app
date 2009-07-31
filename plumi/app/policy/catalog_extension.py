@@ -10,25 +10,28 @@ import logging
 
 def hasImageAndCaption(object,portal, **kw):
     logger=logging.getLogger('plumi.app.policy.catalog_extension')
-    logger.info('hasImageAndCaption - have %s ' % object )
     if not IPlumiVideo.providedBy(object):
         return None
    
-    if object.getThumbnailImage() is not None:
+    logger.debug('hasImageAndCaption - have %s ' % object )
+    img = object.getThumbnailImage()
+    #check that the image is set
+    if img is not None and img is not '':
 	caption = object.getThumbnailImageDescription() or u''
         md = {'image': True, 'caption': caption }
     else:     
 	md = {'image': False, 'caption': u''}
 
-    logger.info(' hasImageAndCaption returning %s' % md)
+    logger.debug(' hasImageAndCaption returning %s  . thumbnail object is %s' % (md, object.getThumbnailImage()))
     return md
 
 def isTranscodedPlumiVideoObj(object, portal, **kw):
     logger=logging.getLogger('plumi.app.policy.catalog_extension')
-    logger.debug(' isTranscodedPlumiVideoObj - have %s ' % object )
 
     if not IPlumiVideo.providedBy(object):
         return None
+
+    logger.debug(' isTranscodedPlumiVideoObj - have %s ' % object )
     # XXX reimplement this.
     # using the PMH Grok web app 
 
@@ -48,10 +51,11 @@ def isTranscodedPlumiVideoObj(object, portal, **kw):
 
 def isPublishablePlumiVideoObj(object, portal, **kw):
     logger=logging.getLogger('plumi.app.policy.catalog_extension')
-    logger.debug(' isPublishablePlumiVuideoObj - have %s ' % object )
 
     if not IPlumiVideo.providedBy(object):
         return None
+
+    logger.debug(' isPublishablePlumiVideoObj - have %s ' % object )
 
     portal_workflow = getToolByName(portal,'portal_workflow')
     portal_membership = getToolByName(portal,'portal_membership')
