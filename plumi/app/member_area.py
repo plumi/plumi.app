@@ -6,10 +6,10 @@ def updateCreatorAndOwnership(container, member_id,object):
     plone_utils = getToolByName(container,'plone_utils') 
     ids_to_update = [ o for o in object.objectIds() if o not in exclude_filter ]
     for o in ids_to_update:
-        logging.info('updateCreatorAndOwnership : object is %s ' % o)
         obj = getattr(object, o)
-        logging.info('object type is %s, creators %s ' %  (obj.getTypeInfo().getId(),obj.Creators()))
         obj.setCreators([member_id])
+
+        logging.info('updateCreatorAndOwnership : object is %s object type is %s, creators %s ' %  (o,obj.getTypeInfo().getId(),obj.Creators()))
         try:
             plone_utils.changeOwnershipOf (obj, member_id, 1)
         except KeyError:
@@ -30,10 +30,15 @@ def notifyMemberAreaCreated(container,context):
     portal_membership = getToolByName(container,'portal_membership') 
     workflow = getToolByName(container,'portal_workflow')
 
+    #XXX this assumption is broken on importing members from CSV file.
     memb = portal_membership.getAuthenticatedMember()
     member_id = memb.getId()
-    logger.info('found member, is %s ' % member_id)
+    #hack around above bug. It manifests itself as everyone owned by 'admin' usually.
+    if member_id == 'admin':
+        #get name from folder context name
+            member_id = context.getId()
 
+    logger.info('found member, is %s ' % member_id) 
     # here we do the copying
     copy_ids = default_member_content.objectIds()
     #exclude
