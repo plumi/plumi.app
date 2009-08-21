@@ -1,6 +1,10 @@
 import logging
 from Products.CMFCore.utils import getToolByName
 
+#i18n
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory("plumi")
+
 exclude_filter = [ 'syndication_information' ]
 def updateCreatorAndOwnership(container, member_id,object):
     plone_utils = getToolByName(container,'plone_utils') 

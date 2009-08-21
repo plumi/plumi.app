@@ -17,8 +17,8 @@ from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
 #i18n
-from zope import i18n
-_ = i18n.MessageFactory("plumi.app")
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory("plumi")
 
 
 def initialize(context):  
@@ -82,13 +82,14 @@ def app_installation_tasks(self):
     #
     lang = getToolByName(self, 'portal_languages')
     lang.supported_langs = LANGUAGES
-    lang.setDefaultLanguage('en-au')
+    lang.setDefaultLanguage('en')
     lang.display_flags = 1
-    lang.force_language_urls = 1
+    lang.force_language_urls = 1 
     lang.use_cookie_negotiation = 1
     lang.use_content_negotiation = 1
     lang.use_path_negotiation = 1
     lang.use_request_negotiation = 1
+    lang.start_neutral = 1
 
     #
     #ATVocabManager setup
@@ -102,9 +103,11 @@ def app_installation_tasks(self):
         vocabname = vkey
         if atvm.getVocabularyByName(vocabname):
             atvm.manage_delObjects(vocabname)
+            #TODO will we need to delete translations here as well?
         logger.debug("adding vocabulary %s" % vocabname)
         atvm.invokeFactory('SimpleVocabulary', vocabname)
         vocab = atvm[vocabname]
+
         #delete the 'default' item
         if hasattr(vocab, 'default'):
             vocab.manage_delObjects(['default'])
@@ -114,6 +117,15 @@ def app_installation_tasks(self):
                 vocab.invokeFactory('SimpleVocabularyTerm', ikey)
                 logger.debug("adding vocabulary item %s %s" % (ikey,value))
                 vocab[ikey].setTitle(value)
+
+#               TODO need to get list of all langues this vocab item has been
+#                    translated into - pseudocode follows:
+#                vocabLangs = PTS.getLanguages(value, 'Plumi') XXX
+#                for lang in vocabLangs:
+#                    vocab[ikey].addTranslation(lang)
+#                    translatedTitle = PTS.translate(value, lang) #TODO value orikey?
+#                    vocab[ikey].getTranslation(lang).setTitle(translateTitle)
+#               END of psuedocode
         #reindex
         vocab.reindexObject()
 
@@ -124,7 +136,9 @@ def app_installation_tasks(self):
     countrytool = getToolByName(self, CountryUtils.id)
     #common code
     countrytool.manage_countries_reset()
-        
+    
+    #TODO translate country names like is done in vocabs above
+    
     if SE_ASIA_COUNTRIES:
         logger.info('starting custom se-asia countries ATCountryWidget configuration')
         #Add countries missing from the standard installs
@@ -165,6 +179,8 @@ def app_installation_tasks(self):
     #simply install them.
 
     # Items to deploy on install.
+    #TODO - why are these called with _ MessageFactory? I don't think that works
+    #       since they are content items
     items = (dict(id      = 'featured-videos',
                   title   = _(u'Featured Videos'),
                   desc    = _(u'Videos featured by the editorial team.'),
@@ -250,6 +266,7 @@ def app_installation_tasks(self):
     if taxonomy_fldr is None:
         logger.error('No taxonomy folder!')
         return
+    taxonomy_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,taxonomy_fldr)
 
     layout_name = "video_listing_view"
@@ -262,6 +279,7 @@ def app_installation_tasks(self):
     if genre_fldr is None:
         logger.error('No genre folder!')
         return
+    genre_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,genre_fldr)
     #description string for new smart folders
     topic_description_string = 'Channel for %s on ' + '%s' % self.Title()
@@ -275,6 +293,7 @@ def app_installation_tasks(self):
         #make the new SmartFolder
         genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
         fldr = getattr(genre_fldr,new_smart_fldr_id)
+        fldr.setLanguage('') #make the object language independent
          
         # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
@@ -305,6 +324,7 @@ def app_installation_tasks(self):
     if categ_fldr is None:
         logger.error('No categories folder!')
         return
+    categ_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,categ_fldr)
 
     for vocab in vocabs['video_categories']:
@@ -317,6 +337,7 @@ def app_installation_tasks(self):
         #make the new SmartFolder
         categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
         fldr = getattr(categ_fldr,new_smart_fldr_id)
+        fldr.setLanguage('') #make the object language independent
 
         # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
@@ -355,6 +376,7 @@ def app_installation_tasks(self):
     if countries_fldr is None:
             logger.error('Countries folder is missing!')
             return
+    countries_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,countries_fldr)
 
     for area in countrytool._area_list:
@@ -371,6 +393,7 @@ def app_installation_tasks(self):
         #make the new SmartFolder
         countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1],description=topic_description_string % country[1]) 
         fldr = getattr(countries_fldr,new_smart_fldr_id)
+        fldr.setLanguage('') #make the object language independent
 
         # Filter results to  Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
@@ -401,6 +424,7 @@ def app_installation_tasks(self):
     if submissions_fldr is None:
             logger.error('callout submissions folder is missing!')
             return
+    submissions_fldr.setLanguage('')
     publishObject(wftool,submissions_fldr)
     for submission_categ in vocabs['submission_categories']:
         new_smart_fldr_id = submission_categ[0]
@@ -413,6 +437,7 @@ def app_installation_tasks(self):
         #make the new SmartFolder
         submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1], description=topic_description_string % submission_categ[1])
         fldr = getattr(submissions_fldr,new_smart_fldr_id)
+        fldr.setLanguage('') #make the object language independent
         # Filter results to Callouts
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
         #the title of the type, not the class name, or portal_type 

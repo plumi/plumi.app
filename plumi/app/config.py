@@ -2,7 +2,7 @@
 SE_ASIA_COUNTRIES=True
 
 #languages to support by default
-LANGUAGES = ['en','en-au','id','ms','ms-my','ml','tl','th']
+LANGUAGES = ['en','id','ms-my']
 
 #Names of the folders inside the taxonomy hierarchy
 TOPLEVEL_TAXONOMY_FOLDER='taxonomy'
