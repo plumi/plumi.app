@@ -1,4 +1,3 @@
-
 import logging
 from zope.app.component.interfaces import ISite
 from plone.app.controlpanel.security import ISecuritySchema
@@ -17,6 +16,8 @@ from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
 #i18n
+from zope.component import getUtility
+from zope.i18n import ITranslationDomain
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory("plumi")
 
@@ -37,6 +38,38 @@ def publishObject(wftool,obj):
         logger.error('caught workflow exception!') 
         pass
 
+def createTranslations(portal,canon):
+    parent = canon.getParentNode()
+    wftool = getToolByName(portal,'portal_workflow')
+    plumiDomain = getUtility(ITranslationDomain, 'plumi')
+    plumiLanguages = plumiDomain.getCatalogsInfo()
+    langs = []
+    for lang in plumiLanguages.keys():
+        if str(lang) != 'test':
+            langs.append(str(lang))
+    for lang in langs:
+        transId = '%s-%s' % (canon.id, lang)
+        transTitle = plumiDomain.translate(canon.title,
+                                           target_language=lang)
+        transDesc = plumiDomain.translate(canon.description,
+                                          target_language=lang)
+        if not hasattr(parent, transId):
+            if parent != portal and parent.hasTranslation(lang):
+                #if parent folder has a translation, put the clone in that
+                translation = parent.getTranslation(lang).manage_clone(canon,
+                                                    transId)
+            else:
+                translation = parent.manage_clone(canon, transId)
+            translation.setTitle(transTitle)
+            translation.setDescription(transDesc)
+            translation.setLanguage(lang)
+            translation.addTranslationReference(canon)
+            publishObject(wftool, translation)
+
+def deleteTranslations(canon):
+    for translation in canon.getBRefs():
+        canon.getParentNode().manage_delObjects(translation.id)
+
 def app_installation_tasks(self):
     """Custom Plumi setup code"""
     logger=logging.getLogger('plumi.app')
@@ -54,17 +87,17 @@ def app_installation_tasks(self):
         portal_syn.enableSyndication(portal) 
     except:
         #throws exceptions if already enabled!
-    	pass
-	
+            pass
+        
     # turn it on in default_member_content
     # need to loop over all folders inside this folder
     default_member_content = getattr(portal,'default_member_content',None)
     for thing in default_member_content.objectValues():
         try:
-        	portal_syn.enableSyndication(thing) 
+                portal_syn.enableSyndication(thing) 
         except:
-		#throws exceptions if already enabled!
-		pass
+        	#throws exceptions if already enabled!
+        	pass
 
     #set default homepage 
     portal.setLayout('featured_videos_homepage')
@@ -91,6 +124,7 @@ def app_installation_tasks(self):
     lang.use_request_negotiation = 1
     lang.start_neutral = 1
 
+
     #
     #ATVocabManager setup
     #
@@ -103,9 +137,9 @@ def app_installation_tasks(self):
         vocabname = vkey
         if atvm.getVocabularyByName(vocabname):
             atvm.manage_delObjects(vocabname)
-            #TODO will we need to delete translations here as well?
         logger.debug("adding vocabulary %s" % vocabname)
         atvm.invokeFactory('SimpleVocabulary', vocabname)
+
         vocab = atvm[vocabname]
 
         #delete the 'default' item
@@ -118,14 +152,6 @@ def app_installation_tasks(self):
                 logger.debug("adding vocabulary item %s %s" % (ikey,value))
                 vocab[ikey].setTitle(value)
 
-#               TODO need to get list of all langues this vocab item has been
-#                    translated into - pseudocode follows:
-#                vocabLangs = PTS.getLanguages(value, 'Plumi') XXX
-#                for lang in vocabLangs:
-#                    vocab[ikey].addTranslation(lang)
-#                    translatedTitle = PTS.translate(value, lang) #TODO value orikey?
-#                    vocab[ikey].getTranslation(lang).setTitle(translateTitle)
-#               END of psuedocode
         #reindex
         vocab.reindexObject()
 
@@ -143,29 +169,29 @@ def app_installation_tasks(self):
         logger.info('starting custom se-asia countries ATCountryWidget configuration')
         #Add countries missing from the standard installs
         # 
-        countrytool.manage_countries_addCountry('WP','West Papua')
+        countrytool.manage_countries_addCountry('WP',_(u'West Papua'))
         #XXX this is a state of America, not a country - but thats just politics!!
-        countrytool.manage_countries_addCountry('HA','Hawaii')
-        countrytool.manage_countries_addCountry('BU','Bougainville')
+        countrytool.manage_countries_addCountry('HA',_(u'Hawaii'))
+        countrytool.manage_countries_addCountry('BU',_(u'Bougainville'))
        
         #update three more pre-exisiting countries 
         #change Myanmar to Burma
         #Lao Peoples blah blah to just Laos
         #Viet Nam to Vietnam
         countries = countrytool._country_list
-        countries[countries.index(Country('MM'))].name="Burma"
-        countries[countries.index(Country('LA'))].name="Laos"
-        countries[countries.index(Country('VN'))].name="Vietnam"
-        countries[countries.index(Country('NZ'))].name="NZ-Aotearoa"
+        countries[countries.index(Country('MM'))].name=_(u'Burma')
+        countries[countries.index(Country('LA'))].name=_(u'Laos')
+        countries[countries.index(Country('VN'))].name=_(u'Vietnam')
+        countries[countries.index(Country('NZ'))].name=_(u'NZ-Aotearoa')
       
         #add our areas
-        countrytool.manage_countries_addArea('South East Asia')
-        countrytool.manage_countries_addCountryToArea('South East Asia', ['SG','TH','VN','ID','PH','LA','MY','KH','BN','MM','HK','MO'])
-        countrytool.manage_countries_sortArea('South East Asia')
+        countrytool.manage_countries_addArea(_(u'South East Asia'))
+        countrytool.manage_countries_addCountryToArea(_(u'South East Asia'), ['SG','TH','VN','ID','PH','LA','MY','KH','BN','MM','HK','MO'])
+        countrytool.manage_countries_sortArea(_(u'South East Asia'))
      
-        countrytool.manage_countries_addArea('Oceania')
-        countrytool.manage_countries_addCountryToArea('Oceania', ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ',])
-        countrytool.manage_countries_sortArea('Oceania')
+        countrytool.manage_countries_addArea(_(u'Oceania'))
+        countrytool.manage_countries_addCountryToArea(_(u'Oceania'), ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ',])
+        countrytool.manage_countries_sortArea(_(u'Oceania'))
 
     #
     # Collections for display 
@@ -179,8 +205,6 @@ def app_installation_tasks(self):
     #simply install them.
 
     # Items to deploy on install.
-    #TODO - why are these called with _ MessageFactory? I don't think that works
-    #       since they are content items
     items = (dict(id      = 'featured-videos',
                   title   = _(u'Featured Videos'),
                   desc    = _(u'Videos featured by the editorial team.'),
@@ -193,18 +217,18 @@ def app_installation_tasks(self):
                   layout  = "video_listing_view",
                   exclude = False),
 
-	     dict(id      = 'news_and_events',
+             dict(id      = 'news_and_events',
                   title   = _(u'News and Events'),
                   desc    = _(u'Latest news and events on the site.'),
                   layout  = "folder_summary_view",
                   exclude = True),
-		
-
-		)
+            )
 
     # Items creation
     for item in items:
         try:
+            canon = getattr(self, item['id'])
+            deleteTranslations(canon)
             self.manage_delObjects([item['id']])
         except:
             ## This is nasty to silence it all
@@ -216,28 +240,34 @@ def app_installation_tasks(self):
                            title = item['title'],
                            description = item['desc'].translate({}))
 
-        # We change its ownership and wf status
         fv = getattr(self, item['id'])
+ 
+
+        # We change its ownership and wf status
         publishObject(wftool, fv)
 
         # Filter results to ATEngageVideo
-        # Have to use the name of the Title (and ATEngageVideo will be re-named by configATEngageVideo to Video!)
-        # this will actually use ALL objects with title 'Video', which means atm, ATEngageVideo and ATVideo
+        # Have to use the name of the Title (and ATEngageVideo will be 
+        #    re-named by configATEngageVideo to Video!)
+        # this will actually use ALL objects with title 'Video', which 
+        #    means atm, ATEngageVideo and ATVideo
         type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
-	if item['id'] is 'news_and_events':
-		type_criterion.setValue( ("News Item","Event") )
-	else:
-		type_criterion.setValue("Plumi Video")
+        if item['id'] is 'news_and_events':
+        	type_criterion.setValue( ("News Item","Event") )
+        else:
+        	type_criterion.setValue("Plumi Video")
 
         # Filter results to this 'keyword' field, the kw being 'featured'
         if item['id'] is 'featured-videos':
-            type_criterion = fv.addCriterion('Subject', 'ATSimpleStringCriterion')
+            type_criterion = fv.addCriterion('Subject', 
+                                             'ATSimpleStringCriterion')
             type_criterion.setValue('featured')
 
         # Sort on reverse publication date order
-	# XXX port functionality
-        #sort_crit = fv.addCriterion('getFirstPublishedTransitionTime',"ATSortCriterion")
-	sort_crit = fv.addCriterion('created',"ATSortCriterion")
+        # XXX port functionality
+        #sort_crit = fv.addCriterion('getFirstPublishedTransitionTime',
+        #                                "ATSortCriterion")
+        sort_crit = fv.addCriterion('created',"ATSortCriterion")
         sort_crit.setReversed(True)
 
         ## add criteria for showing only published videos
@@ -252,48 +282,52 @@ def app_installation_tasks(self):
 
         fv.reindexObject()
 
+        createTranslations(self,fv)
+
 
     #
     #
-    # Taxonomy - smart folder hierarchy setup - genres/categories/countries/ for videos
-    # 	we automatically [RE]create collections , hierarchically, for all available vocabulary items
+    # Taxonomy - smart folder hierarchy setup - genres/categories/countries/ 
+    #    for videos we automatically [RE]create collections , hierarchically, 
+    #    for all available vocabulary items
     #
     logger.info('starting taxonomy hierarchy setup')
-    
-    # we start in 'taxonomy', and shld already have sub-folders constructed
-    #to hold the topics objects (smart folders), via generic setup XML
+
+    #delete the taxonomy folder and it's translations.
+    #this should also delete all children and children's children etc
+    try:
+        canon = getattr(self, 'taxonomy')
+        deleteTranslations(canon)
+        self.manage_delObjects(['taxonomy'])
+    except:
+        pass
+    self.invokeFactory('Folder', id = TOPLEVEL_TAXONOMY_FOLDER,
+                       title = _(u'Browse Content'),
+#                      description = _(u'The top-level taxonomy of the content')
+                       )
     taxonomy_fldr = getattr(self,TOPLEVEL_TAXONOMY_FOLDER,None) 
-    if taxonomy_fldr is None:
-        logger.error('No taxonomy folder!')
-        return
-    taxonomy_fldr.setLanguage('') #make the object language independent
+    # we start in 'taxonomy', and shld already have sub-folders constructed
+    #    to hold the topics objects (smart folders), via generic setup XML
     publishObject(wftool,taxonomy_fldr)
 
+    createTranslations(self,taxonomy_fldr)
     layout_name = "video_listing_view"
 
 
     #
     # 1 of 4: video genre
     #
+    taxonomy_fldr.invokeFactory('Folder', id=GENRE_FOLDER, 
+                                title=_(u'Video Genres'))
     genre_fldr = getattr(taxonomy_fldr, GENRE_FOLDER,None)
-    if genre_fldr is None:
-        logger.error('No genre folder!')
-        return
-    genre_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,genre_fldr)
+    createTranslations(self,genre_fldr)
     #description string for new smart folders
-    topic_description_string = 'Channel for %s on ' + '%s' % self.Title()
     for vocab in vocabs['video_genre']:
         new_smart_fldr_id = vocab[0]
-        try:
-            # Remove existing instance if there is one
-            genre_fldr.manage_delObjects([new_smart_fldr_id])
-        except:
-            pass
         #make the new SmartFolder
-        genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
+        genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1])
         fldr = getattr(genre_fldr,new_smart_fldr_id)
-        fldr.setLanguage('') #make the object language independent
          
         # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
@@ -314,30 +348,25 @@ def app_installation_tasks(self):
         sort_crit.setReversed(True)
 
         #make the folder published
-   	fldr.setLayout(layout_name)
+        fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
+        createTranslations(self,fldr)
 
     #
     # 2 of 4: video categories aka topic
     #
+    taxonomy_fldr.invokeFactory('Folder',id=CATEGORIES_FOLDER,
+                                title=_(u'Video Topics'))
     categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
-    if categ_fldr is None:
-        logger.error('No categories folder!')
-        return
-    categ_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,categ_fldr)
+    createTranslations(self,categ_fldr)
 
     for vocab in vocabs['video_categories']:
         new_smart_fldr_id = vocab[0]
-        try:
-            # Remove existing instance if there is one
-            categ_fldr.manage_delObjects([new_smart_fldr_id])
-        except:
-            pass
+
         #make the new SmartFolder
-        categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1], description=topic_description_string % vocab[1])
+        categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1])
         fldr = getattr(categ_fldr,new_smart_fldr_id)
-        fldr.setLanguage('') #make the object language independent
 
         # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
@@ -357,8 +386,9 @@ def app_installation_tasks(self):
         sort_crit.setReversed(True)
 
         #make the folder published.
-	fldr.setLayout(layout_name)
+        fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
+        createTranslations(self,fldr)
 
 
     #
@@ -372,12 +402,11 @@ def app_installation_tasks(self):
 
     countrytool = getToolByName(self,CountryUtils.id)
     cdict = list()
+    taxonomy_fldr.invokeFactory('Folder',id=COUNTRIES_FOLDER,
+                                title=_(u'Countries'))
     countries_fldr = getattr(taxonomy_fldr,COUNTRIES_FOLDER,None)
-    if countries_fldr is None:
-            logger.error('Countries folder is missing!')
-            return
-    countries_fldr.setLanguage('') #make the object language independent
     publishObject(wftool,countries_fldr)
+    createTranslations(self,countries_fldr)
 
     for area in countrytool._area_list:
         for country in area.countries:
@@ -385,15 +414,10 @@ def app_installation_tasks(self):
 
     for country in cdict:
         new_smart_fldr_id = country[0]
-        try:
-            # Remove existing instance if there is one
-            countries_fldr.manage_delObjects([new_smart_fldr_id])
-        except:
-            pass
+
         #make the new SmartFolder
-        countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1],description=topic_description_string % country[1]) 
+        countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1]) 
         fldr = getattr(countries_fldr,new_smart_fldr_id)
-        fldr.setLanguage('') #make the object language independent
 
         # Filter results to  Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
@@ -413,31 +437,26 @@ def app_installation_tasks(self):
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
         #publish folder
-	fldr.setLayout(layout_name)
+        fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
+        createTranslations(self,fldr)
 
     #
     #4 of 4 : CallOut submission categories
     #
     topic_description_string = "CallOuts for Topic - %s "
+    taxonomy_fldr.invokeFactory('Folder',id=SUBMISSIONS_FOLDER,
+                                title=_(u'Call Outs'))
     submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
-    if submissions_fldr is None:
-            logger.error('callout submissions folder is missing!')
-            return
-    submissions_fldr.setLanguage('')
     publishObject(wftool,submissions_fldr)
+    createTranslations(self,submissions_fldr)
+
     for submission_categ in vocabs['submission_categories']:
         new_smart_fldr_id = submission_categ[0]
-        try:
-            # Remove existing instance if there is one
-            submissions_fldr.manage_delObjects([new_smart_fldr_id])
-        except:
-            pass
 
         #make the new SmartFolder
-        submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1], description=topic_description_string % submission_categ[1])
+        submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1])
         fldr = getattr(submissions_fldr,new_smart_fldr_id)
-        fldr.setLanguage('') #make the object language independent
         # Filter results to Callouts
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
         #the title of the type, not the class name, or portal_type 
@@ -458,6 +477,7 @@ def app_installation_tasks(self):
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
         sort_crit.setReversed(True)
         #publish the folder
-	fldr.setLayout(layout_name)
+        fldr.setLayout(layout_name)
         publishObject(wftool,fldr)
+        createTranslations(self,fldr)
 
