@@ -27,7 +27,7 @@
   <element value="Fiction"/>
   <element value="Animation"/>
   <element value="Music"/>
-  <element value="NewsReport"/>
+  <element value="News Report"/>
  </property>
  <property name="genre_interests" select_variable="genre_interests_selection" type="multiple selection"/>
 
