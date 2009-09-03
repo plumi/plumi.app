@@ -16,10 +16,9 @@ from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
 #i18n
-from zope.component import getUtility
-from zope.i18n import ITranslationDomain
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory("plumi")
+from plumi.app.translations import createTranslations, deleteTranslations
 
 
 def initialize(context):  
@@ -37,38 +36,6 @@ def publishObject(wftool,obj):
     except WorkflowException:
         logger.error('caught workflow exception!') 
         pass
-
-def createTranslations(portal,canon):
-    parent = canon.getParentNode()
-    wftool = getToolByName(portal,'portal_workflow')
-    plumiDomain = getUtility(ITranslationDomain, 'plumi')
-    plumiLanguages = plumiDomain.getCatalogsInfo()
-    langs = []
-    for lang in plumiLanguages.keys():
-        if str(lang) != 'test':
-            langs.append(str(lang))
-    for lang in langs:
-        transId = '%s-%s' % (canon.id, lang)
-        transTitle = plumiDomain.translate(canon.title,
-                                           target_language=lang)
-        transDesc = plumiDomain.translate(canon.description,
-                                          target_language=lang)
-        if not hasattr(parent, transId):
-            if parent != portal and parent.hasTranslation(lang):
-                #if parent folder has a translation, put the clone in that
-                translation = parent.getTranslation(lang).manage_clone(canon,
-                                                    transId)
-            else:
-                translation = parent.manage_clone(canon, transId)
-            translation.setTitle(transTitle)
-            translation.setDescription(transDesc)
-            translation.setLanguage(lang)
-            translation.addTranslationReference(canon)
-            publishObject(wftool, translation)
-
-def deleteTranslations(canon):
-    for translation in canon.getBRefs():
-        canon.getParentNode().manage_delObjects(translation.id)
 
 def app_installation_tasks(self):
     """Custom Plumi setup code"""
