@@ -11,6 +11,7 @@ from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
 from Products.ATCountryWidget.CountryTool import CountryUtils, Country
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.Five.component import enableSite
+from Products.CMFPlone.interfaces import IPropertiesTool
 
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
@@ -45,6 +46,22 @@ def app_installation_tasks(self):
     portal=getToolByName(self,'portal_url').getPortalObject()
     if not ISite.providedBy(portal):
         enableSite(portal)
+
+    _PROPERTIES = [
+        dict(name='transcodedaemon_address', type_='string', value='localhost:8888'),
+        dict(name='plonesite_address', type_='string', value='localhost:8080'),
+        dict(name='plonesite_login', type_='string', value='admin'),
+        dict(name='plonesite_password', type_='string', value='admin'),
+        dict(name='default_width', type_='int', value=0),
+        dict(name='default_height', type_='int', value=0),
+    ]
+    # Define portal properties
+    ptool = getToolByName(self, 'portal_properties')
+    props = ptool.plumi_properties
+    for prop in _PROPERTIES:
+        if not props.hasProperty(prop['name']):
+            props.manage_addProperty(prop['name'], prop['value'], prop['type_'])
+
 
     # modify site properties
 
