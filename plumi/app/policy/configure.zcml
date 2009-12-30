@@ -3,4 +3,7 @@
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="plumi.app.policy">
  
+    <adapter name="hasImageAndCaption" factory=".catalog_extension.hasImageAndCaption" />
+    <adapter name="isTranscodedPlumiVideoObj" factory=".catalog_extension.isTranscodedPlumiVideoObj" />
+    <adapter name="isPublishablePlumiVideoObj" factory=".catalog_extension.isPublishablePlumiVideoObj" />
 </configure>

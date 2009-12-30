@@ -8,11 +8,15 @@ from Products.CMFCore.utils import getToolByName
 from plumi.content.interfaces import IPlumiVideo
 import logging
 
-def hasImageAndCaption(object,portal, **kw):
+from plone.indexer.decorator import indexer
+
+@indexer(IPlumiVideo)
+def hasImageAndCaption(object,**kw):
     logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    """ #not required as this is taken care by indexer decorator
     if not IPlumiVideo.providedBy(object):
         return None
-   
+    """
     logger.debug('hasImageAndCaption - have %s ' % object )
     img = object.getThumbnailImage()
     #check that the image is set
@@ -25,12 +29,14 @@ def hasImageAndCaption(object,portal, **kw):
     logger.debug(' hasImageAndCaption returning %s  . thumbnail object is %s' % (md, object.getThumbnailImage()))
     return md
 
-def isTranscodedPlumiVideoObj(object, portal, **kw):
-    logger=logging.getLogger('plumi.app.policy.catalog_extension')
 
+@indexer(IPlumiVideo)
+def isTranscodedPlumiVideoObj(object,**kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    """#not required as this is taken care by indexer decorator
     if not IPlumiVideo.providedBy(object):
         return None
-
+    """
     logger.debug(' isTranscodedPlumiVideoObj - have %s ' % object )
     # XXX reimplement this.
     # using the PMH Grok web app 
@@ -49,17 +55,20 @@ def isTranscodedPlumiVideoObj(object, portal, **kw):
 
     return { 'transcoding_status':video_status[0], 'indytube_html':indytube_html }
 
-def isPublishablePlumiVideoObj(object, portal, **kw):
-    logger=logging.getLogger('plumi.app.policy.catalog_extension')
 
+
+@indexer(IPlumiVideo)
+def isPublishablePlumiVideoObj(object,**kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    """#not required as this is taken care by indexer decorator
     if not IPlumiVideo.providedBy(object):
         return None
-
+    """
     logger.debug(' isPublishablePlumiVideoObj - have %s ' % object )
 
-    portal_workflow = getToolByName(portal,'portal_workflow')
-    portal_membership = getToolByName(portal,'portal_membership')
-    portal_contentlicensing = getToolByName(portal,'portal_contentlicensing')
+    portal_workflow = getToolByName(object,'portal_workflow')
+    portal_membership = getToolByName(object,'portal_membership')
+    portal_contentlicensing = getToolByName(object,'portal_contentlicensing')
 
     #wf state
     item_state = portal_workflow.getInfoFor(object, 'review_state', '')
@@ -67,9 +76,9 @@ def isPublishablePlumiVideoObj(object, portal, **kw):
     member_name = object.Creator()
     #get the actual user object
     user = portal_membership.getMemberById(member_name)
-    portal.plone_log("Item %s by %s is in state %s. user is %s " % (object.absolute_url(), member_name, item_state,user))
+    object.plone_log("Item %s by %s is in state %s. user is %s " % (object.absolute_url(), member_name, item_state,user))
     if user is None:
-        portal.plone_log("No matching members??")
+        object.plone_log("No matching members??")
 
     if user is not None and item_state == 'published':
         (url,length,type) = object.getFileAttribs()
@@ -104,6 +113,6 @@ def isPublishablePlumiVideoObj(object, portal, **kw):
 
 #
 # Register these indexable attributes
-registerIndexableAttribute('hasImageAndCaption', hasImageAndCaption)
-registerIndexableAttribute('isTranscodedPlumiVideoObj', isTranscodedPlumiVideoObj)
-registerIndexableAttribute('isPublishablePlumiVideoObj', isPublishablePlumiVideoObj)
+#registerIndexableAttribute('hasImageAndCaption', hasImageAndCaption)
+#registerIndexableAttribute('isTranscodedPlumiVideoObj', isTranscodedPlumiVideoObj)
+#registerIndexableAttribute('isPublishablePlumiVideoObj', isPublishablePlumiVideoObj)
