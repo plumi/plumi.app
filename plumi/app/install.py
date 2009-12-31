@@ -48,8 +48,8 @@ def app_installation_tasks(self):
         enableSite(portal)
 
     _PROPERTIES = [
-        dict(name='transcodedaemon_address', type_='string', value='localhost:8888'),
-        dict(name='plonesite_address', type_='string', value='localhost:8080'),
+        dict(name='transcodedaemon_address', type_='string', value='http://localhost:8888'),
+        dict(name='plonesite_address', type_='string', value='http://localhost:8080'),
         dict(name='plonesite_login', type_='string', value='admin'),
         dict(name='plonesite_password', type_='string', value='admin'),
         dict(name='default_width', type_='int', value=0),
@@ -112,7 +112,7 @@ def app_installation_tasks(self):
     #
     #ATVocabManager setup
     #
-    logger.info('Starting ATVocabManager configuration')
+    logger.info('Starting ATVocabManager configuration ')
     atvm = getToolByName(portal, ATVOCABULARYTOOL)
     wftool = getToolByName(self,'portal_workflow')
      
@@ -140,48 +140,26 @@ def app_installation_tasks(self):
         vocab.reindexObject()
 
     #
-    #
     #ATCountryWidget setup
     #reset the country tool
     countrytool = getToolByName(self, CountryUtils.id)
-    #common code
-    countrytool.manage_countries_reset()
-    
-    #TODO translate country names like is done in vocabs above
-    
-    if SE_ASIA_COUNTRIES:
-        logger.info('starting custom se-asia countries ATCountryWidget configuration')
-        #Add countries missing from the standard installs
-        # 
-        countrytool.manage_countries_addCountry('WP',_(u'West Papua'))
-        #XXX this is a state of America, not a country - but thats just politics!!
-        countrytool.manage_countries_addCountry('HA',_(u'Hawaii'))
-        countrytool.manage_countries_addCountry('BU',_(u'Bougainville'))
-       
-        #update three more pre-exisiting countries 
-        #change Myanmar to Burma
-        #Lao Peoples blah blah to just Laos
-        #Viet Nam to Vietnam
-        countries = countrytool._country_list
-        countries[countries.index(Country('MM'))].name=_(u'Burma')
-        countries[countries.index(Country('LA'))].name=_(u'Laos')
-        countries[countries.index(Country('VN'))].name=_(u'Vietnam')
-        countries[countries.index(Country('NZ'))].name=_(u'NZ-Aotearoa')
-      
-        #add our areas
-        countrytool.manage_countries_addArea(_(u'South East Asia'))
-        countrytool.manage_countries_addCountryToArea(_(u'South East Asia'), ['SG','TH','VN','ID','PH','LA','MY','KH','BN','MM','HK','MO'])
-        countrytool.manage_countries_sortArea(_(u'South East Asia'))
-     
-        countrytool.manage_countries_addArea(_(u'Oceania'))
-        countrytool.manage_countries_addCountryToArea(_(u'Oceania'), ['AU','NZ','PG','TL','WP','FJ','SB','HA','NC','VU','WS','BU'    ,'NR','TO','TV','GU','KI','FM','PF','MH','MP','PW','PN','TK','AQ',])
-        countrytool.manage_countries_sortArea(_(u'Oceania'))
+    #common code        
+    countrytool.manage_countries_addCountry('WP',_(u'West Papua'))
+    #XXX this is a state of America, not a country - but thats just politics!!
+    countrytool.manage_countries_addCountry('HA',_(u'Hawaii'))
+    countrytool.manage_countries_addCountry('BU',_(u'Bougainville'))
+    countrytool.manage_countries_addCountryToArea('Australasia',['WP','HA','BU'])
+    countrytool.manage_countries_sortArea(_(u'Australasia'))
+
+    # Removed the customization made on the ATCountryWidget. Reverted it back
+    # to plone dafault
 
     #
     # Collections for display 
     # latestvideos / featured-videos / news-and-events
     #
 
+    
     #The front page, @@featured_videos_homepage, contains
     #links to 'featured-videos' which is a smart folder containing
     #all the videos with keyword 'featured' and 'lastestvideos'
