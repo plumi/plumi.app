@@ -6,4 +6,6 @@
     <adapter name="hasImageAndCaption" factory=".catalog_extension.hasImageAndCaption" />
     <adapter name="isTranscodedPlumiVideoObj" factory=".catalog_extension.isTranscodedPlumiVideoObj" />
     <adapter name="isPublishablePlumiVideoObj" factory=".catalog_extension.isPublishablePlumiVideoObj" />
+    <adapter name="hasImageAndCaption" factory=".catalog_extension.hasImageAndCaptionForNews" />
+
 </configure>

@@ -9,6 +9,7 @@ from plumi.content.interfaces import IPlumiVideo
 import logging
 
 from plone.indexer.decorator import indexer
+from Products.ATContentTypes.interface.news import IATNewsItem
 
 @indexer(IPlumiVideo)
 def hasImageAndCaption(object,**kw):
@@ -110,6 +111,27 @@ def isPublishablePlumiVideoObj(object,**kw):
         d = {'published': False }
 
     return d
+
+
+@indexer(IATNewsItem)
+def hasImageAndCaptionForNews(object,**kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    """ #not required as this is taken care by indexer decorator
+    if not IPlumiVideo.providedBy(object):
+        return None
+    """
+    logger.info('hasImageAndCaptionForNews - have %s ' % object )
+    
+    img = object.getImage()
+    #check that the image is set
+    if img is not None and img is not '':
+	caption = object.getImageCaption() or u''
+        md = {'image': True, 'caption': caption }
+    else:     
+	md = {'image': False, 'caption': u''}
+
+    logger.info(' hasImageAndCaptionForNews returning %s  . thumbnail object is %s' % (md, object.getImage()))
+    return md
 
 #
 # Register these indexable attributes
