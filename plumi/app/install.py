@@ -49,6 +49,7 @@ def app_installation_tasks(self):
 
     _PROPERTIES = [
         dict(name='transcodedaemon_address', type_='string', value='http://localhost:8888'),
+        dict(name='videoserver_address', type_='string', value='http://localhost:8888'),
         dict(name='plonesite_address', type_='string', value='http://localhost:8080'),
         dict(name='plonesite_login', type_='string', value='admin'),
         dict(name='plonesite_password', type_='string', value='admin'),
