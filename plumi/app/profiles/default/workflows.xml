@@ -6,6 +6,10 @@
    <bound-workflow workflow_id="simple_publication_workflow"/>
   </type>
 
+  <type type_id="Favorite">
+   <bound-workflow workflow_id="one_state_workflow"/>
+  </type>
+  
   <!-- News workflow - Members can publish events directly -->
   <type type_id="News Item">
    <bound-workflow workflow_id="simple_publication_workflow"/>
