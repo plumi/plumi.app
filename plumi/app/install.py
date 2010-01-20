@@ -378,31 +378,36 @@ def app_installation_tasks(self):
     for country in cdict:
         new_smart_fldr_id = country[0]
 
-        #make the new SmartFolder
-        countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1]) 
-        fldr = getattr(countries_fldr,new_smart_fldr_id)
+        # maybe it already exists?
+        try: 
+            # make the new SmartFolder
+            countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1]) 
+            fldr = getattr(countries_fldr,new_smart_fldr_id)
 
-        # Filter results to  Plumi Video
-        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-        type_criterion.setValue("Plumi Video")
+            # Filter results to  Plumi Video
+            type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+            type_criterion.setValue("Plumi Video")
 
-        # Filter results to this individual category
-        type_criterion = fldr.addCriterion('getCountries', 'ATListCriterion' )
-        #
-        #match against the ID of the vocab term. see getCategories in content objects
-        type_criterion.setValue(country[0])
-        #match if any vocab term is present in the video's selected categories
-        type_criterion.setOperator('or')
-        ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        #sort on reverse date order
-        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
-        sort_crit.setReversed(True)
-        #publish folder
-        fldr.setLayout(layout_name)
-        publishObject(wftool,fldr)
-        createTranslations(self,fldr)
+            # Filter results to this individual category
+            type_criterion = fldr.addCriterion('getCountries', 'ATListCriterion' )
+            #
+            #match against the ID of the vocab term. see getCategories in content objects
+            type_criterion.setValue(country[0])
+            #match if any vocab term is present in the video's selected categories
+            type_criterion.setOperator('or')
+            ## add criteria for showing only published videos
+            state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+            state_crit.setValue('published')
+            #sort on reverse date order
+            sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+            sort_crit.setReversed(True)
+            #publish folder
+            fldr.setLayout(layout_name)
+            publishObject(wftool,fldr)
+            createTranslations(self,fldr)
+        except:
+            # should be ok from previous installation
+            pass
 
     #
     #4 of 4 : CallOut submission categories
