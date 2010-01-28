@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
  <bindings>
-  <!-- Events workflow - Members can publish events directly -->
+  <!-- Events workflow set to the community_workflow -->
   <type type_id="Event">
-   <bound-workflow workflow_id="simple_publication_workflow"/>
+   <bound-workflow workflow_id="plone_workflow"/>
   </type>
 
   <type type_id="Favorite">
    <bound-workflow workflow_id="one_state_workflow"/>
   </type>
   
-  <!-- News workflow - Members can publish events directly -->
+  <!-- News workflow set to the community_workflow -->
   <type type_id="News Item">
-   <bound-workflow workflow_id="simple_publication_workflow"/>
+   <bound-workflow workflow_id="plone_workflow"/>
   </type>
 
 
@@ -21,6 +21,13 @@
    <bound-workflow workflow_id="plone_workflow"/>
   </type>
 
+  <!-- Call Out worfklow set to the community_workflow -->
+  <type type_id="PlumiCallOut">
+   <bound-workflow workflow_id="plone_workflow"/>
+  </type>
+
 
  </bindings>
 </object>
+
+
