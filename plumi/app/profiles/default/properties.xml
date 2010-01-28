@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <site>
- <property name="title">Plumi 0.3 development site</property>
- <property name="description">Plumi 0.3 development site</property>
+ <property name="title">Plumi 3.0 development site</property>
+ <property name="description">Plumi 3.0 development site</property>
  <property name="selectable_views" type="lines">
   <element value="folder_listing"/>
   <element value="news_listing"/>
