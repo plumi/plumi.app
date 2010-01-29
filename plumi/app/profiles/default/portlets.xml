@@ -15,6 +15,13 @@
   <property name="count">5</property>
   <property name="state"/>
  </assignment>
- <assignment name="review-list" category="user" key="Plumi"
-    manager="plone.dashboard4" type="portlets.Review"/>
+
+ <assignment
+     manager="plone.leftcolumn"
+     category="context"
+     key="/"
+     type="vaporisation.tagcloud"
+     name="tagcloud"
+     />
+     
 </portlets>
