@@ -133,6 +133,22 @@ def hasImageAndCaptionForNews(object,**kw):
     logger.info(' hasImageAndCaptionForNews returning %s  . thumbnail object is %s' % (md, object.getImage()))
     return md
 
+
+@indexer(IPlumiVideo)
+def videoDuration(object,**kw):
+    logger=logging.getLogger('plumi.app.policy.catalog_extension')
+    """ #not required as this is taken care by indexer decorator
+    if not IPlumiVideo.providedBy(object):
+        return None
+    """
+    logger.debug('videoDuration - have %s ' % object )
+    duration = object.plumiVideoDuration()
+
+
+
+    logger.debug(' videoDuration returning %s  ' % (duration))
+    return duration
+
 #
 # Register these indexable attributes
 #registerIndexableAttribute('hasImageAndCaption', hasImageAndCaption)

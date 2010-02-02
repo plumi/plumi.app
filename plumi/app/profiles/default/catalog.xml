@@ -4,13 +4,14 @@
  <column value="hasImageAndCaption"/>
  <column value="isTranscodedPlumiVideoObj"/>
  <column value="isPublishablePlumiVideoObj"/>
-
+ <column value="videoDuration"/>
+ 
  <column value="getGenre"/>
  <column value="getCategories"/>
  <column value="getCountries"/>
  <column value="getSubmissionCategories"/>
 
-
+ 
  <!-- indexes -->
  <index name="getGenre" meta_type="KeywordIndex">
     <indexed_attr value="getGenre"/>
