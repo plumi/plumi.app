@@ -2,6 +2,7 @@
 """
 
 from zope.interface import providedBy, Interface
+from zope.annotation.interfaces import IAnnotations
 from Acquisition import aq_inner
 from Products.CMFPlone.CatalogTool import registerIndexableAttribute
 from Products.CMFCore.utils import getToolByName
@@ -34,28 +35,10 @@ def hasImageAndCaption(object,**kw):
 @indexer(IPlumiVideo)
 def isTranscodedPlumiVideoObj(object,**kw):
     logger=logging.getLogger('plumi.app.policy.catalog_extension')
-    """#not required as this is taken care by indexer decorator
-    if not IPlumiVideo.providedBy(object):
-        return None
-    """
     logger.debug(' isTranscodedPlumiVideoObj - have %s ' % object )
-    # XXX reimplement this.
-    # using the PMH Grok web app 
-
-    #statuses = TRANSCODING_STATUSES
-    #status = str(object.getIndyTubeStatus())
-    #if status in statuses:
-    #    video_status = statuses.get(status, (False, u""))
-    #    if video_status[0]:
-    #            indytube_html = object.getIndyTubeHTML()
-    #    else:
-    #            indytube_html = ""
-    #else:
-    video_status = (False, u"")
-    indytube_html = ""
-
-    return { 'transcoding_status':video_status[0], 'indytube_html':indytube_html }
-
+    annotations = IAnnotations(object)
+    transcode_profiles = annotations.get('plumi.transcode.profiles')
+    return transcode_profiles
 
 
 @indexer(IPlumiVideo)
