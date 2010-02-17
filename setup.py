@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.3'
+version = '0.3-beta2'
 
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
@@ -41,6 +41,8 @@ setup(name='plumi.app',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plumi.content',
+          'plumi.skin',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
