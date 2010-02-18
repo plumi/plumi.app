@@ -4,7 +4,7 @@
   - Uploaded to PyPI - for Plumi 3.0 beta 2 [Andy Nicholson]
 
 0.3-beta2 (2010-02-17)
-==================
+======================
 
   - Release for Plumi 3.0 beta 2 [Dimitris Moraitis]
 
