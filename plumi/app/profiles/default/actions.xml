@@ -5,7 +5,7 @@
   <action title="Review List" action_id="review_list" category="portal_tabs"
      condition_expr="python:1"
      url_expr="string:${portal_url}/full_review_list" visible="True">
-   <permission>Manage portal</permission>
+   <permission>Review portal content</permission>
   </action>
   <action title="About us" action_id="about-us" category="portal_tabs"
      condition_expr="python:1" url_expr="string:${portal_url}/about-us"
