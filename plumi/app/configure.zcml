@@ -1,11 +1,12 @@
 <configure
-    xmlns="http://namespaces.zope.org/genericsetup"
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:zope="http://namespaces.zope.org/zope"
+
     i18n_domain="plumi">
 
   <!-- Generic Setup Profile -->
-  <registerProfile
+  <gs:registerProfile
         name="default"
         title="Plumi application setup"
         directory="profiles/default"
@@ -20,5 +21,11 @@
   <include package="plumi.skin" />
   <include package="plumi.content" />
 
+  <adapter
+      for="Products.CMFDefault.interfaces._content.IFavorite"
+      factory=".adapters.FavoriteConversation"
+      provides="plone.app.discussion.interfaces.IConversation"
+      />
+      
 </configure>
 
