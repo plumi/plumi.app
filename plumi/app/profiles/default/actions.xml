@@ -21,7 +21,7 @@
   <object name="rss2" meta_type="CMF Action">
    <property name="title">RSS2 Feed</property>
    <property name="description"></property>
-   <property name="url_expr">string:$object_url/RSS</property>
+   <property name="url_expr">string:$object_url/RSS2</property>
    <property name="icon_expr"></property>
    <property
       name="available_expr">python:portal.portal_syndication.isSyndicationAllowed(object)</property>
@@ -47,18 +47,6 @@
    <property name="url_expr">string:javascript:this.print();</property>
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
-  <object name="addtofavorites" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Add to favorites</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/addtoFavorites</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
    <property name="permissions">
     <element value="View"/>
    </property>
