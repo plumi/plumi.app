@@ -6,10 +6,11 @@
  <action-provider name="portal_actions"/>
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="rss" meta_type="CMF Action" i18n:domain="ContentLicensing">
-   <property name="title" i18n:translate="">RSS Feed</property>
-   <property name="description" i18n:translate="">RSS Feed</property>
-   <property name="url_expr">string:$object_url/RSS</property>
+  
+  <object name="rss2" meta_type="CMF Action">
+   <property name="title">RSS2 Feed</property>
+   <property name="description"></property>
+   <property name="url_expr">string:$object_url/RSS2</property>
    <property name="icon_expr">string:$portal_url/rss2_icon.png</property>
    <property
       name="available_expr">python:portal.portal_syndication.isSyndicationAllowed(object)</property>
@@ -18,11 +19,12 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="rss2" meta_type="CMF Action">
-   <property name="title">RSS2 Feed</property>
-   <property name="description"></property>
-   <property name="url_expr">string:$object_url/RSS2</property>
-   <property name="icon_expr"></property>
+    
+  <object name="rss" meta_type="CMF Action" i18n:domain="ContentLicensing">
+   <property name="title" i18n:translate="">RSS Feed</property>
+   <property name="description" i18n:translate="">RSS Feed</property>
+   <property name="url_expr">string:$object_url/RSS</property>
+   <property name="icon_expr">string:$portal_url/rss.gif</property>
    <property
       name="available_expr">python:portal.portal_syndication.isSyndicationAllowed(object)</property>
    <property name="permissions">
@@ -30,11 +32,12 @@
    </property>
    <property name="visible">True</property>
   </object>
+
   <object name="sendto" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Send this</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$object_url/sendto_form</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:$portal_url/mail_icon.gif</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="Allow sendto"/>
@@ -45,7 +48,7 @@
    <property name="title" i18n:translate="">Print this</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:javascript:this.print();</property>
-   <property name="icon_expr"></property>
+   <property name="icon_expr">string:$portal_url/print_icon.gif</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
@@ -95,7 +98,7 @@
    <property name="description"
       i18n:translate="">Bookmark this content</property>
    <property name="url_expr"></property>
-   <property name="icon_expr">string:bookmarklets.gif</property>
+   <property name="icon_expr">string:${portal_url}/bookmarklets.gif</property>
    <property name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
