@@ -1,4 +1,8 @@
 # See http://peak.telecommunity.com/DevCenter/setuptools#namespace-packages
+
+import os
+os.environ['PLONE_I18NAWARE_CATALOG'] = '0'
+
 try:
     __import__('pkg_resources').declare_namespace(__name__)
 except ImportError:
