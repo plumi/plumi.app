@@ -421,43 +421,4 @@ def app_installation_tasks(self):
             # should be ok from previous installation
             pass
 
-    #
-    #4 of 4 : CallOut submission categories
-    #
-    topic_description_string = "CallOuts for Topic - %s "
-    taxonomy_fldr.invokeFactory('Folder',id=SUBMISSIONS_FOLDER,
-                                title=_(u'Call Outs'))
-    submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
-    publishObject(wftool,submissions_fldr)
-    createTranslations(self,submissions_fldr)
-
-    for submission_categ in vocabs['submission_categories']:
-        new_smart_fldr_id = submission_categ[0]
-
-        #make the new SmartFolder
-        submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1])
-        fldr = getattr(submissions_fldr,new_smart_fldr_id)
-        # Filter results to Callouts
-        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-        #the title of the type, not the class name, or portal_type 
-        type_criterion.setValue("Plumi Call Out")
-
-        # Filter results to this individual category
-        type_criterion = fldr.addCriterion('getSubmissionCategories', 'ATListCriterion' )
-        #
-        #match against the ID of the vocab term. see getCategories in callout.py (Callout object)
-        type_criterion.setValue(submission_categ[0])
-        #match if any vocab term is present in the video's selected categories
-        type_criterion.setOperator('or')
-
-        ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        #sort on reverse date order
-        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
-        sort_crit.setReversed(True)
-        #publish the folder
-        fldr.setLayout(layout_name)
-        publishObject(wftool,fldr)
-        createTranslations(self,fldr)
 
