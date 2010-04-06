@@ -22,6 +22,17 @@ _ = MessageFactory("plumi")
 from plumi.app.translations import createTranslations, deleteTranslations
 
 
+def customPersonalBar(context):
+        actionObj=getattr(context,'portal_actions')
+        actionObjUsr=getattr(actionObj,'user')
+        tempVar = ['logout']
+        try:
+                actionObjUsr.moveObjectsToBottom(tempVar)
+        except:
+                pass
+
+
+
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
     logger=logging.getLogger('plumi.app')
@@ -188,6 +199,7 @@ def app_installation_tasks(self):
             )
 
     # Items creation
+    customPersonalBar(self)
     for item in items:
         try:
             canon = getattr(self, item['id'])
