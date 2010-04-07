@@ -22,6 +22,16 @@ _ = MessageFactory("plumi")
 from plumi.app.translations import createTranslations, deleteTranslations
 
 
+
+
+def updateCatalogSet(context):
+        wf_tool = getToolByName(context, 'portal_workflow')
+        wf_tool.updateRoleMappings()
+        wf_tool.setChainForPortalTypes(('Event','PlumiCallOut','PlumiVideo'), 'plone_workflow')
+
+
+
+
 def customPersonalBar(context):
         actionObj=getattr(context,'portal_actions')
         actionObjUsr=getattr(actionObj,'user')
@@ -200,6 +210,7 @@ def app_installation_tasks(self):
 
     # Items creation
     customPersonalBar(self)
+    updateCatalogSet(self)
     for item in items:
         try:
             canon = getattr(self, item['id'])
