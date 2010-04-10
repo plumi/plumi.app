@@ -245,7 +245,7 @@ def app_installation_tasks(self):
 
         fv.reindexObject()
 
-        createTranslations(self,fv)
+#        createTranslations(self,fv)
 
 
     #
