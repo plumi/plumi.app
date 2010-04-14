@@ -1,0 +1,4 @@
+recursive-include plumi *
+include *.txt
+include TODO
+global-exclude *pyc
