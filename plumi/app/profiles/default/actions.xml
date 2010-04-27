@@ -6,20 +6,6 @@
  <action-provider name="portal_actions"/>
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>
-  
-  <object name="rss2" meta_type="CMF Action">
-   <property name="title">RSS2 Feed</property>
-   <property name="description"></property>
-   <property name="url_expr">string:$object_url/RSS2</property>
-   <property name="icon_expr">string:$portal_url/rss2_icon.png</property>
-   <property
-      name="available_expr">python:portal.portal_syndication.isSyndicationAllowed(object)</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-    
   <object name="rss" meta_type="CMF Action" i18n:domain="ContentLicensing">
    <property name="title" i18n:translate="">RSS Feed</property>
    <property name="description" i18n:translate="">RSS Feed</property>
@@ -32,7 +18,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-
   <object name="sendto" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Send this</property>
    <property name="description" i18n:translate=""></property>
@@ -50,6 +35,18 @@
    <property name="url_expr">string:javascript:this.print();</property>
    <property name="icon_expr">string:$portal_url/print_icon.gif</property>
    <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="addtofavorites" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Add to favorites</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${object_url}/addtoFavorites</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None)</property>
    <property name="permissions">
     <element value="View"/>
    </property>
@@ -79,19 +76,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="addFavorite" meta_type="CMF Action">
-   <property name="title">Add to favorites</property>
-   <property name="description"></property>
-   <property name="url_expr">string:${object_url}/addtoFavorites</property>
-   <property
-      name="icon_expr">string:${portal_url}/favorite_icon.gif</property>
-   <property
-      name="available_expr">python: portal.portal_membership.getHomeFolder() is not None</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
   <object name="bookmarklets" meta_type="CMF Action"
      i18n:domain="PloneBookmarklets">
    <property name="title" i18n:translate="">Bookmarks</property>
@@ -100,6 +84,31 @@
    <property name="url_expr"></property>
    <property name="icon_expr">string:${portal_url}/bookmarklets.gif</property>
    <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="rss2" meta_type="CMF Action">
+   <property name="title">RSS2 Feed</property>
+   <property name="description"></property>
+   <property name="url_expr">string:$object_url/RSS2</property>
+   <property name="icon_expr">string:$portal_url/rss2_icon.png</property>
+   <property
+      name="available_expr">python:portal.portal_syndication.isSyndicationAllowed(object)</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="addFavorite" meta_type="CMF Action">
+   <property name="title">Add to favorites</property>
+   <property name="description"></property>
+   <property name="url_expr">string:${object_url}/addtoFavorites</property>
+   <property
+      name="icon_expr">string:${portal_url}/favorite_icon.gif</property>
+   <property
+      name="available_expr">python: portal.portal_membership.getHomeFolder() is not None</property>
    <property name="permissions">
     <element value="View"/>
    </property>
@@ -442,32 +451,6 @@
  </object>
  <object name="user" meta_type="CMF Action Category">
   <property name="title"></property>
-  <object name="mystuff" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">My Folder</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal/portal_membership/getHomeUrl}</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:(member is not None) and                             (portal.portal_membership.getHomeFolder() is not None) </property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="favorites" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">My favorites</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), 'Favorites')</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
   <object name="preferences" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Preferences</property>
    <property name="description" i18n:translate=""></property>
@@ -515,6 +498,56 @@
     <element value="List undoable changes"/>
    </property>
    <property name="visible">False</property>
+  </object>
+  <object name="addFavorite" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Add to favorites</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${object_url}/addtoFavorites</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python: portal.portal_membership.getHomeFolder() is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">False</property>
+  </object>
+  <object name="favorites" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">My favorites</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}/Favorites</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and hasattr(portal.portal_membership.getHomeFolder(), 'Favorites')</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="review-comments" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Moderate comments</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${globals_view/navigationRootUrl}/@@moderate-comments</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Review comments"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  <object name="mystuff" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">My Folder</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${portal/portal_membership/getHomeUrl}</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:(member is not None) and (portal.portal_membership.getHomeFolder() is not None) </property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
   </object>
   <object name="logout" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Log out</property>
