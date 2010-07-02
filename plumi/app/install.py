@@ -230,7 +230,7 @@ def app_installation_tasks(self):
         # XXX port functionality
         #sort_crit = fv.addCriterion('getFirstPublishedTransitionTime',
         #                                "ATSortCriterion")
-        sort_crit = fv.addCriterion('created',"ATSortCriterion")
+        sort_crit = fv.addCriterion('effective',"ATSortCriterion")
         sort_crit.setReversed(True)
 
         ## add criteria for showing only published videos
