@@ -235,7 +235,7 @@ def app_installation_tasks(self):
 
         ## add criteria for showing only published videos
         state_crit = fv.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
+        state_crit.setValue(['published','featured'])
 
         if item['exclude'] is True:
             fv.setExcludeFromNav(True)
@@ -303,7 +303,7 @@ def app_installation_tasks(self):
         type_criterion.setValue(vocab[0])
         ## add criteria for showing only published videos
         state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
+        state_crit.setValue(['published','featured'])
         
         #XXX used to have a custom getFirstPublishedTransitionTime 
         #sort on reverse date order, using the first published time transition
@@ -342,7 +342,7 @@ def app_installation_tasks(self):
         type_criterion.setOperator('or')
         ## add criteria for showing only published videos
         state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
+        state_crit.setValue(['published','featured'])
         #sort on reverse date order
         #XXX old getfirstpublishedtransition time 
         sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
@@ -397,7 +397,7 @@ def app_installation_tasks(self):
             type_criterion.setOperator('or')
             ## add criteria for showing only published videos
             state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-            state_crit.setValue('published')
+            state_crit.setValue(['published','featured'])
             #sort on reverse date order
             sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
             sort_crit.setReversed(True)
