@@ -13,6 +13,13 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.Five.component import enableSite
 from Products.CMFPlone.interfaces import IPropertiesTool
 
+from zope.component import getUtility
+from zope.component import getMultiAdapter
+from zope.app.container.interfaces import INameChooser
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
+from plone.portlet.collection.collection import Assignment
+
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
@@ -226,6 +233,22 @@ def app_installation_tasks(self):
         	type_criterion.setValue( ("News Item","Event") )
         elif item['id'] is 'callouts':
         	type_criterion.setValue( ("Plumi Call Out") )        
+                right = getUtility(IPortletManager, name='plone.rightcolumn')
+                rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+                urltool  = getToolByName(portal, 'portal_url')
+                calloutsCollectionPortlet = Assignment(header=u"Callouts",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=False)
+          
+    
+                def saveAssignment(mapping, assignment):
+                    chooser = INameChooser(mapping)
+                    mapping[chooser.chooseName(None, assignment)] = assignment
+    
+                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
         else:
         	type_criterion.setValue("Video")
 
