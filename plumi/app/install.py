@@ -185,6 +185,13 @@ def app_installation_tasks(self):
                   desc    = _(u'Latest news and events on the site.'),
                   layout  = "folder_summary_view",
                   exclude = True),
+
+             dict(id      = 'callouts',
+                  title   = _(u'Callouts'),
+                  desc    = _(u'Latest callouts.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
             )
 
     # Items creation
@@ -217,14 +224,17 @@ def app_installation_tasks(self):
         type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
         if item['id'] is 'news_and_events':
         	type_criterion.setValue( ("News Item","Event") )
+        elif item['id'] is 'callouts':
+        	type_criterion.setValue( ("Plumi Call Out") )        
         else:
-        	type_criterion.setValue("Plumi Video")
+        	type_criterion.setValue("Video")
 
         # Filter results to this 'keyword' field, the kw being 'featured'
         if item['id'] is 'featured-videos':
             type_criterion = fv.addCriterion('Subject', 
                                              'ATSimpleStringCriterion')
             type_criterion.setValue('featured')
+
 
         # Sort on reverse publication date order
         # XXX port functionality
@@ -234,7 +244,7 @@ def app_installation_tasks(self):
         sort_crit.setReversed(True)
 
         ## add criteria for showing only published videos
-        state_crit = fv.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit = fv.addCriterion('review_state', 'ATListCriterion')
         state_crit.setValue(['published','featured'])
 
         if item['exclude'] is True:
@@ -295,14 +305,14 @@ def app_installation_tasks(self):
         # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
         #Have to use the name of the Title of the Type you want to filter.
-        type_criterion.setValue("Plumi Video")
+        type_criterion.setValue("Video")
          
         # Filter results to this individual genre
         type_criterion = fldr.addCriterion('getGenre', 'ATSimpleStringCriterion' )
         #match against the ID of the vocab term. see getGenre in content types 
         type_criterion.setValue(vocab[0])
         ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
         state_crit.setValue(['published','featured'])
         
         #XXX used to have a custom getFirstPublishedTransitionTime 
@@ -333,7 +343,7 @@ def app_installation_tasks(self):
 
         # Filter results to Plumi Video
         type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-        type_criterion.setValue("Plumi Video")
+        type_criterion.setValue("Video")
         # Filter results to this individual category
         type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
         #match against the ID of the vocab term. see getCategories in content objects
@@ -341,7 +351,7 @@ def app_installation_tasks(self):
         #match if any vocab term is present in the video's selected categories
         type_criterion.setOperator('or')
         ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+        state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
         state_crit.setValue(['published','featured'])
         #sort on reverse date order
         #XXX old getfirstpublishedtransition time 
@@ -386,7 +396,7 @@ def app_installation_tasks(self):
 
             # Filter results to  Plumi Video
             type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-            type_criterion.setValue("Plumi Video")
+            type_criterion.setValue("Video")
 
             # Filter results to this individual category
             type_criterion = fldr.addCriterion('getCountries', 'ATListCriterion' )
@@ -396,7 +406,7 @@ def app_installation_tasks(self):
             #match if any vocab term is present in the video's selected categories
             type_criterion.setOperator('or')
             ## add criteria for showing only published videos
-            state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+            state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
             state_crit.setValue(['published','featured'])
             #sort on reverse date order
             sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
