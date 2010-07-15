@@ -54,24 +54,6 @@ def app_installation_tasks(self):
     if not ISite.providedBy(portal):
         enableSite(portal)
 
-    _PROPERTIES = [
-        dict(name='transcodedaemon_address', type_='string', value='http://localhost:8888'),
-        dict(name='videoserver_address', type_='string', value='http://localhost:8888'),
-        dict(name='plonesite_address', type_='string', value='http://localhost:8080'),
-        dict(name='plonesite_login', type_='string', value='admin'),
-        dict(name='plonesite_password', type_='string', value='admin'),
-        dict(name='default_width', type_='int', value=0),
-        dict(name='default_height', type_='int', value=0),
-    ]
-    # Define portal properties
-    ptool = getToolByName(self, 'portal_properties')
-    props = ptool.plumi_properties
-    for prop in _PROPERTIES:
-        if not props.hasProperty(prop['name']):
-            props.manage_addProperty(prop['name'], prop['value'], prop['type_'])
-
-
-    # modify site properties
 
     #turn on RSS site wide
     portal_syn = getToolByName(portal,'portal_syndication',None)
@@ -252,12 +234,6 @@ def app_installation_tasks(self):
         else:
         	type_criterion.setValue("Video")
 
-        # Filter results to this 'keyword' field, the kw being 'featured'
-        if item['id'] is 'featured-videos':
-            type_criterion = fv.addCriterion('Subject', 
-                                             'ATSimpleStringCriterion')
-            type_criterion.setValue('featured')
-
 
         # Sort on reverse publication date order
         # XXX port functionality
@@ -268,7 +244,10 @@ def app_installation_tasks(self):
 
         ## add criteria for showing only published videos
         state_crit = fv.addCriterion('review_state', 'ATListCriterion')
-        state_crit.setValue(['published','featured'])
+        if item['id'] is 'featured-videos':
+            state_crit.setValue(['featured'])
+        else:
+            state_crit.setValue(['published','featured'])
 
         if item['exclude'] is True:
             fv.setExcludeFromNav(True)
