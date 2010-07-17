@@ -159,6 +159,7 @@
     <permission name="List portal members" acquire="True">
       <role name="Manager"/>
       <role name="Member"/>
+      <role name="Anonymous"/>
     </permission>
     <permission name="List undoable changes" acquire="True">
       <role name="Manager"/>
