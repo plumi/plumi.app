@@ -20,6 +20,9 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
 from plone.portlet.collection.collection import Assignment
 
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
@@ -461,3 +464,5 @@ def app_installation_tasks(self):
         publishObject(wftool,fldr)
         createTranslations(self,fldr)
 
+        registry = getUtility(IRegistry)
+        registry['collective.transcode.interfaces.ITranscodeSettings.portal_types'] = (u'Video:video_file',)
