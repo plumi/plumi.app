@@ -19,8 +19,6 @@ from zope.app.container.interfaces import INameChooser
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
 from plone.portlet.collection.collection import Assignment
-
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 
 from AccessControl import allow_module
