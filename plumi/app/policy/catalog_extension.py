@@ -8,9 +8,10 @@ from Products.CMFPlone.CatalogTool import registerIndexableAttribute
 from Products.CMFCore.utils import getToolByName
 from plumi.content.interfaces import IPlumiVideo
 import logging
-
+from collective.transcode.interfaces import ITranscodeTool
 from plone.indexer.decorator import indexer
 from Products.ATContentTypes.interface.news import IATNewsItem
+from zope.component import getUtility
 
 @indexer(IPlumiVideo)
 def hasImageAndCaption(object,**kw):
@@ -36,9 +37,11 @@ def hasImageAndCaption(object,**kw):
 def isTranscodedPlumiVideoObj(object,**kw):
     logger=logging.getLogger('plumi.app.policy.catalog_extension')
     logger.debug(' isTranscodedPlumiVideoObj - have %s ' % object )
-    annotations = IAnnotations(object)
-    transcode_profiles = annotations.get('plumi.transcode.profiles')
-    return transcode_profiles
+    tt = getUtility(ITranscodeTool)
+    try:
+        return tt[object.UID()]['video_file']
+    except:
+        return
 
 
 @indexer(IPlumiVideo)
