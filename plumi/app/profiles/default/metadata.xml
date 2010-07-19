@@ -2,6 +2,6 @@
 <metadata>
   <version>0.2</version>
   <dependencies>
-    <dependency>profile-collective.transcode:default</dependency>
+    <dependency>profile-collective.transcode.star:default</dependency>
   </dependencies>
 </metadata>

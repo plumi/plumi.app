@@ -8,7 +8,7 @@ from Products.CMFPlone.CatalogTool import registerIndexableAttribute
 from Products.CMFCore.utils import getToolByName
 from plumi.content.interfaces import IPlumiVideo
 import logging
-from collective.transcode.interfaces import ITranscodeTool
+from collective.transcode.star.interfaces import ITranscodeTool
 from plone.indexer.decorator import indexer
 from Products.ATContentTypes.interface.news import IATNewsItem
 from zope.component import getUtility

@@ -463,4 +463,4 @@ def app_installation_tasks(self):
         createTranslations(self,fldr)
 
         registry = getUtility(IRegistry)
-        registry['collective.transcode.interfaces.ITranscodeSettings.portal_types'] = (u'PlumiVideo:video_file',)
+        registry['collective.transcode.star.interfaces.ITranscodeSettings.portal_types'] = (u'PlumiVideo:video_file',)
