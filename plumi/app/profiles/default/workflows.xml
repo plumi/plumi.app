@@ -24,7 +24,7 @@
 
   <!-- Call Out worfklow set to the community_workflow -->
   <type type_id="PlumiCallOut">
-   <bound-workflow workflow_id="plone_workflow"/>
+   <bound-workflow workflow_id="plumi_workflow"/>
   </type>
 
 
