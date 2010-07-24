@@ -213,13 +213,19 @@ def app_installation_tasks(self):
         #    means atm, ATEngageVideo and ATVideo
         type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
         if item['id'] is 'news_and_events':
-        	type_criterion.setValue( ("News Item","Event") )
+            type_criterion.setValue( ("News Item","Event") )
         elif item['id'] is 'callouts':
-        	type_criterion.setValue( ("Plumi Call Out") )        
-                right = getUtility(IPortletManager, name='plone.rightcolumn')
-                rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-                urltool  = getToolByName(portal, 'portal_url')
-                calloutsCollectionPortlet = Assignment(header=u"Callouts",
+            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            # Only take events in the past
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('less')
+            type_criterion.setValue( ("Plumi Call Out") )        
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            calloutsCollectionPortlet = Assignment(header=u"Callouts",
                                         limit=5,
                                         target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
                                         random=False,
@@ -227,13 +233,14 @@ def app_installation_tasks(self):
                                         show_dates=False)
           
     
-                def saveAssignment(mapping, assignment):
-                    chooser = INameChooser(mapping)
-                    mapping[chooser.chooseName(None, assignment)] = assignment
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
     
-                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+            saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
         else:
-        	type_criterion.setValue("Video")
+            type_criterion.setValue("Video")
+
 
 
         # Sort on reverse publication date order
