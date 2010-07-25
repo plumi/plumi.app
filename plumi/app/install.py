@@ -220,7 +220,7 @@ def app_installation_tasks(self):
             date_crit.setValue(0)
             # Only take events in the past
             date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('less')
+            date_crit.setOperation('more')
             type_criterion.setValue( ("Plumi Call Out") )        
             right = getUtility(IPortletManager, name='plone.rightcolumn')
             rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
