@@ -29,6 +29,15 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory("plumi")
 from plumi.app.translations import createTranslations, deleteTranslations
 
+#upgrade
+from hashlib import md5
+from datetime import datetime
+from StringIO import StringIO
+from persistent.dict import PersistentDict
+from zope.annotation.interfaces import IAnnotations
+from collective.transcode.star.interfaces import ITranscodeTool
+from DateTime import DateTime
+from Products.CMFCore.interfaces import IPropertiesTool
 
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
@@ -46,7 +55,7 @@ def publishObject(wftool,obj):
         logger.error('caught workflow exception!') 
         pass
 
-def app_installation_tasks(self):
+def app_installation_tasks(self, reinstall=False):
     """Custom Plumi setup code"""
     logger=logging.getLogger('plumi.app')
 
@@ -297,177 +306,327 @@ def app_installation_tasks(self):
     layout_name = "video_listing_view"
 
 
-    #
-    # 1 of 4: video genre
-    #
-    taxonomy_fldr.invokeFactory('Folder', id=GENRE_FOLDER, 
-                                title=_(u'Video Genres'))
-    genre_fldr = getattr(taxonomy_fldr, GENRE_FOLDER,None)
-    publishObject(wftool,genre_fldr)
-    createTranslations(self,genre_fldr)
-    #description string for new smart folders
-    for vocab in vocabs['video_genre']:
-        new_smart_fldr_id = vocab[0]
-        #make the new SmartFolder
-        genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1])
-        fldr = getattr(genre_fldr,new_smart_fldr_id)
-         
-        # Filter results to Plumi Video
-        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-        #Have to use the name of the Title of the Type you want to filter.
-        type_criterion.setValue("Video")
-         
-        # Filter results to this individual genre
-        type_criterion = fldr.addCriterion('getGenre', 'ATSimpleStringCriterion' )
-        #match against the ID of the vocab term. see getGenre in content types 
-        type_criterion.setValue(vocab[0])
-        ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
-        state_crit.setValue(['published','featured'])
-        
-        #XXX used to have a custom getFirstPublishedTransitionTime 
-        #sort on reverse date order, using the first published time transition
-        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
-        sort_crit.setReversed(True)
+    if not reinstall:
 
-        #make the folder published
-        fldr.setLayout(layout_name)
-        publishObject(wftool,fldr)
-        createTranslations(self,fldr)
+        #
+        # 1 of 4: video genre
+        #
+        taxonomy_fldr.invokeFactory('Folder', id=GENRE_FOLDER, 
+                                    title=_(u'Video Genres'))
+        genre_fldr = getattr(taxonomy_fldr, GENRE_FOLDER,None)
+        publishObject(wftool,genre_fldr)
+        createTranslations(self,genre_fldr)
+        #description string for new smart folders
+        for vocab in vocabs['video_genre']:
+            new_smart_fldr_id = vocab[0]
+            #make the new SmartFolder
+            genre_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1])
+            fldr = getattr(genre_fldr,new_smart_fldr_id)
+             
+            # Filter results to Plumi Video
+            type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+            #Have to use the name of the Title of the Type you want to filter.
+            type_criterion.setValue("Video")
+             
+            # Filter results to this individual genre
+            type_criterion = fldr.addCriterion('getGenre', 'ATSimpleStringCriterion' )
+            #match against the ID of the vocab term. see getGenre in content types 
+            type_criterion.setValue(vocab[0])
+            ## add criteria for showing only published videos
+            state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
+            state_crit.setValue(['published','featured'])
+            
+            #XXX used to have a custom getFirstPublishedTransitionTime 
+            #sort on reverse date order, using the first published time transition
+            sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+            sort_crit.setReversed(True)
 
-    #
-    # 2 of 4: video categories aka topic
-    #
-    taxonomy_fldr.invokeFactory('Folder',id=CATEGORIES_FOLDER,
-                                title=_(u'Video Topics'))
-    categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
-    publishObject(wftool,categ_fldr)
-    createTranslations(self,categ_fldr)
+            #make the folder published
+            fldr.setLayout(layout_name)
+            publishObject(wftool,fldr)
+            createTranslations(self,fldr)
 
-    for vocab in vocabs['video_categories']:
-        new_smart_fldr_id = vocab[0]
+        #
+        # 2 of 4: video categories aka topic
+        #
+        taxonomy_fldr.invokeFactory('Folder',id=CATEGORIES_FOLDER,
+                                    title=_(u'Video Topics'))
+        categ_fldr = getattr(taxonomy_fldr, CATEGORIES_FOLDER,None)
+        publishObject(wftool,categ_fldr)
+        createTranslations(self,categ_fldr)
 
-        #make the new SmartFolder
-        categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1])
-        fldr = getattr(categ_fldr,new_smart_fldr_id)
+        for vocab in vocabs['video_categories']:
+            new_smart_fldr_id = vocab[0]
 
-        # Filter results to Plumi Video
-        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-        type_criterion.setValue("Video")
-        # Filter results to this individual category
-        type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
-        #match against the ID of the vocab term. see getCategories in content objects
-        type_criterion.setValue(vocab[0])
-        #match if any vocab term is present in the video's selected categories
-        type_criterion.setOperator('or')
-        ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
-        state_crit.setValue(['published','featured'])
-        #sort on reverse date order
-        #XXX old getfirstpublishedtransition time 
-        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
-        sort_crit.setReversed(True)
+            #make the new SmartFolder
+            categ_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=vocab[1])
+            fldr = getattr(categ_fldr,new_smart_fldr_id)
 
-        #make the folder published.
-        fldr.setLayout(layout_name)
-        publishObject(wftool,fldr)
-        createTranslations(self,fldr)
-
-
-    #
-    # 3 of 4: video countries
-    #
-   
-    #Countries
-    #get the countries from the countrytool!
-    # nb: this means that the setup method for the countries should be called BEFORE
-    # this one
-
-    countrytool = getToolByName(self,CountryUtils.id)
-    cdict = list()
-    taxonomy_fldr.invokeFactory('Folder',id=COUNTRIES_FOLDER,
-                                title=_(u'Countries'))
-    countries_fldr = getattr(taxonomy_fldr,COUNTRIES_FOLDER,None)
-    publishObject(wftool,countries_fldr)
-    createTranslations(self,countries_fldr)
-
-    for area in countrytool._area_list:
-        for country in area.countries:
-            cdict.append([country.isocc,country.name])
-
-    for country in cdict:
-        new_smart_fldr_id = country[0]
-
-        # maybe it already exists?
-        try: 
-            # make the new SmartFolder
-            countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1]) 
-            fldr = getattr(countries_fldr,new_smart_fldr_id)
-
-            # Filter results to  Plumi Video
+            # Filter results to Plumi Video
             type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
             type_criterion.setValue("Video")
-
             # Filter results to this individual category
-            type_criterion = fldr.addCriterion('getCountries', 'ATListCriterion' )
-            #
+            type_criterion = fldr.addCriterion('getCategories', 'ATListCriterion' )
             #match against the ID of the vocab term. see getCategories in content objects
-            type_criterion.setValue(country[0])
+            type_criterion.setValue(vocab[0])
             #match if any vocab term is present in the video's selected categories
             type_criterion.setOperator('or')
             ## add criteria for showing only published videos
             state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
             state_crit.setValue(['published','featured'])
             #sort on reverse date order
+            #XXX old getfirstpublishedtransition time 
             sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
             sort_crit.setReversed(True)
-            #publish folder
+
+            #make the folder published.
             fldr.setLayout(layout_name)
             publishObject(wftool,fldr)
             createTranslations(self,fldr)
-        except:
-            # should be ok from previous installation
-            pass
 
-    #
-    #4 of 4 : CallOut submission categories
-    #
-    topic_description_string = "CallOuts for Topic - %s "
-    taxonomy_fldr.invokeFactory('Folder',id=SUBMISSIONS_FOLDER,
-                                title=_(u'Call Outs'))
-    submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
-    publishObject(wftool,submissions_fldr)
-    createTranslations(self,submissions_fldr)
 
-    for submission_categ in vocabs['submission_categories']:
-        new_smart_fldr_id = submission_categ[0]
-
-        #make the new SmartFolder
-        submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1])
-        fldr = getattr(submissions_fldr,new_smart_fldr_id)
-        # Filter results to Callouts
-        type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
-        #the title of the type, not the class name, or portal_type 
-        type_criterion.setValue("Plumi Call Out")
-
-        # Filter results to this individual category
-        type_criterion = fldr.addCriterion('getSubmissionCategories', 'ATListCriterion' )
         #
-        #match against the ID of the vocab term. see getCategories in callout.py (Callout object)
-        type_criterion.setValue(submission_categ[0])
-        #match if any vocab term is present in the video's selected categories
-        type_criterion.setOperator('or')
+        # 3 of 4: video countries
+        #
+       
+        #Countries
+        #get the countries from the countrytool!
+        # nb: this means that the setup method for the countries should be called BEFORE
+        # this one
 
-        ## add criteria for showing only published videos
-        state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        #sort on reverse date order
-        sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
-        sort_crit.setReversed(True)
-        #publish the folder
-        fldr.setLayout(layout_name)
-        publishObject(wftool,fldr)
-        createTranslations(self,fldr)
+        countrytool = getToolByName(self,CountryUtils.id)
+        cdict = list()
+        taxonomy_fldr.invokeFactory('Folder',id=COUNTRIES_FOLDER,
+                                    title=_(u'Countries'))
+        countries_fldr = getattr(taxonomy_fldr,COUNTRIES_FOLDER,None)
+        publishObject(wftool,countries_fldr)
+        createTranslations(self,countries_fldr)
 
-        registry = getUtility(IRegistry)
-        registry['collective.transcode.star.interfaces.ITranscodeSettings.portal_types'] = (u'PlumiVideo:video_file',)
+        for area in countrytool._area_list:
+            for country in area.countries:
+                cdict.append([country.isocc,country.name])
+
+        for country in cdict:
+            new_smart_fldr_id = country[0]
+
+            # maybe it already exists?
+            try: 
+                # make the new SmartFolder
+                countries_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=country[1]) 
+                fldr = getattr(countries_fldr,new_smart_fldr_id)
+
+                # Filter results to  Plumi Video
+                type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+                type_criterion.setValue("Video")
+
+                # Filter results to this individual category
+                type_criterion = fldr.addCriterion('getCountries', 'ATListCriterion' )
+                #
+                #match against the ID of the vocab term. see getCategories in content objects
+                type_criterion.setValue(country[0])
+                #match if any vocab term is present in the video's selected categories
+                type_criterion.setOperator('or')
+                ## add criteria for showing only published videos
+                state_crit = fldr.addCriterion('review_state', 'ATListCriterion')
+                state_crit.setValue(['published','featured'])
+                #sort on reverse date order
+                sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+                sort_crit.setReversed(True)
+                #publish folder
+                fldr.setLayout(layout_name)
+                publishObject(wftool,fldr)
+                createTranslations(self,fldr)
+            except:
+                # should be ok from previous installation
+                pass
+
+        #
+        #4 of 4 : CallOut submission categories
+        #
+        topic_description_string = "CallOuts for Topic - %s "
+        taxonomy_fldr.invokeFactory('Folder',id=SUBMISSIONS_FOLDER,
+                                    title=_(u'Call Outs'))
+        submissions_fldr = getattr(taxonomy_fldr,SUBMISSIONS_FOLDER,None)
+        publishObject(wftool,submissions_fldr)
+        createTranslations(self,submissions_fldr)
+
+        for submission_categ in vocabs['submission_categories']:
+            new_smart_fldr_id = submission_categ[0]
+
+            #make the new SmartFolder
+            submissions_fldr.invokeFactory('Topic', id=new_smart_fldr_id,title=submission_categ[1])
+            fldr = getattr(submissions_fldr,new_smart_fldr_id)
+            # Filter results to Callouts
+            type_criterion = fldr.addCriterion('Type', 'ATPortalTypeCriterion' )
+            #the title of the type, not the class name, or portal_type 
+            type_criterion.setValue("Plumi Call Out")
+
+            # Filter results to this individual category
+            type_criterion = fldr.addCriterion('getSubmissionCategories', 'ATListCriterion' )
+            #
+            #match against the ID of the vocab term. see getCategories in callout.py (Callout object)
+            type_criterion.setValue(submission_categ[0])
+            #match if any vocab term is present in the video's selected categories
+            type_criterion.setOperator('or')
+
+            ## add criteria for showing only published videos
+            state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
+            state_crit.setValue('published')
+            #sort on reverse date order
+            sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
+            sort_crit.setReversed(True)
+            #publish the folder
+            fldr.setLayout(layout_name)
+            publishObject(wftool,fldr)
+            createTranslations(self,fldr)
+
+            registry = getUtility(IRegistry)
+            registry['collective.transcode.star.interfaces.ITranscodeSettings.portal_types'] = (u'PlumiVideo:video_file',)
+
+
+def plumi30to31(context, logger=None):
+
+    catalog = getToolByName(context, 'portal_catalog')
+    workflow_tool = getToolByName(context,'portal_workflow')
+
+    # Migrate callouts
+    callouts = catalog(portal_type='PlumiCallOut')
+    for c in callouts:
+        # Migrate callout dates
+        callout=c.getObject()
+        closing = callout.getClosingDate()
+        if closing:
+            callout.setExpirationDate(closing)
+            callout.reindexObject()
+
+        # Migrate callout workflow
+        from_state = workflow_tool.getInfoFor(callout,'review_state', wf_id='plone_workflow')
+        current_state = workflow_tool.getInfoFor(callout, 'review_state', wf_id='plumi_workflow')
+        if current_state != from_state:
+            changeWorkflowState(callout, from_state, False)
+
+    # Migrate events
+    events = catalog(portal_type='Event')
+    for e in events:
+        # Migrate event workflow
+        event=e.getObject()
+        from_state = workflow_tool.getInfoFor(event,'review_state', wf_id='plone_workflow')
+        current_state = workflow_tool.getInfoFor(event, 'review_state', wf_id='plumi_workflow')
+        if current_state != from_state:
+            changeWorkflowState(event, from_state, False)
+    # Migrate news
+    news = catalog(portal_type='News Item')
+    for n in news:
+        # Migrate news workflow
+        new=n.getObject()
+        from_state = workflow_tool.getInfoFor(new,'review_state', wf_id='plone_workflow')
+        current_state = workflow_tool.getInfoFor(new, 'review_state', wf_id='plumi_workflow')
+        if current_state != from_state:
+            changeWorkflowState(new, from_state, False)
+
+
+    # Migrate Videos
+    videos = catalog(portal_type='PlumiVideo')
+    tt = getUtility(ITranscodeTool)
+    pprop = getUtility(IPropertiesTool)
+    config = getattr(pprop, 'plumi_properties', None)
+    tok = 0
+    fok = 0
+
+
+    for video in videos:
+        # Migrate video annotations
+        obj = video.getObject()
+        UID = obj.UID()
+        if not UID:
+            continue
+        data = StringIO(obj.getField('video_file').get(obj).data)
+        md5sum = md5(data.read()).hexdigest()
+        annotations = IAnnotations(obj)
+        transcode_profiles = annotations.get('plumi.transcode.profiles', {})
+        for profile_name in transcode_profiles.keys():
+            profile = transcode_profiles[profile_name]
+            path = profile.get('path', None)
+            if not path:
+                continue
+            address = config.videoserver_address
+            objRec = tt.get(UID, None)
+            if not objRec:
+                tt[UID] = PersistentDict()
+
+            fieldRec = tt[UID].get('video_file', None)
+            if not fieldRec:
+                tt[UID]['video_file']=PersistentDict()
+            tt[UID]['video_file'][profile_name] = PersistentDict({'jobId' : None, 'address' : address,'status' : 'ok', 'start' : datetime.now(), 'md5' : md5sum, 'path': path,})
+        if transcode_profiles:
+            del annotations['plumi.transcode.profiles']
+
+        # Migrate video workflow
+        from_state = workflow_tool.getInfoFor(obj,'review_state', wf_id='plone_workflow')
+        current_state = workflow_tool.getInfoFor(obj, 'review_state', wf_id='plumi_workflow')
+        if current_state != from_state:
+            changeWorkflowState(obj, from_state, False)
+
+    # Migrated featured state
+    wf = getToolByName(context, 'portal_workflow')
+    featured = catalog(Subject='featured')
+    for f in featured:
+        try:
+            obj = f.getObject()
+            wf.doActionFor(obj, 'feature')
+             # Map changes to the catalogs
+            obj.reindexObject(idxs=['allowedRolesAndUsers', 'review_state'])
+        except Exception, e:
+            print "Could not feature %s" % obj
+
+
+def changeWorkflowState(content, state_id, acquire_permissions=False,
+                        portal_workflow=None, **kw):
+    """Change the workflow state of an object
+    @param content: Content obj which state will be changed
+    @param state_id: name of the state to put on content
+    @param acquire_permissions: True->All permissions unchecked and on riles and
+                                acquired
+                                False->Applies new state security map
+    @param portal_workflow: Provide workflow tool (optimisation) if known
+    @param kw: change the values of same name of the state mapping
+    @return: None
+    """
+
+    if portal_workflow is None:
+        portal_workflow = getToolByName(content, 'portal_workflow')
+
+    # Might raise IndexError if no workflow is associated to this type
+    wf_def = portal_workflow.getWorkflowsFor(content)[0]
+    wf_id= wf_def.getId()
+
+    wf_state = {
+        'action': None,
+        'actor': None,
+        'comments': "Setting state to %s" % state_id,
+        'review_state': state_id,
+        'time': DateTime(),
+        }
+
+    # Updating wf_state from keyword args
+    for k in kw.keys():
+        # Remove unknown items
+        if not wf_state.has_key(k):
+            del kw[k]
+    if kw.has_key('review_state'):
+        del kw['review_state']
+    wf_state.update(kw)
+
+    portal_workflow.setStatusOf(wf_id, content, wf_state)
+
+    if acquire_permissions:
+        # Acquire all permissions
+        for permission in content.possible_permissions():
+            content.manage_permission(permission, acquire=1)
+    else:
+        # Setting new state permissions
+        wf_def.updateRoleMappingsFor(content)
+
+    # Map changes to the catalogs
+    content.reindexObject(idxs=['allowedRolesAndUsers', 'review_state'])
+    return

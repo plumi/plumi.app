@@ -1,18 +1,29 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:five="http://namespaces.zope.org/five"
-
+    xmlns:browser="http://namespaces.zope.org/browser" 
+    xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="plumi">
 
   <!-- Generic Setup Profile -->
-  <gs:registerProfile
+  <genericsetup:registerProfile
         name="default"
         title="Plumi application setup"
         directory="profiles/default"
         description="The default settings of Plumi portals"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
+
+  <!-- Register the upgrade step -->
+  <genericsetup:upgradeStep
+      title="Plumi 3.0 to 3.1"
+      description=""
+      source="0.2"
+      destination="0.9"
+      handler="plumi.app.install.plumi30to31"
+      profile="plumi.app:default"
+      />
 
   <five:registerPackage package="." initialize=".install.initialize" />
 

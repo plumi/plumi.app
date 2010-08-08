@@ -53,6 +53,6 @@ def install(self, reinstall=False):
         transaction.savepoint()
     #run custom setup code.
     logger.info('starting custom setup code')
-    app_installation_tasks(self)
+    app_installation_tasks(self, reinstall)
     logger.info('end install')
 
