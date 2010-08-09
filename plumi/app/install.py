@@ -334,6 +334,45 @@ def app_installation_tasks(self, reinstall=False):
 
 #        createTranslations(self,fv)
 
+    #
+    #
+    #create top level documents if they do not exist
+    #    
+    try:
+        about = getattr(self, 'about-us')
+    except:
+        # We create the element
+        self.invokeFactory('Document',
+                           id = 'about-us',
+                           title = 'About Us',
+                           description = 'This is a generic Plumi install. The About Us text hasnt been modified.')
+
+    try:
+        about = getattr(self, 'help-and-tutorials')
+    except:
+        # We create the element
+        self.invokeFactory('Document',
+                           id = 'help-and-tutorials',
+                           title = 'Help and Tutorials',
+                           description = 'For help with Plumi see http://plumi.org/wiki/Documentation')
+
+    try:
+        about = getattr(self, 'editorial-policy')
+    except:
+        # We create the element
+        self.invokeFactory('Document',
+                           id = 'editorial-policy',
+                           title = 'Editorial Policy',
+                           description = 'This is an generic Plumi install. For an example, see the editorial policy from EngageMedia here - http://www.engagemedia.org/editorial-policy.')
+
+    try:
+        about = getattr(self, 'get-involved')
+    except:
+        # We create the element
+        self.invokeFactory('Document',
+                           id = 'get-involved',
+                           title = 'Get Involved!',
+                           description = 'See "Getting Involved" at http://plumi.org/wiki')
 
     if not reinstall:
         
