@@ -565,9 +565,9 @@ def app_installation_tasks(self, reinstall=False):
             #match if any vocab term is present in the video's selected categories
             type_criterion.setOperator('or')
 
-            ## add criteria for showing only published videos
+            ## add criteria for showing only published callouts
             state_crit = fldr.addCriterion('review_state', 'ATSimpleStringCriterion')
-            state_crit.setValue('published')
+            state_crit.setValue(['published','featured'])
             #sort on reverse date order
             sort_crit = fldr.addCriterion('modified',"ATSortCriterion")
             sort_crit.setReversed(True)
