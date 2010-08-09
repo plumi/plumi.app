@@ -139,78 +139,7 @@ def app_installation_tasks(self, reinstall=False):
         #reindex
         vocab.reindexObject()
 
-    if not reinstall:
-        #
-        #ATCountryWidget setup
-        #reset the country tool
-        countrytool = getToolByName(self, CountryUtils.id)
-        countrytool.manage_countries_reset()    
-        if countrytool.listAreas() == ():
-            countrytool.manage_countries_addArea('Europe (Western)')
-            countrytool.manage_countries_addCountryToArea('Europe (Western)', ['DK','FI','FR','IT','NL','PT','ES','GB','IS','IE','LI','LU','NO','SE','AT','DE','CH','AD','GI','MT','MC','SM','VA','BE','GL','FO','SJ'])
-            countrytool.manage_countries_sortArea('Europe (Western)')
-            
-            countrytool.manage_countries_addArea('Europe (Central)')
-            countrytool.manage_countries_addCountryToArea('Europe (Central)', ['CZ','HU','PL','RO','SK','HR','AL','BG','BA','GR','SI','RS','MK'])
-            countrytool.manage_countries_sortArea('Europe (Central)')
-
-            countrytool.manage_countries_addArea('Europe (Eastern)')
-            countrytool.manage_countries_addCountryToArea('Europe (Eastern)', ['BY','UA','AZ','EE','LV','LT','RU','AM','GE','MD'])
-            countrytool.manage_countries_sortArea('Europe (Eastern)')
-
-            countrytool.manage_countries_addArea('North America')
-            countrytool.manage_countries_addCountryToArea('North America', ['CA','MX','PM','US','UM'])
-            countrytool.manage_countries_sortArea('North America')
-
-            countrytool.manage_countries_addArea('Central America')
-            countrytool.manage_countries_addCountryToArea('Central America', ['BZ','CR','SV','GT','HN','NI','PA'])
-            countrytool.manage_countries_sortArea('Central America')
-
-            countrytool.manage_countries_addArea('South America')
-            countrytool.manage_countries_addCountryToArea('South America', ['AR','BO','BR','CL','CO','EC','FK','GF','GY','PY','PE','SR','UY','VE','GS'])
-            countrytool.manage_countries_sortArea('South America')
-
-            countrytool.manage_countries_addArea('Middle East')
-            countrytool.manage_countries_addCountryToArea('Middle East', ['LB','BH','IR','IQ','IL','JO','KW','OM','QA','SA','SY','AE','TR','YE','CY'])
-            countrytool.manage_countries_sortArea('Middle East')
-
-            countrytool.manage_countries_addArea('Central Asia')
-            countrytool.manage_countries_addCountryToArea('Central Asia', ['KZ','KG','TJ','TM','UZ','IO'])
-            countrytool.manage_countries_sortArea('Central Asia')
-
-            countrytool.manage_countries_addArea('South Asia')
-            countrytool.manage_countries_addCountryToArea('South Asia', ['AF','BD','BT','IN','MV','NP','LK','PK'])
-            countrytool.manage_countries_sortArea('South Asia')
-
-            countrytool.manage_countries_addArea('South East Asia')
-            countrytool.manage_countries_addCountryToArea('South East Asia', ['BN','KH','ID','LA','MY','MM','PH','SG','TH','TL','VN'])
-            countrytool.manage_countries_sortArea('South East Asia')
-
-            countrytool.manage_countries_addArea('North East Asia')
-            countrytool.manage_countries_addCountryToArea('North East Asia', ['CN','HK','JP','KP','KR','MN','TW','MO'])
-            countrytool.manage_countries_sortArea('North East Asia')
-
-            countrytool.manage_countries_addArea('Australasia')
-            countrytool.manage_countries_addCountryToArea('Australasia', ['AU','NZ','AS','CX','CC','CK','FJ','GU','KI','MH','FM','NR','NC','NU','NF','PW','PG','PN','WS','SB','TK','TO','TV','VU','WF','PF','HM','MP','AQ'])
-            countrytool.manage_countries_sortArea('Australasia')
-
-            countrytool.manage_countries_addArea('Caribbean')
-            countrytool.manage_countries_addCountryToArea('Caribbean', ['AI','AG','AW','BS','BB','BM','KY','CU','DM','DO','GD','GP','HT','JM','MQ','MS','AN','PR','KN','LC','VC','TT','TC','VG','VI'])
-            countrytool.manage_countries_sortArea('Caribbean')
-
-            countrytool.manage_countries_addArea('Africa')
-            countrytool.manage_countries_addCountryToArea('Africa', ['DZ','AO','BJ','BW','BV','BF','BI','CM','CV','CF','TD','KM','CD','CG','CI','EG','GQ','ER','ET','TF','GA','GM','GN','GW','KE','LS','LR','LY','MG','MW','ML','MR','MU','YT','MA','MZ','NA','NE','NG','RE','RW','ST','SN','SC','SL','SO','ZA','SD','SZ','TZ','TG','TN','UG','ZM','ZW','GH','DJ','EH','SH'])
-            countrytool.manage_countries_sortArea('Africa')    
-            #Add some extra countries 
-            countrytool.manage_countries_addCountry('WP',_(u'West Papua'))
-            #XXX this is a state of America, not a country - but thats just politics!!
-            countrytool.manage_countries_addCountry('HA',_(u'Hawaii'))
-            countrytool.manage_countries_addCountry('BU',_(u'Bougainville'))
-            countrytool.manage_countries_addCountryToArea('Australasia',['WP','HA','BU'])
-            countrytool.manage_countries_sortArea(_(u'Australasia'))
-
-    # Removed the customization made on the ATCountryWidget. Reverted it back
-    # to plone dafault
+   
 
     #
     # Collections for display 
@@ -374,7 +303,77 @@ def app_installation_tasks(self, reinstall=False):
                            title = 'Get Involved!',
                            description = 'See "Getting Involved" at http://plumi.org/wiki')
 
+    #Avoid doing all the following when reinstalling
     if not reinstall:
+
+        #
+        #ATCountryWidget setup
+        #reset the country tool
+        countrytool = getToolByName(self, CountryUtils.id)
+        countrytool.manage_countries_reset()    
+        if countrytool.listAreas() == ():
+            countrytool.manage_countries_addArea('Europe (Western)')
+            countrytool.manage_countries_addCountryToArea('Europe (Western)', ['DK','FI','FR','IT','NL','PT','ES','GB','IS','IE','LI','LU','NO','SE','AT','DE','CH','AD','GI','MT','MC','SM','VA','BE','GL','FO','SJ'])
+            countrytool.manage_countries_sortArea('Europe (Western)')
+            
+            countrytool.manage_countries_addArea('Europe (Central)')
+            countrytool.manage_countries_addCountryToArea('Europe (Central)', ['CZ','HU','PL','RO','SK','HR','AL','BG','BA','GR','SI','RS','MK'])
+            countrytool.manage_countries_sortArea('Europe (Central)')
+
+            countrytool.manage_countries_addArea('Europe (Eastern)')
+            countrytool.manage_countries_addCountryToArea('Europe (Eastern)', ['BY','UA','AZ','EE','LV','LT','RU','AM','GE','MD'])
+            countrytool.manage_countries_sortArea('Europe (Eastern)')
+
+            countrytool.manage_countries_addArea('North America')
+            countrytool.manage_countries_addCountryToArea('North America', ['CA','MX','PM','US','UM'])
+            countrytool.manage_countries_sortArea('North America')
+
+            countrytool.manage_countries_addArea('Central America')
+            countrytool.manage_countries_addCountryToArea('Central America', ['BZ','CR','SV','GT','HN','NI','PA'])
+            countrytool.manage_countries_sortArea('Central America')
+
+            countrytool.manage_countries_addArea('South America')
+            countrytool.manage_countries_addCountryToArea('South America', ['AR','BO','BR','CL','CO','EC','FK','GF','GY','PY','PE','SR','UY','VE','GS'])
+            countrytool.manage_countries_sortArea('South America')
+
+            countrytool.manage_countries_addArea('Middle East')
+            countrytool.manage_countries_addCountryToArea('Middle East', ['LB','BH','IR','IQ','IL','JO','KW','OM','QA','SA','SY','AE','TR','YE','CY'])
+            countrytool.manage_countries_sortArea('Middle East')
+
+            countrytool.manage_countries_addArea('Central Asia')
+            countrytool.manage_countries_addCountryToArea('Central Asia', ['KZ','KG','TJ','TM','UZ','IO'])
+            countrytool.manage_countries_sortArea('Central Asia')
+
+            countrytool.manage_countries_addArea('South Asia')
+            countrytool.manage_countries_addCountryToArea('South Asia', ['AF','BD','BT','IN','MV','NP','LK','PK'])
+            countrytool.manage_countries_sortArea('South Asia')
+
+            countrytool.manage_countries_addArea('South East Asia')
+            countrytool.manage_countries_addCountryToArea('South East Asia', ['BN','KH','ID','LA','MY','MM','PH','SG','TH','TL','VN'])
+            countrytool.manage_countries_sortArea('South East Asia')
+
+            countrytool.manage_countries_addArea('North East Asia')
+            countrytool.manage_countries_addCountryToArea('North East Asia', ['CN','HK','JP','KP','KR','MN','TW','MO'])
+            countrytool.manage_countries_sortArea('North East Asia')
+
+            countrytool.manage_countries_addArea('Australasia')
+            countrytool.manage_countries_addCountryToArea('Australasia', ['AU','NZ','AS','CX','CC','CK','FJ','GU','KI','MH','FM','NR','NC','NU','NF','PW','PG','PN','WS','SB','TK','TO','TV','VU','WF','PF','HM','MP','AQ'])
+            countrytool.manage_countries_sortArea('Australasia')
+
+            countrytool.manage_countries_addArea('Caribbean')
+            countrytool.manage_countries_addCountryToArea('Caribbean', ['AI','AG','AW','BS','BB','BM','KY','CU','DM','DO','GD','GP','HT','JM','MQ','MS','AN','PR','KN','LC','VC','TT','TC','VG','VI'])
+            countrytool.manage_countries_sortArea('Caribbean')
+
+            countrytool.manage_countries_addArea('Africa')
+            countrytool.manage_countries_addCountryToArea('Africa', ['DZ','AO','BJ','BW','BV','BF','BI','CM','CV','CF','TD','KM','CD','CG','CI','EG','GQ','ER','ET','TF','GA','GM','GN','GW','KE','LS','LR','LY','MG','MW','ML','MR','MU','YT','MA','MZ','NA','NE','NG','RE','RW','ST','SN','SC','SL','SO','ZA','SD','SZ','TZ','TG','TN','UG','ZM','ZW','GH','DJ','EH','SH'])
+            countrytool.manage_countries_sortArea('Africa')    
+            #Add some extra countries 
+            countrytool.manage_countries_addCountry('WP',_(u'West Papua'))
+            #XXX this is a state of America, not a country - but thats just politics!!
+            countrytool.manage_countries_addCountry('HA',_(u'Hawaii'))
+            countrytool.manage_countries_addCountry('BU',_(u'Bougainville'))
+            countrytool.manage_countries_addCountryToArea('Australasia',['WP','HA','BU'])
+            countrytool.manage_countries_sortArea(_(u'Australasia'))
         
         #
         #
