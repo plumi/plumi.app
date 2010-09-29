@@ -210,6 +210,22 @@ def app_installation_tasks(self, reinstall=False):
         type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
         if item['id'] is 'news_and_events':
             type_criterion.setValue( ("News Item","Event") )
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            newsCollectionPortlet = Assignment(header=u"News",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=True)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+
+            saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
         elif item['id'] is 'callouts':
             date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
             # Set date reference to now
@@ -232,8 +248,8 @@ def app_installation_tasks(self, reinstall=False):
             def saveAssignment(mapping, assignment):
                 chooser = INameChooser(mapping)
                 mapping[chooser.chooseName(None, assignment)] = assignment
-    
-            saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+            if not rightColumnInThisContext.has_key('callouts'):    
+                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
         else:
             type_criterion.setValue("Video")
 
