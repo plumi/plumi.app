@@ -78,9 +78,9 @@
   </object>
   <object name="bookmarklets" meta_type="CMF Action"
      i18n:domain="PloneBookmarklets">
-   <property name="title" i18n:translate="">Bookmarks</property>
+   <property name="title" i18n:translate="">Share this</property>
    <property name="description"
-      i18n:translate="">Bookmark this content</property>
+      i18n:translate="">Share this content</property>
    <property name="url_expr"></property>
    <property name="icon_expr">string:${portal_url}/bookmarklets.gif</property>
    <property name="available_expr"></property>
