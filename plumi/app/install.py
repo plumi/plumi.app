@@ -13,13 +13,14 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.Five.component import enableSite
 from Products.CMFPlone.interfaces import IPropertiesTool
 
-from zope.component import getUtility
+from zope.component import getUtility , queryUtility
 from zope.component import getMultiAdapter
 from zope.app.container.interfaces import INameChooser
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
 from plone.portlet.collection.collection import Assignment
 from plone.registry.interfaces import IRegistry
+from plone.app.discussion.interfaces import ICommentingTool
 
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
@@ -690,6 +691,19 @@ def plumi30to31(context, logger=None):
             obj.reindexObject(idxs=['allowedRolesAndUsers', 'review_state'])
         except Exception, e:
             print "Could not feature %s" % obj
+
+def plumi31to311(context, logger=None):
+
+    catalog = getToolByName(context, 'portal_catalog')
+    commenttool = queryUtility(ICommentingTool)
+    # Update comment modification time
+    comments = catalog(portal_type='Discussion Item')
+    for comment in comments:
+        obj = comment.getObject()
+        obj.setModificationDate(comment["modified"])
+        obj.setCreationDate(comment["modified"])
+        commenttool.reindexObject(obj)    
+    print str(len(comments)) + 'comments updated'
 
 
 def changeWorkflowState(content, state_id, acquire_permissions=False,

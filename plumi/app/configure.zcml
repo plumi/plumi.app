@@ -15,13 +15,22 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-  <!-- Register the upgrade step -->
+  <!-- Register the upgrade steps -->
   <genericsetup:upgradeStep
       title="Plumi 3.0 to 3.1"
       description=""
       source="0.2"
       destination="0.9"
       handler="plumi.app.install.plumi30to31"
+      profile="plumi.app:default"
+      />
+
+  <genericsetup:upgradeStep
+      title="Plumi 3.1 to 3.1.1"
+      description=""
+      source="0.2"
+      destination="0.9"
+      handler="plumi.app.install.plumi31to311"
       profile="plumi.app:default"
       />
 
