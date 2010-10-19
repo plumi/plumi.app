@@ -179,10 +179,10 @@ def app_installation_tasks(self, reinstall=False):
                   layout  = "folder_summary_view",
                   exclude = True),
 
-             dict(id      = 'comments',
-                  title   = _(u'Comments'),
-                  desc    = _(u'Latest comments.'),
-                  layout  = "folder_summary_view",
+             dict(id      = 'recent_comments',
+                  title   = _(u'Recent Comments'),
+                  desc    = _(u'Recent comments.'),
+                  layout  = "folder_listing",
                   exclude = True),
 
             )
@@ -233,24 +233,6 @@ def app_installation_tasks(self, reinstall=False):
                 mapping[chooser.chooseName(None, assignment)] = assignment
 
             saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
-        elif item['id'] is 'comments':
-            type_criterion.setValue( ("Discussion Item") )
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            commentsCollectionPortlet = Assignment(header=u"Comments",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.comments)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=True)
-          
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('comments'):
-                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
         elif item['id'] is 'callouts':
             date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
             # Set date reference to now
@@ -275,6 +257,24 @@ def app_installation_tasks(self, reinstall=False):
                 mapping[chooser.chooseName(None, assignment)] = assignment
             if not rightColumnInThisContext.has_key('callouts'):    
                 saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+        elif item['id'] is 'recent_comments':
+            type_criterion.setValue( ("Comment") )
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            commentsCollectionPortlet = Assignment(header=u"Recent Comments",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.recent_comments)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=True)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('recent-comments'):
+                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
         else:
             type_criterion.setValue("Video")
 
