@@ -217,6 +217,7 @@ def app_installation_tasks(self, reinstall=False):
         type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
         if item['id'] is 'news_and_events':
             type_criterion.setValue( ("News Item","Event") )
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")          
             right = getUtility(IPortletManager, name='plone.rightcolumn')
             rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
             urltool  = getToolByName(portal, 'portal_url')
@@ -226,7 +227,6 @@ def app_installation_tasks(self, reinstall=False):
                                         random=False,
                                         show_more=True,
                                         show_dates=True)
-          
     
             def saveAssignment(mapping, assignment):
                 chooser = INameChooser(mapping)
@@ -241,6 +241,7 @@ def app_installation_tasks(self, reinstall=False):
             date_crit.setDateRange('-') # This is irrelevant when the date is now
             date_crit.setOperation('more')
             type_criterion.setValue( ("Plumi Call Out") )        
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
             right = getUtility(IPortletManager, name='plone.rightcolumn')
             rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
             urltool  = getToolByName(portal, 'portal_url')
@@ -259,6 +260,7 @@ def app_installation_tasks(self, reinstall=False):
                 saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
         elif item['id'] is 'recent_comments':
             type_criterion.setValue( ("Comment") )
+            sort_crit = fv.addCriterion('created',"ATSortCriterion")
             right = getUtility(IPortletManager, name='plone.rightcolumn')
             rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
             urltool  = getToolByName(portal, 'portal_url')
@@ -277,14 +279,8 @@ def app_installation_tasks(self, reinstall=False):
                 saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
         else:
             type_criterion.setValue("Video")
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
 
-
-
-        # Sort on reverse publication date order
-        # XXX port functionality
-        #sort_crit = fv.addCriterion('getFirstPublishedTransitionTime',
-        #                                "ATSortCriterion")
-        sort_crit = fv.addCriterion('effective',"ATSortCriterion")
         sort_crit.setReversed(True)
 
         ## add criteria for showing only published videos
