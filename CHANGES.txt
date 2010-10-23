@@ -1,7 +1,12 @@
+0.11 (2010-10-23)
+=================
+
+ - Release for Plumi 3.1.1 rc2 [Dimitris Moraitis]
+
 0.10 (2010-10-21)
 =================
 
- - Release for Plumi 3.1.1 final [Dimitris Moraitis]
+ - Release for Plumi 3.1.1 rc1 [Dimitris Moraitis]
 
 0.9 (2010-10-09)
 ================
