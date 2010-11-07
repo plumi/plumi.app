@@ -21,6 +21,7 @@ from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAs
 from plone.portlet.collection.collection import Assignment
 from plone.registry.interfaces import IRegistry
 from plone.app.discussion.interfaces import ICommentingTool
+from plone.app.discussion.interfaces import IConversation
 
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
@@ -716,14 +717,50 @@ def plumi31to311(context, logger=None):
 
     catalog = getToolByName(context, 'portal_catalog')
     commenttool = queryUtility(ICommentingTool)
-    # Update comment modification time
-    comments = catalog(portal_type='Discussion Item')
-    for comment in comments:
-        obj = comment.getObject()
-        obj.setModificationDate(comment["modified"])
-        obj.setCreationDate(comment["modified"])
-        commenttool.reindexObject(obj)    
-    print str(len(comments)) + 'comments updated'
+    # Reindex comments
+    videos = catalog(portal_type='PlumiVideo')
+    comments = 0
+    for video in videos:
+        obj = video.getObject()
+        conversation = IConversation(obj)
+        for r in conversation.getThreads():
+            comment_obj = r['comment']
+            commenttool.reindexObject(comment_obj)
+            comments = comments + 1
+    print str(comments) + 'comments updated in videos'
+
+    callouts = catalog(portal_type='PlumiCallOut')
+    comments = 0
+    for callout in callouts:
+        obj = callout.getObject()
+        conversation = IConversation(obj)
+        for r in conversation.getThreads():
+            comment_obj = r['comment']
+            commenttool.reindexObject(comment_obj)
+            comments = comments + 1
+    print str(comments) + 'comments updated in callouts'
+
+    news = catalog(portal_type='News Item')
+    comments = 0
+    for news_item in news:
+        obj = news_item.getObject()
+        conversation = IConversation(obj)
+        for r in conversation.getThreads():
+            comment_obj = r['comment']
+            commenttool.reindexObject(comment_obj)
+            comments = comments + 1
+    print str(comments) + 'comments updated in news'
+
+    events = catalog(portal_type='Event')
+    comments = 0
+    for event in events:
+        obj = event.getObject()
+        conversation = IConversation(obj)
+        for r in conversation.getThreads():
+            comment_obj = r['comment']
+            commenttool.reindexObject(comment_obj)
+            comments = comments + 1
+    print str(comments) + 'comments updated in events'
 
 
 def changeWorkflowState(content, state_id, acquire_permissions=False,
