@@ -1,0 +1,82 @@
+# This is the default nginx configuration for the transforming web server.
+# This is responsible for proxying to the load balancer and applying the
+# XSLT transform from the pre-compiled XDV theme. It is optimised for
+# serving Plone.
+#
+# Note that transform.conf is generated from transform.conf.template.
+#
+
+# Process control
+
+user ${users:transform};
+pid ${buildout:directory}/var/transform.pid;
+lock_file ${buildout:directory}/var/transform.lock;
+
+worker_processes 8;
+daemon off;
+
+events {
+    worker_connections 1024;
+}
+
+# Logging
+
+error_log ${buildout:directory}/var/log/transform-error.log warn;
+
+# HTTP server
+
+http {
+    
+    include    ${buildout:directory}/production/nginx/mime.types;
+    
+    server {
+    
+        listen *:${ports:transform};
+        server_name ${hosts:transform};
+        root ${theme:root};
+        access_log off;
+        
+        # Enable gzip compression
+        gzip             on;
+        gzip_min_length  1000;
+        gzip_proxied     any;
+        gzip_types       text/xml text/plain application/xml;
+
+        
+        # Show status information on /_transform-status
+        location = /_transform_status_ {
+            stub_status on;
+            allow 127.0.0.1;
+            deny all;
+        }        
+        
+        # Static files are served from /static
+        
+        location ${theme:absolute-prefix} {
+            autoindex on;
+        }
+        
+        # Hack to support kupu editor
+        
+        location ~ /emptypage$ {
+            rewrite ^/(.*)$ /VirtualHostBase/http/${hosts:main}:${ports:main}/${plone-sites:main}/VirtualHostRoot/$1 break;
+            proxy_pass http://${hosts:balancer}:${ports:balancer};
+        }
+        
+        # Everything else is proxied to the load balancer with virtual hosting
+        
+        location / {
+            rewrite ^/(.*)$ /VirtualHostBase/http/${hosts:main}:${ports:main}/${plone-sites:main}/VirtualHostRoot/$1 break;
+            proxy_pass http://${hosts:balancer}:${ports:balancer};
+            
+            proxy_connect_timeout 75;
+            proxy_read_timeout 185;
+
+            xslt_stylesheet ${theme:output-xslt};
+            xslt_html_parser on;
+            xslt_types text/html;
+
+            proxy_set_header Accept-Encoding '';
+        }
+    }
+}

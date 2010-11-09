@@ -1,8 +1,9 @@
-.. contents::
-	
-Plumi application setup - policy product
+Plumi video sharing system 
 
-- Code repository: https://svn.plone.org/svn/collective/plumi.app/trunk
-- Questions and comments to discuss@lists.plumi.org
-- Report bugs at http://plumi.org/newticket
+ - For more info see http://plumi.org
+ - For installation instructions see INSTALL.txt
+ - For the Plumi Manual visit http://en.flossmanuals.net/bin/view/Plumi
+ - Code repository: https://svn.plone.org/svn/collective/plumi.app/trunk
+ - Questions and comments to discuss@lists.plumi.org
+ - Report bugs at http://plumi.org/newticket
 
