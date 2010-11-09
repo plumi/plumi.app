@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ffmpeg -y -i "$1" -s 640x480 -qscale 5.0 -r 50 -ar 44100 -vcodec libx264 -vpre hq -crf 22 -acodec libfaac -ab 64k -f mp4 "$2"
+qt-faststart "$2" "${2}.fst"
+mv "${2}.fst" "$2"

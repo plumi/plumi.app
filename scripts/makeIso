@@ -1,0 +1,63 @@
+#!/usr/bin/python
+
+import sys, subprocess, datetime, os, urllib
+import feedparser
+
+if len(sys.argv) == 3:
+    input_rss = sys.argv[1]
+    output_iso = sys.argv[2]
+else:
+    print 'too many or too few arguments in makeDvdIso command'
+    sys.exit(1)
+
+try:
+    rss = feedparser.parse(input_rss)
+
+except:
+    print 'cannot open rss feed url'
+
+cmd = [u'tovid', u'disc', u'-pal' , u'-ffmpeg' , u'-menu-length', u'5', u'-noask' , u'-titles-fontsize', u'16' , u'-menu-fontsize', u'36', u'-title-color', u'\'#ff7700\'', u'-stroke', u'black']
+dvd_title = unicode(rss.feed.title + "'s DVD")
+cmd += [u'-menu-title'] 
+cmd += [dvd_title]
+
+files = []
+titles = []
+
+for entry in rss.entries:
+    try:
+	if len(entry.title) > 40:
+	   title = entry.title[:37] + '...'
+	else:
+	   title = entry.title
+        titles.append(title)
+        filepath = entry.link
+        video = urllib.urlretrieve(filepath)
+        files.append(video[0])
+    except:
+        #TODO: log problem
+        pass
+
+cmd += [u'-files'] + files
+cmd += [u'-titles'] + titles
+cmd += [u'-out']
+cmd += [unicode(output_iso[:-4])]
+try:
+    subprocess.call(cmd)
+except:
+    print 'problem when calling tovid command'
+
+try:
+    subprocess.call(["mkisofs", "-o", output_iso, output_iso[:-4]])
+except:
+    print 'problem when calling mkisofs command'
+
+#delete tovid folder
+try:
+    subprocess.call(["rm", "-rf", output_iso[:-4]])
+except:
+    print 'problem when deleting temporary dvd folder'
+    
+#TODO 2: send callback that dvd is ready
+#TODO 3: delete dvd and folder after some time
+

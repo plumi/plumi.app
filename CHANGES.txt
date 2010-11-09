@@ -1,7 +1,10 @@
 4.0 (2010-11-??) [unweb.me]
 ===========================
 
- - deprecate plumi.buildout which was not a proper egg. Now the buildout lives inside plumi.app
+ - deprecate plumi.buildout which was not a proper egg. Now the buildout lives inside plumi.app [dimo]
+ - new production and devel buildout based on Martin Aspeli's uber buildout [dimo]
+ - use varnish instead of squid [dimo]
+ - use haproxy instead of pound [dimo]
 
 
 3.1.1 (2010-10-28) [unweb.me]
