@@ -1,14 +1,18 @@
 <?xml version="1.0"?>
 <object>
  <default_language value="en"/>
- <use_path_negotiation value="False"/>
- <use_cookie_negotiation value="False"/>
- <use_request_negotiation value="False"/>
+ <use_path_negotiation value="True"/>
+ <use_cookie_negotiation value="True"/>
+ <use_request_negotiation value="True"/>
  <use_cctld_negotiation value="False"/>
+ <use_content_negotiation value="True"/>
  <use_combined_language_codes value="True"/>
- <display_flags value="False"/>
+ <display_flags value="True"/>
  <start_neutral value="True"/>
+ <use_subdomain_negotiation value="False"/>
+ <authenticated_users_only value="False"/>
  <supported_langs>
   <element value="en"/>
+  <element value="id"/>
  </supported_langs>
 </object>

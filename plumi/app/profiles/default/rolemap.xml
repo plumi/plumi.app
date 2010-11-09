@@ -24,12 +24,6 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
-    <permission name="ATContentTypes: Add Favorite"
-                acquire="True">
-      <role name="Contributor"/>
-      <role name="Manager"/>
-      <role name="Owner"/>
-    </permission>
     <permission name="ATContentTypes: Add File"
                 acquire="True">
       <role name="Contributor"/>

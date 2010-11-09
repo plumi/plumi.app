@@ -4,7 +4,6 @@
 from zope.interface import providedBy, Interface
 from zope.annotation.interfaces import IAnnotations
 from Acquisition import aq_inner
-from Products.CMFPlone.CatalogTool import registerIndexableAttribute
 from Products.CMFCore.utils import getToolByName
 from plumi.content.interfaces import IPlumiVideo
 import logging
@@ -134,9 +133,3 @@ def videoDuration(object,**kw):
 
     logger.debug(' videoDuration returning %s  ' % (duration))
     return duration
-
-#
-# Register these indexable attributes
-#registerIndexableAttribute('hasImageAndCaption', hasImageAndCaption)
-#registerIndexableAttribute('isTranscodedPlumiVideoObj', isTranscodedPlumiVideoObj)
-#registerIndexableAttribute('isPublishablePlumiVideoObj', isPublishablePlumiVideoObj)

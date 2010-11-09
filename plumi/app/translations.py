@@ -1,12 +1,15 @@
 from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
-from zope.i18n import ITranslationDomain
+from zope.i18n.translationdomain import TranslationDomain
+
+#from zope.i18n import ITranslationDomain
 
 def createTranslations(portal,canon,domain='plumi'):
     """Creates translations of 'canon' into all available languages in 'domain'"""
     parent = canon.getParentNode()
     wftool = getToolByName(portal,'portal_workflow')
-    transDomain = getUtility(ITranslationDomain, domain)
+    transDomain = TranslationDomain(domain)
+#    transDomain = getUtility(ITranslationDomain, domain)
     availLanguages = transDomain.getCatalogsInfo()
     langs = []
     for lang in availLanguages.keys():
