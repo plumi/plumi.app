@@ -3,3 +3,8 @@ syntax: glob
 
 plumi.app.egg-info
 *.pyc
+eggs
+develop-eggs
+bin
+parts
+.mr.developer.cfg
