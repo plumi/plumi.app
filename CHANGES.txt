@@ -1,54 +1,96 @@
-0.11 (2010-10-23)
-=================
+4.0 (2010-11-??) [unweb.me]
+===========================
 
- - Release for Plumi 3.1.1 rc2 [Dimitris Moraitis]
+ - deprecate plumi.buildout which was not a proper egg. Now the buildout lives inside plumi.app
 
-0.10 (2010-10-21)
-=================
 
- - Release for Plumi 3.1.1 rc1 [Dimitris Moraitis]
+3.1.1 (2010-10-28) [unweb.me]
+=============================
+Plumi 3.1.1 final release
 
-0.9 (2010-10-09)
+Added delete support for transcoded files, improved embed code and more.
+
+For a full list of closed tickets check http://plumi.org/query?status=closed&group=resolution&milestone=3.1.1
+
+3.1 (2010-08-10) [unweb.me]
+===========================
+Plumi 3.1 final release
+
+ - replaced custom transcode integration code with collective.transcode.star [dimo]
+
+For a full list of closed tickets check http://plumi.org/query?status=closed&group=resolution&milestone=3.1
+
+3.0 (2010-05-18)
 ================
+Plumi 3.0 final release
 
- - Release for Plumi 3.1.1 beta [Dimitris Moraitis]
+For a full list of closed tickets check http://plumi.org/query?status=closed&group=resolution&milestone=3.0-Final
 
-0.8 (2010-08-09)
-================
+Plumi 3.0 has been made possible thanks to the work of 
+ - Engagemedia (http://engagemedia.org)
+ - Unweb.me (https://unweb.me)
+ - Infinite Recursion (http://www.infiniterecursion.com.au) 
+ - and others. See CONTRIBUTORS.txt
 
-  - Release for Plumi 3.1 final [Dimitris Moraitis]
 
-0.7 (2010-08-01)
-================
+3.0-rc3 (2010-04-14)
+====================
 
-  - Release for Plumi 3.1 beta1 [Dimitris Moraitis]
+ - an rc2 packaging error was fixed
 
-0.6 (2010-04-27)
-================
 
-  - Release for Plumi 3.0 final [Dimitris Moraitis]
+3.0-rc2 (2010-04-12)
+====================
 
-0.5 (2010-04-13)
-================
+For a full list of closed tickets check http://plumi.org/query?status=closed&group=resolution&milestone=3.0-RC2
 
-  - Release for Plumi 3.0-rc3 [Dimitris Moraitis]
+3.0-rc1 (2010-03-25)
+====================
+First Release Candidate for Plumi 3.0
 
-0.4 (2010-03-25)
-================
+Done collectively by Unweb.me (https://unweb.me), Engagemedia (http://engagemedia.org), Infinite Recursion (http://www.infiniterecursion.com.au) and others. See AUTHORS.txt
 
-  - Release for Plumi 3.0-rc1 [Dimitris Moraitis]
+For changes in rc1, see http://plumi.org/query?status=closed&group=resolution&order=priority&milestone=3.0-RC1&resolution=fixed
 
-0.3 (2010-02-18)
-================
 
-  - Uploaded to PyPI - for Plumi 3.0 beta 2 [Andy Nicholson]
+3.0-beta2 (2010-02-23) [Mike - unweb.me]
+=======================================
 
-0.2 (2009-09-03)
-==================
+Beta 2 includes lot of changes, including the use of collective.transcode.daemon for video transcoding.
 
-  - Release for Plumi 3.0 beta 1 [Andy Nicholson]
+For a full list of closed tickets check out:
+ - http://plumi.org/query?status=closed&group=resolution&order=priority&milestone=3.0-beta2&resolution=fixed
 
-0.1 (2009-07-24)
-================
+Also, at the 3rd of November 2009, David Bain (pigeonflight) did the following in plumi.buildout:
+ - updated buildout_plone331.cfg,
+ - removed reference to the 'plone' part which was still using the 3.1.7 plone.recipe
+ - pinned zope.component to 3.5.1
+ - changed MarkDown to be pinned to 2.0.3
+ - added pytz,ZConfig and zope.browsermenu  to the additional-fake-eggs
+ - pinned zope.app.authentication to 3.6.0
+ - pinned zope.publisher to 3.5.6
+ - added http://dist.repoze.org/ to find-links to support PIL
 
-  - Initial Release for Plumi 3.0 alpha 1 release [Andy Nicholson]
+
+3.0-beta1 (2009-09-04) [Erko, Sydney]
+=====================================
+First beta release of Plumi 3.0 , targetted at Plone 3.2.3
+
+Includes migration code to move from Plumi 0.2.x via members/content exporting
+into a Plumi 3.0 site
+
+3.0-alpha2 (2009-08-03) [Chippo, Sydney]
+========================================
+
+Second alpha release of Plumi 3.0 , targetted at Plone 3.2.3
+
+NOTE: The version number of Plumi has changed!!
+See : http://blog.plumi.org/2009/07/23/new-version-numbering-system/
+
+
+0.3-alpha1 (2009-07-24) [Bondi, Sydney]
+========================================
+
+Initial release of Plumi 0.3, targetted at Plone 3.2.3 
+
+Previous Plumi 0.2.x history -- http://dev.plone.org/old/collective/browser/Plumi/branches/plumi-0.2.x/CHANGELOG.txt
