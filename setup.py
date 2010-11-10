@@ -46,12 +46,14 @@ setup(name='plumi.app',
           'plumi.skin',
           'collective.transcode.star',
           'collective.contentlicensing',
+          'collective.sharerizer',
+          'qi.portlet.TagClouds',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
       # -*- Entry points: -*-
+
       [z3c.autoinclude.plugin]
       target = plone
-
       """,
       )
