@@ -44,6 +44,8 @@ setup(name='plumi.app',
           'setuptools',
           'plumi.content',
           'plumi.skin',
+          'collective.transcode.star',
+          'collective.contentlicensing',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

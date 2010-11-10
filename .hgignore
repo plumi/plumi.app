@@ -7,4 +7,7 @@ eggs
 develop-eggs
 bin
 parts
+var
 .mr.developer.cfg
+.installed.cfg
+

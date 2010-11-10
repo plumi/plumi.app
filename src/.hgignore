@@ -1,0 +1,8 @@
+# use glob syntax.
+syntax: glob
+
+*.pyc
+collective.*
+plumi.content
+plumi.skin
+plumi.locales
