@@ -56,3 +56,16 @@
      def __init__(self, name):
          self.name = name
      def __call__(self, value, *args, **kwargs):
+--- Products/ATCountryWidget/skins/ATCountryWidget/country_widgets/country.pt	2010-11-10 16:21:42.157667533 +0200
++++ Products/ATCountryWidget/skins/ATCountryWidget/country_widgets/country.pt	2010-11-10 17:52:42.733670342 +0200
+@@ -19,8 +19,7 @@
+           <metal:fill fill-slot="widget_body"
+ 		    tal:define="vocab python:field.Vocabulary(here);">
+             <select tal:attributes="name fieldName;
+-                                    id fieldName;
+-                                    tabindex tabindex/next;">
++                                    id fieldName;">
+               <option tal:condition="widget/provideNullValue" value="" tal:content="widget/nullValueTitle" i18n:translate=""/>
+               <optgroup tal:repeat="area python: here.portal_countryutils.listAreas(omit=widget.omitCountries)"
+                         tal:attributes="label area/name"
+
