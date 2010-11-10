@@ -5,6 +5,10 @@
  - new production and devel buildout based on Martin Aspeli's uber buildout [dimo]
  - use varnish instead of squid [dimo]
  - use haproxy instead of pound [dimo]
+ - move install code to setuphandlers.py & cleanup [dimo]
+ - patch ATCountryWidget to be plone4 compatible [clopy]
+ - use qi.portlet.TagCloud instead of Vaporisation [dimo]
+ - remove dependency on plonebookmarklets [dimo]
 
 
 3.1.1 (2010-10-28) [unweb.me]

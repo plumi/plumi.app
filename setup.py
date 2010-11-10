@@ -49,6 +49,7 @@ setup(name='plumi.app',
           'collective.sharerizer',
           'qi.portlet.TagClouds',
           'Products.LinguaPlone',
+          'plone.contentratings',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
