@@ -9,9 +9,9 @@
   <!-- Generic Setup Profile -->
   <genericsetup:registerProfile
         name="default"
-        title="Plumi application setup"
+        title="Plumi"
         directory="profiles/default"
-        description="The default settings of Plumi portals"
+        description="Video sharing"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
