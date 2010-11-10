@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="plumi.app.various"
+               version="20101110-01"
+               handler="plumi.app.setuphandlers.setupVarious"
+               title="Plumi: miscellaneous import steps">
+    <dependency step="structure" />
+  </import-step>
+</import-steps>

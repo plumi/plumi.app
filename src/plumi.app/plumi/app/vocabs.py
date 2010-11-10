@@ -3,7 +3,12 @@ _ = MessageFactory("plumi")
 
 vocab_set = {}
 
-taxonomy_sub_folder={'topic':'video_categories','genre':'video_genre','callouts':'submission_categories','countries':''}
+taxonomy_sub_folder={'topic':'video_categories','genre':'video_genre','callouts':'submission_categories','countries':'video_countries'}
+
+vocab_set['video_countries'] = (
+         ('ID', _(u'Indonesia')),
+         ('AU', _(u'Australia')),
+        )
 
 vocab_set['video_categories'] = (
          ('poverty', _(u'Poverty / Development')),

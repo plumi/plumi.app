@@ -15,6 +15,16 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+  <!-- Generic Setup Profile -->
+  <genericsetup:registerProfile
+        name="uninstall"
+        title="Plumi uninstall"
+        directory="profiles/uninstall"
+        description="Video sharing"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+
   <!-- Register the upgrade steps -->
   <genericsetup:upgradeStep
       title="Plumi 3.0 to 3.1"

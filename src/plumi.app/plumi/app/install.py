@@ -1,13 +1,11 @@
 import logging
 from zope.app.component.interfaces import ISite
-from plone.app.controlpanel.security import ISecuritySchema
 
 from plumi.app.vocabs  import vocab_set as vocabs
 from plumi.app.config import TOPLEVEL_TAXONOMY_FOLDER , GENRE_FOLDER, CATEGORIES_FOLDER, COUNTRIES_FOLDER, SUBMISSIONS_FOLDER, SE_ASIA_COUNTRIES
 
 #imports from old style plone 'Products' namespace
 from Products.CMFCore.utils import getToolByName
-from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
 from Products.ATCountryWidget.CountryTool import CountryUtils, Country
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.Five.component import enableSite
@@ -19,7 +17,6 @@ from zope.app.container.interfaces import INameChooser
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
 from plone.portlet.collection.collection import Assignment
-from plone.registry.interfaces import IRegistry
 from plone.app.discussion.interfaces import ICommentingTool
 from plone.app.discussion.interfaces import IConversation
 
@@ -66,231 +63,16 @@ def app_installation_tasks(self, reinstall=False):
     if not ISite.providedBy(portal):
         enableSite(portal)
 
-
-    #turn on RSS site wide
-    portal_syn = getToolByName(portal,'portal_syndication',None)
-    try:
-        portal_syn.enableSyndication(portal) 
-    except:
-        #throws exceptions if already enabled!
-            pass
-        
-    # turn it on in default_member_content
-    # need to loop over all folders inside this folder
-    default_member_content = getattr(portal,'default_member_content',None)
-    for thing in default_member_content.objectValues():
-        try:
-                portal_syn.enableSyndication(thing) 
-        except:
-        	#throws exceptions if already enabled!
-        	pass
-
-    #set default homepage 
-    portal.setLayout('featured_videos_homepage')
-
-    #
-    #site security setup!
-    #
-    secSchema = ISecuritySchema(portal)
-    secSchema.set_enable_self_reg(True)
-    secSchema.set_enable_user_pwd_choice(True)
-    secSchema.set_enable_user_folders(True)
+    setupRSS(portal, logger)
+    setupCollections(portal, logger)
+    setupDocuments(portal, reinstall, logger)
 
 
-    #
-    #ATVocabManager setup
-    #
-    logger.info('Starting ATVocabManager configuration ')
-    atvm = getToolByName(portal, ATVOCABULARYTOOL)
+def setupDocuments(self, reinstall, logger):
+    
     wftool = getToolByName(self,'portal_workflow')
-     
-    for vkey in vocabs.keys():
-        # create vocabulary if it doesnt exist:
-        vocabname = vkey
-        if atvm.getVocabularyByName(vocabname):
-            atvm.manage_delObjects(vocabname)
-        logger.debug("adding vocabulary %s" % vocabname)
-        atvm.invokeFactory('SimpleVocabulary', vocabname)
-
-        vocab = atvm[vocabname]
-
-        #delete the 'default' item
-        if hasattr(vocab, 'default'):
-            vocab.manage_delObjects(['default'])
-     
-        for (ikey, value) in vocabs [vkey]:
-            if not hasattr(vocab, ikey):
-                vocab.invokeFactory('SimpleVocabularyTerm', ikey)
-                logger.debug("adding vocabulary item %s %s" % (ikey,value))
-                vocab[ikey].setTitle(value)
-
-        #reindex
-        vocab.reindexObject()
-
-   
-
-    #
-    # Collections for display 
-    # latestvideos / featured-videos / news-and-events
-    #
-
     
-    #The front page, @@featured_videos_homepage, contains
-    #links to 'featured-videos' which is a smart folder containing
-    #all the videos with keyword 'featured' and 'lastestvideos'
-    #which is a smart folder of the latest videos. this method will
-    #simply install them.
-
-    # Items to deploy on install.
-    items = (dict(id      = 'featured-videos',
-                  title   = _(u'Featured Videos'),
-                  desc    = _(u'Videos featured by the editorial team.'),
-                  layout  = "video_listing_view",
-                  exclude = True),
-
-             dict(id      = 'latestvideos',
-                  title   = _(u'Latest Videos'),
-                  desc    = _(u'Latest videos contributed by the users.'),
-                  layout  = "video_listing_view",
-                  exclude = False),
-
-             dict(id      = 'news_and_events',
-                  title   = _(u'News and Events'),
-                  desc    = _(u'Latest news and events on the site.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'callouts',
-                  title   = _(u'Callouts'),
-                  desc    = _(u'Latest callouts.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'recent_comments',
-                  title   = _(u'Recent Comments'),
-                  desc    = _(u'Recent comments.'),
-                  layout  = "folder_listing",
-                  exclude = True),
-
-            )
-
-    # Items creation
-    for item in items:
-        try:
-            canon = getattr(self, item['id'])
-            deleteTranslations(canon)
-            self.manage_delObjects([item['id']])
-        except:
-            ## This is nasty to silence it all
-            pass
-
-        # We create the element
-        self.invokeFactory('Topic',
-                           id = item['id'],
-                           title = item['title'],
-                           description = item['desc'].translate({}))
-
-        fv = getattr(self, item['id'])
- 
-
-        # We change its ownership and wf status
-        publishObject(wftool, fv)
-
-        # Filter results to ATEngageVideo
-        # Have to use the name of the Title (and ATEngageVideo will be 
-        #    re-named by configATEngageVideo to Video!)
-        # this will actually use ALL objects with title 'Video', which 
-        #    means atm, ATEngageVideo and ATVideo
-        type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
-        if item['id'] is 'news_and_events':
-            type_criterion.setValue( ("News Item","Event") )
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")          
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            newsCollectionPortlet = Assignment(header=u"News",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=True)
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-
-            saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
-        elif item['id'] is 'callouts':
-            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
-            # Set date reference to now
-            date_crit.setValue(0)
-            # Only take events in the past
-            date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('more')
-            type_criterion.setValue( ("Plumi Call Out") )        
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            calloutsCollectionPortlet = Assignment(header=u"Callouts",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=False)
-          
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('callouts'):    
-                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
-        elif item['id'] is 'recent_comments':
-            type_criterion.setValue( ("Comment") )
-            sort_crit = fv.addCriterion('created',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            commentsCollectionPortlet = Assignment(header=u"Recent Comments",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.recent_comments)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=True)
-          
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('recent-comments'):
-                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
-        else:
-            type_criterion.setValue("Video")
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-
-        sort_crit.setReversed(True)
-
-        ## add criteria for showing only published videos
-        state_crit = fv.addCriterion('review_state', 'ATListCriterion')
-        if item['id'] is 'featured-videos':
-            state_crit.setValue(['featured'])
-        else:
-            state_crit.setValue(['published','featured'])
-
-        if item['exclude'] is True:
-            fv.setExcludeFromNav(True)
-
-        if item['layout'] is not None:
-            fv.setLayout(item['layout'])
-
-        fv.reindexObject()
-
-#        createTranslations(self,fv)
-
-    #
-    #
     #create top level documents if they do not exist
-    #    
     try:
         about = getattr(self, 'about-us')
     except:
@@ -329,10 +111,6 @@ def app_installation_tasks(self, reinstall=False):
 
     #Avoid doing all the following when reinstalling
     if not reinstall:
-
-
-        #
-        #
         # Taxonomy - smart folder hierarchy setup - genres/categories/countries/ 
         #    for videos we automatically [RE]create collections , hierarchically, 
         #    for all available vocabulary items
@@ -442,23 +220,15 @@ def app_installation_tasks(self, reinstall=False):
         #
        
         #Countries
-        #get the countries from the countrytool!
-        # nb: this means that the setup method for the countries should be called BEFORE
-        # this one
+        #get the countries from the country vocab!
 
-        countrytool = getToolByName(self,CountryUtils.id)
-        cdict = list()
         taxonomy_fldr.invokeFactory('Folder',id=COUNTRIES_FOLDER,
                                     title=_(u'Countries'))
         countries_fldr = getattr(taxonomy_fldr,COUNTRIES_FOLDER,None)
         publishObject(wftool,countries_fldr)
         createTranslations(self,countries_fldr)
 
-        for area in countrytool._area_list:
-            for country in area.countries:
-                cdict.append([country.isocc,country.name])
-
-        for country in cdict:
+        for country in vocabs['video_countries']:
             new_smart_fldr_id = country[0]
 
             # maybe it already exists?
@@ -531,9 +301,6 @@ def app_installation_tasks(self, reinstall=False):
             fldr.setLayout(layout_name)
             publishObject(wftool,fldr)
             createTranslations(self,fldr)
-
-            registry = getUtility(IRegistry)
-            registry['collective.transcode.star.interfaces.ITranscodeSettings.portal_types'] = (u'PlumiVideo:video_file',)
 
 
 def plumi30to31(context, logger=None):
@@ -731,3 +498,185 @@ def changeWorkflowState(content, state_id, acquire_permissions=False,
     # Map changes to the catalogs
     content.reindexObject(idxs=['allowedRolesAndUsers', 'review_state'])
     return
+
+def setupRSS(portal, logger):
+    #turn on RSS site wide
+    portal_syn = getToolByName(portal,'portal_syndication',None)
+    try:
+        portal_syn.enableSyndication(portal)
+    except Exception, e:
+        #throws exceptdions if already enabled!
+        pass
+
+    # turn it on in default_member_content
+    # need to loop over all folders inside this folder
+    default_member_content = getattr(portal,'default_member_content',None)
+    for thing in default_member_content.objectValues():
+        try:
+            portal_syn.enableSyndication(thing)
+        except:
+            #throws exceptions if already enabled!
+            pass
+
+def setupCollections(portal, logger):
+    """
+       Collections for display 
+       latestvideos / featured-videos / news-and-events
+    """
+
+    wftool = getToolByName(portal,'portal_workflow')
+
+    #The front page, @@featured_videos_homepage, contains
+    #links to 'featured-videos' which is a smart folder containing
+    #all the videos with keyword 'featured' and 'lastestvideos'
+    #which is a smart folder of the latest videos. this method will
+    #simply install them.
+
+    # Items to deploy on install.
+    items = (dict(id      = 'featured-videos',
+                  title   = _(u'Featured Videos'),
+                  desc    = _(u'Videos featured by the editorial team.'),
+                  layout  = "video_listing_view",
+                  exclude = True),
+
+             dict(id      = 'latestvideos',
+                  title   = _(u'Latest Videos'),
+                  desc    = _(u'Latest videos contributed by the users.'),
+                  layout  = "video_listing_view",
+                  exclude = False),
+
+             dict(id      = 'news_and_events',
+                  title   = _(u'News and Events'),
+                  desc    = _(u'Latest news and events on the site.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
+             dict(id      = 'callouts',
+                  title   = _(u'Callouts'),
+                  desc    = _(u'Latest callouts.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
+             dict(id      = 'recent_comments',
+                  title   = _(u'Recent Comments'),
+                  desc    = _(u'Recent comments.'),
+                  layout  = "folder_listing",
+                  exclude = True),
+
+            )
+
+    # Items creation
+    for item in items:
+        try:
+            canon = getattr(portal, item['id'])
+            deleteTranslations(canon)
+            portal.manage_delObjects([item['id']])
+        except:
+            ## This is nasty to silence it all
+            pass
+
+        # We create the element
+        portal.invokeFactory('Topic',
+                           id = item['id'],
+                           title = item['title'],
+                           description = item['desc'].translate({}))
+
+        fv = getattr(portal, item['id'])
+ 
+
+        # We change its ownership and wf status
+        publishObject(wftool, fv)
+
+        # Filter results to ATEngageVideo
+        # Have to use the name of the Title (and ATEngageVideo will be 
+        #    re-named by configATEngageVideo to Video!)
+        # this will actually use ALL objects with title 'Video', which 
+        #    means atm, ATEngageVideo and ATVideo
+        type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
+        if item['id'] is 'news_and_events':
+            type_criterion.setValue( ("News Item","Event") )
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")          
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            newsCollectionPortlet = Assignment(header=u"News",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=True)
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+
+            saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
+        elif item['id'] is 'callouts':
+            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            # Only take events in the past
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('more')
+            type_criterion.setValue( ("Plumi Call Out") )        
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            calloutsCollectionPortlet = Assignment(header=u"Callouts",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=False)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('callouts'):    
+                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+        elif item['id'] is 'recent_comments':
+            type_criterion.setValue( ("Comment") )
+            sort_crit = fv.addCriterion('created',"ATSortCriterion")
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            commentsCollectionPortlet = Assignment(header=u"Recent Comments",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.recent_comments)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=True)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('recent-comments'):
+                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
+        else:
+            type_criterion.setValue("Video")
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+
+        sort_crit.setReversed(True)
+
+        ## add criteria for showing only published videos
+        state_crit = fv.addCriterion('review_state', 'ATListCriterion')
+        if item['id'] is 'featured-videos':
+            state_crit.setValue(['featured'])
+        else:
+            state_crit.setValue(['published','featured'])
+
+        if item['exclude'] is True:
+            fv.setExcludeFromNav(True)
+
+        if item['layout'] is not None:
+            fv.setLayout(item['layout'])
+
+        fv.reindexObject()
+
+#        createTranslations(portal,fv)
+
+    #
+

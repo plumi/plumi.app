@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="plumi.app.uninstall"
+               version="20101110-01"
+               handler="plumi.app.setuphandlers.uninstall"
+               title="Plumi: uninstall profile">
+  </import-step>
+</import-steps>
