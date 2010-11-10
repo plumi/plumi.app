@@ -1,0 +1,58 @@
+--- Products/ATCountryWidget/CountryTool.py	2010-11-10 16:21:42.149667704 +0200
++++ Products/ATCountryWidget/CountryTool.py	2010-11-10 16:37:42.093671764 +0200
+@@ -30,7 +30,7 @@
+         self.name = name
+ 
+     def __eq__(self, other):
+-        if not ICountry.isImplementedBy(other):
++        if not ICountry.implementedBy(other):
+             return False
+         return other.isocc == self.isocc
+     
+@@ -59,7 +59,7 @@
+         self.countries = []
+        
+     def __cmp__(self, other):
+-        if not IArea.isImplementedBy(other):
++        if not IArea.implementedBy(other):
+             return -1
+         return cmp(self.name, other.name)
+         
+@@ -67,7 +67,7 @@
+         return self.name
+ 
+     def addCountry(self, country):
+-        if ICountry.isImplementedBy(country):
++        if ICountry.implementedBy(country):
+             self.countries.append(country)
+         else:
+             raise TypeError, 'Parameter country is not implementing ICountry.'
+--- Products/ATCountryWidget/Interfaces.py	2010-11-10 16:21:42.145685286 +0200
++++ Products/ATCountryWidget/Interfaces.py	2010-11-10 16:36:48.217667334 +0200
+@@ -2,7 +2,7 @@
+ # See also LICENSE.txt
+ # $Id: Interfaces.py 29254 2009-02-21 19:14:24Z ctheune $
+ 
+-from Interface import Interface, Attribute
++from zope.interface import Interface, Attribute
+ 
+ class ICountry(Interface):
+     """represens a country"""
+--- Products/ATCountryWidget/validators.py	2010-11-10 16:21:42.145685286 +0200
++++ Products/ATCountryWidget/validators.py	2010-11-10 16:37:14.949665896 +0200
+@@ -4,13 +4,14 @@
+ 
+ from Products.validation.interfaces.IValidator import IValidator
+ from config import COUNTRIES
++from zope.interface import implements
+ import re
+ 
+ class CountryValidator:
+     """country validator, checks if given value is in list
+     of valid iso country codes.
+     """
+-    __implements__ = (IValidator,)
++    implements(IValidator)
+     def __init__(self, name):
+         self.name = name
+     def __call__(self, value, *args, **kwargs):
