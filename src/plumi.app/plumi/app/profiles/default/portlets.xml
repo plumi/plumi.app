@@ -27,7 +27,7 @@
     <assignment manager="plone.leftcolumn"
                 category="context"
                 key="/"
-                type="vaporisation.tagcloud"
+                type="qi.portlet.TagClouds.TagCloudPortlet"
                 name="tagcloud"
      />
      
