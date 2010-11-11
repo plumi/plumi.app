@@ -6,7 +6,6 @@ from plumi.app.config import TOPLEVEL_TAXONOMY_FOLDER , GENRE_FOLDER, CATEGORIES
 
 #imports from old style plone 'Products' namespace
 from Products.CMFCore.utils import getToolByName
-from Products.ATCountryWidget.CountryTool import CountryUtils, Country
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.Five.component import enableSite
 from Products.CMFPlone.interfaces import IPropertiesTool
