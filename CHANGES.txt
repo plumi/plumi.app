@@ -9,6 +9,8 @@
  - patch ATCountryWidget to be plone4 compatible [clopy]
  - use qi.portlet.TagCloud instead of Vaporisation [dimo]
  - remove dependency on plonebookmarklets [dimo]
+ - remove dependency on ATCountryWidget [dimo]
+ - build ffmpeg and qt-faststart using buildout [dimo]
 
 
 3.1.1 (2010-10-28) [unweb.me]
