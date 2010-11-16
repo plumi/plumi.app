@@ -56,7 +56,6 @@
   <resource id="collection" mode="whitelist">
     <type>Topic</type>
     <type>Folder</type>
-    <type>Large Plone Folder</type>
     <type>Plone Site</type>
   </resource>
   <resource id="containsanchors" mode="blacklist">
@@ -81,7 +80,6 @@
     <type>File</type>
     <type>Folder</type>
     <type>Image</type>
-    <type>Large Plone Folder</type>
     <type>Link</type>
     <type>PressClip</type>
     <type>PressContact</type>
