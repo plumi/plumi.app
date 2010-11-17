@@ -16,6 +16,7 @@
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
+ <permission>Modify view template</permission>
  <permission>View</permission>
 
  <state state_id="pending" title="Pending review" i18n:attributes="title">
@@ -40,6 +41,10 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify view template"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
@@ -71,6 +76,10 @@
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
   </permission-map>
+  <permission-map name="Modify view template"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -99,6 +108,10 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
+  <permission-map name="Modify view template"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
@@ -117,6 +130,10 @@
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Modify view template"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -139,6 +156,10 @@
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Modify view template"
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -169,6 +190,10 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
+  </permission-map>
+  <permission-map name="Modify view template"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
