@@ -1,16 +1,19 @@
 4.0 (2010-11-??) [unweb.me]
 ===========================
 
+ - remove and replace deprecated code and rebase on Plone 4 [clopy]
  - deprecate plumi.buildout which was not a proper egg. Now the buildout lives inside plumi.app [dimo]
  - new production and devel buildout based on Martin Aspeli's uber buildout [dimo]
  - use varnish instead of squid [dimo]
  - use haproxy instead of pound [dimo]
  - move install code to setuphandlers.py & cleanup [dimo]
- - patch ATCountryWidget to be plone4 compatible [clopy]
- - use qi.portlet.TagCloud instead of Vaporisation [dimo]
- - remove dependency on plonebookmarklets [dimo]
+ - move parts of the install code to GenericSetup [clopy]
+ - use qi.portlet.TagCloud instead of Vaporisation [dimo,clopy]
+ - remove dependency on plonebookmarklets [dimo,clopy]
  - remove dependency on ATCountryWidget [dimo]
  - build ffmpeg and qt-faststart using buildout [dimo]
+ - Remove ability for ordinary users to change video view [clopy]
+
 
 
 3.1.1 (2010-10-28) [unweb.me]
