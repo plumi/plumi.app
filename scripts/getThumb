@@ -1,3 +1,6 @@
 #!/bin/sh
+pwd
+echo `pwd`
+PATH=.:./bin::$PATH
 sleep 2
 ffmpeg -i "$1" -f image2 -ss 4 -vframes 1 -s 320x270 "$2"

@@ -44,15 +44,6 @@ def initialize(context):
     # this is called at Zope instance startup, ie not installation.
     logger.debug('ending  initialize')
 
-def publishObject(wftool,obj):
-    logger=logging.getLogger('plumi.app')
-    try:
-        logger.info('publishing %s ' % obj)
-        wftool.doActionFor(obj,action='publish')
-    except WorkflowException:
-        logger.error('caught workflow exception!') 
-        pass
-
 def app_installation_tasks(self, reinstall=False):
     """Custom Plumi setup code"""
     logger=logging.getLogger('plumi.app')
@@ -66,6 +57,14 @@ def app_installation_tasks(self, reinstall=False):
     setupCollections(portal, logger)
     setupDocuments(portal, reinstall, logger)
 
+def publishObject(wftool,obj):
+    logger=logging.getLogger('plumi.app')
+    try:
+        logger.info('publishing %s ' % obj)
+        wftool.doActionFor(obj,action='publish')
+    except WorkflowException:
+        logger.error('caught workflow exception!') 
+        pass
 
 def setupDocuments(self, reinstall, logger):
     
@@ -676,6 +675,4 @@ def setupCollections(portal, logger):
         fv.reindexObject()
 
 #        createTranslations(portal,fv)
-
-    #
 

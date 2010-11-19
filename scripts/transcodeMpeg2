@@ -1,5 +1,5 @@
 #!/bin/sh
-
+PATH=../bin:../../bin:$PATH
 #ffmpeg -i "$1" -target pal-dvd "$2"
 stringOut="$2"
 tovid mpg -pal -ffmpeg -dvd -force -overwrite -noask -in "$1" -out ${stringOut%.*}
