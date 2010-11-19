@@ -9,6 +9,5 @@
     <dependency>profile-collective.contentlicensing:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plumi.content:default</dependency>
-    <dependency>profile-plumi.skin:default</dependency>
   </dependencies>
 </metadata>

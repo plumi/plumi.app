@@ -7,7 +7,6 @@ from zope.component import getUtility
 from plumi.app.vocabs  import vocab_set as vocabs
 from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
 
-
 def setupHome(portal, out):
     """
         set default homepage 
@@ -60,7 +59,6 @@ def setupVocabs(portal, logger):
 
         #reindex
         vocab.reindexObject()
-
 
 def setupVarious(context):
 

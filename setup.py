@@ -43,7 +43,6 @@ setup(name='plumi.app',
       install_requires=[
           'setuptools',
           'plumi.content',
-          'plumi.skin',
           'collective.transcode.star',
           'collective.contentlicensing',
           'collective.sharerizer',

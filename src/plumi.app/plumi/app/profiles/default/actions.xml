@@ -379,62 +379,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="about-us" meta_type="CMF Action">
-   <property name="title">About us</property>
-   <property name="description"></property>
-   <property name="url_expr">string:${portal_url}/about-us</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:1</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="contact-info" meta_type="CMF Action">
-   <property name="title">Contact</property>
-   <property name="description"></property>
-   <property name="url_expr">string:${portal_url}/contact-info</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:1</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="help-and-tutorials" meta_type="CMF Action">
-   <property name="title">Help</property>
-   <property name="description"></property>
-   <property
-      name="url_expr">string:${portal_url}/help-and-tutorials</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:1</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="support-us" meta_type="CMF Action">
-   <property name="title">Support Us</property>
-   <property name="description"></property>
-   <property name="url_expr">string:${portal_url}/support-us</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:1</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="get-involved" meta_type="CMF Action">
-   <property name="title">Get Involved</property>
-   <property name="description"></property>
-   <property name="url_expr">string:${portal_url}/get-involved</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:1</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
  </object>
  <object name="user" meta_type="CMF Action Category">
   <property name="title"></property>

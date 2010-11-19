@@ -48,7 +48,6 @@
 
   <include package=".policy" />
 
-  <include package="plumi.skin" />
   <include package="plumi.content" />
 
   <adapter

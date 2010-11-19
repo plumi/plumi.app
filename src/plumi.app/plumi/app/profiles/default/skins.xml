@@ -2,11 +2,5 @@
 <object name="portal_skins" meta_type="Plone Skins Tool" allow_any="False"
    cookie_persistence="False" 
    request_varname="plone_skin"
-   default_skin="Plumi 3.0 Skin">
-    <!-- Setting the default skin here
-        default_skin="Plumi 3.0 Skin"
-	or, for the default plone.
-   	default_skin="Plone Default">
-        The skin definition itself is inside plumi.skin egg -->
-
+   default_skin="Sunburst Theme">
 </object>

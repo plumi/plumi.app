@@ -47,12 +47,11 @@ def initialize(context):
 def app_installation_tasks(self, reinstall=False):
     """Custom Plumi setup code"""
     logger=logging.getLogger('plumi.app')
-
     logger.info('starting app_installation_tasks. self is %s' %self)
     portal=getToolByName(self,'portal_url').getPortalObject()
     if not ISite.providedBy(portal):
         enableSite(portal)
-
+    
     setupRSS(portal, logger)
     setupCollections(portal, logger)
     setupDocuments(portal, reinstall, logger)
@@ -66,46 +65,10 @@ def publishObject(wftool,obj):
         logger.error('caught workflow exception!') 
         pass
 
+
 def setupDocuments(self, reinstall, logger):
     
     wftool = getToolByName(self,'portal_workflow')
-    
-    #create top level documents if they do not exist
-    try:
-        about = getattr(self, 'about-us')
-    except:
-        # We create the element
-        self.invokeFactory('Document',
-                           id = 'about-us',
-                           title = 'About Us',
-                           description = 'This is a generic Plumi install. The About Us text hasnt been modified.')
-
-    try:
-        about = getattr(self, 'help-and-tutorials')
-    except:
-        # We create the element
-        self.invokeFactory('Document',
-                           id = 'help-and-tutorials',
-                           title = 'Help and Tutorials',
-                           description = 'For help with Plumi see http://plumi.org/wiki/Documentation')
-
-    try:
-        about = getattr(self, 'editorial-policy')
-    except:
-        # We create the element
-        self.invokeFactory('Document',
-                           id = 'editorial-policy',
-                           title = 'Editorial Policy',
-                           description = 'This is an generic Plumi install. For an example, see the editorial policy from EngageMedia here - http://www.engagemedia.org/editorial-policy.')
-
-    try:
-        about = getattr(self, 'get-involved')
-    except:
-        # We create the element
-        self.invokeFactory('Document',
-                           id = 'get-involved',
-                           title = 'Get Involved!',
-                           description = 'See "Getting Involved" at http://plumi.org/wiki')
 
     #Avoid doing all the following when reinstalling
     if not reinstall:
@@ -299,6 +262,165 @@ def setupDocuments(self, reinstall, logger):
             fldr.setLayout(layout_name)
             publishObject(wftool,fldr)
             createTranslations(self,fldr)
+
+def setupCollections(portal, logger):
+    """
+       Collections for display 
+       latestvideos / featured-videos / news-and-events
+    """
+
+    wftool = getToolByName(portal,'portal_workflow')
+
+    #The front page, @@featured_videos_homepage, contains
+    #links to 'featured-videos' which is a smart folder containing
+    #all the videos with keyword 'featured' and 'lastestvideos'
+    #which is a smart folder of the latest videos. this method will
+    #simply install them.
+
+    # Items to deploy on install.
+    items = (dict(id      = 'featured-videos',
+                  title   = _(u'Featured Videos'),
+                  desc    = _(u'Videos featured by the editorial team.'),
+                  layout  = "video_listing_view",
+                  exclude = True),
+
+             dict(id      = 'latestvideos',
+                  title   = _(u'Latest Videos'),
+                  desc    = _(u'Latest videos contributed by the users.'),
+                  layout  = "video_listing_view",
+                  exclude = False),
+
+             dict(id      = 'news_and_events',
+                  title   = _(u'News and Events'),
+                  desc    = _(u'Latest news and events on the site.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
+             dict(id      = 'callouts',
+                  title   = _(u'Callouts'),
+                  desc    = _(u'Latest callouts.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
+             dict(id      = 'recent_comments',
+                  title   = _(u'Recent Comments'),
+                  desc    = _(u'Recent comments.'),
+                  layout  = "folder_listing",
+                  exclude = True),
+
+            )
+
+    # Items creation
+    for item in items:
+        try:
+            canon = getattr(portal, item['id'])
+            deleteTranslations(canon)
+            portal.manage_delObjects([item['id']])
+        except:
+            ## This is nasty to silence it all
+            pass
+
+        # We create the element
+        portal.invokeFactory('Topic',
+                           id = item['id'],
+                           title = item['title'],
+                           description = item['desc'].translate({}))
+
+        fv = getattr(portal, item['id'])
+ 
+
+        # We change its ownership and wf status
+        publishObject(wftool, fv)
+
+        # Filter results to ATEngageVideo
+        # Have to use the name of the Title (and ATEngageVideo will be 
+        #    re-named by configATEngageVideo to Video!)
+        # this will actually use ALL objects with title 'Video', which 
+        #    means atm, ATEngageVideo and ATVideo
+        type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
+        if item['id'] is 'news_and_events':
+            type_criterion.setValue( ("News Item","Event") )
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")          
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            newsCollectionPortlet = Assignment(header=u"News",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=True)
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+
+            saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
+        elif item['id'] is 'callouts':
+            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            # Only take events in the past
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('more')
+            type_criterion.setValue( ("Plumi Call Out") )        
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            calloutsCollectionPortlet = Assignment(header=u"Callouts",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=False)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('callouts'):    
+                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+        elif item['id'] is 'recent_comments':
+            type_criterion.setValue( ("Comment") )
+            sort_crit = fv.addCriterion('created',"ATSortCriterion")
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            commentsCollectionPortlet = Assignment(header=u"Recent Comments",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.recent_comments)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=True)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('recent-comments'):
+                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
+        else:
+            type_criterion.setValue("Video")
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+
+        sort_crit.setReversed(True)
+
+        ## add criteria for showing only published videos
+        state_crit = fv.addCriterion('review_state', 'ATListCriterion')
+        if item['id'] is 'featured-videos':
+            state_crit.setValue(['featured'])
+        else:
+            state_crit.setValue(['published','featured'])
+
+        if item['exclude'] is True:
+            fv.setExcludeFromNav(True)
+
+        if item['layout'] is not None:
+            fv.setLayout(item['layout'])
+
+        fv.reindexObject()
+
 
 
 def plumi30to31(context, logger=None):
@@ -516,163 +638,6 @@ def setupRSS(portal, logger):
             #throws exceptions if already enabled!
             pass
 
-def setupCollections(portal, logger):
-    """
-       Collections for display 
-       latestvideos / featured-videos / news-and-events
-    """
-
-    wftool = getToolByName(portal,'portal_workflow')
-
-    #The front page, @@featured_videos_homepage, contains
-    #links to 'featured-videos' which is a smart folder containing
-    #all the videos with keyword 'featured' and 'lastestvideos'
-    #which is a smart folder of the latest videos. this method will
-    #simply install them.
-
-    # Items to deploy on install.
-    items = (dict(id      = 'featured-videos',
-                  title   = _(u'Featured Videos'),
-                  desc    = _(u'Videos featured by the editorial team.'),
-                  layout  = "video_listing_view",
-                  exclude = True),
-
-             dict(id      = 'latestvideos',
-                  title   = _(u'Latest Videos'),
-                  desc    = _(u'Latest videos contributed by the users.'),
-                  layout  = "video_listing_view",
-                  exclude = False),
-
-             dict(id      = 'news_and_events',
-                  title   = _(u'News and Events'),
-                  desc    = _(u'Latest news and events on the site.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'callouts',
-                  title   = _(u'Callouts'),
-                  desc    = _(u'Latest callouts.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'recent_comments',
-                  title   = _(u'Recent Comments'),
-                  desc    = _(u'Recent comments.'),
-                  layout  = "folder_listing",
-                  exclude = True),
-
-            )
-
-    # Items creation
-    for item in items:
-        try:
-            canon = getattr(portal, item['id'])
-            deleteTranslations(canon)
-            portal.manage_delObjects([item['id']])
-        except:
-            ## This is nasty to silence it all
-            pass
-
-        # We create the element
-        portal.invokeFactory('Topic',
-                           id = item['id'],
-                           title = item['title'],
-                           description = item['desc'].translate({}))
-
-        fv = getattr(portal, item['id'])
- 
-
-        # We change its ownership and wf status
-        publishObject(wftool, fv)
-
-        # Filter results to ATEngageVideo
-        # Have to use the name of the Title (and ATEngageVideo will be 
-        #    re-named by configATEngageVideo to Video!)
-        # this will actually use ALL objects with title 'Video', which 
-        #    means atm, ATEngageVideo and ATVideo
-        type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
-        if item['id'] is 'news_and_events':
-            type_criterion.setValue( ("News Item","Event") )
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")          
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            newsCollectionPortlet = Assignment(header=u"News",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=True)
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-
-            saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
-        elif item['id'] is 'callouts':
-            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
-            # Set date reference to now
-            date_crit.setValue(0)
-            # Only take events in the past
-            date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('more')
-            type_criterion.setValue( ("Plumi Call Out") )        
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            calloutsCollectionPortlet = Assignment(header=u"Callouts",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=False)
-          
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('callouts'):    
-                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
-        elif item['id'] is 'recent_comments':
-            type_criterion.setValue( ("Comment") )
-            sort_crit = fv.addCriterion('created',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            commentsCollectionPortlet = Assignment(header=u"Recent Comments",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.recent_comments)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=True)
-          
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('recent-comments'):
-                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
-        else:
-            type_criterion.setValue("Video")
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-
-        sort_crit.setReversed(True)
-
-        ## add criteria for showing only published videos
-        state_crit = fv.addCriterion('review_state', 'ATListCriterion')
-        if item['id'] is 'featured-videos':
-            state_crit.setValue(['featured'])
-        else:
-            state_crit.setValue(['published','featured'])
-
-        if item['exclude'] is True:
-            fv.setExcludeFromNav(True)
-
-        if item['layout'] is not None:
-            fv.setLayout(item['layout'])
-
-        fv.reindexObject()
 
 #        createTranslations(portal,fv)
 
