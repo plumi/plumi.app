@@ -1,0 +1,13 @@
+Plumi 3.x to 4.x migration guide
+================================
+
+ - Back up your Data.fs, the blobstorage and the transcoded videos directory
+ - Go to the add-ons panel in the 3.x instance and uninstall Vaporisation, ATCountryWidget, json_migrator, plumi.migration
+ - Go to the @@manage-portlets page of your Plumi 3.x instance and remove the tagcloud portlet
+ - Copy var/filestorage var/blobstorage and the transcoded directories from the 3.x to the 4.0 buildout directory
+ - Update site.cfg, bootstrap & buildout
+ - Start supervisor & your debug instance
+ - Migrate plone
+ - Reinstall plumi
+ - Update site title, description, email, analytics code
+

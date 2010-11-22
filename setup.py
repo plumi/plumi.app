@@ -12,12 +12,12 @@ long_description = (
     'Change history\n'
     '**************\n'
     + '\n' +
-    read('CHANGES.txt')
+    read('docs/CHANGES.txt')
     + '\n' +
     'Contributors\n'
     '************\n'
     + '\n' +
-    read('CONTRIBUTORS.txt')
+    read('docs/CONTRIBUTORS.txt')
     )
 
 setup(name='plumi.app',
