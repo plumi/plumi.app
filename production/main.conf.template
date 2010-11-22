@@ -54,6 +54,7 @@ http {
             proxy_pass http://cache/VirtualHostBase/http/${site:www-server-name}:80/${site:portal-id}/VirtualHostRoot/;
             proxy_connect_timeout 75;
             proxy_read_timeout 185;
+            client_max_body_size 512M;
         }
     }
 
