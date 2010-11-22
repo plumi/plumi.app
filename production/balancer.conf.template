@@ -5,10 +5,9 @@
 #
 
 global
-  log ${hosts:syslog} local6
+  log ${site:syslog-host} local6
   
   # We manage this with supervisor
-  #  user ${users:balancer}
   
   maxconn  1024
   ulimit-n 65536
@@ -46,12 +45,12 @@ defaults
   stats realm Haproxy\ statistics
 
 frontend zopecluster
-  bind ${hosts:balancer}:${ports:balancer}
+  bind ${site:balancer-host}:${site:balancer-port}
   default_backend zope
 
   capture cookie __ac len 10
   option httplog
-  log ${hosts:syslog} local6
+  log ${site:syslog-host} local6
 
 # Load balancing over the zope instances
 
@@ -62,7 +61,7 @@ backend zope
   cookie serverid
   option httpchk GET /
 
-  server  zope0101 ${hosts:instance1}:${ports:instance1} cookie z0101 check maxconn 1 maxqueue 2
-  server  zope0102 ${hosts:instance2}:${ports:instance2} cookie z0102 check maxconn 1 maxqueue 2
-  server  zope0103 ${hosts:instance3}:${ports:instance3} cookie z0103 check maxconn 1 maxqueue 2
-  server  zope0104 ${hosts:instance4}:${ports:instance4} cookie z0104 check maxconn 1 maxqueue 2
+  server  zope0101 ${site:instance1-address} cookie z0101 check maxconn 1 maxqueue 2
+  server  zope0102 ${site:instance2-address} cookie z0102 check maxconn 1 maxqueue 2
+  server  zope0103 ${site:instance3-address} cookie z0103 check maxconn 1 maxqueue 2
+  server  zope0104 ${site:instance4-address} cookie z0104 check maxconn 1 maxqueue 2

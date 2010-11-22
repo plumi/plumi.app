@@ -1,0 +1,12 @@
+--- auto/options.bak	2009-01-14 17:45:34.000000000 +0100
++++ auto/options	2009-01-14 17:47:20.000000000 +0100
+@@ -245,6 +245,9 @@
+         --with-zlib-opt=*)               ZLIB_OPT="$value"          ;;
+         --with-zlib-asm=*)               ZLIB_ASM="$value"          ;;
+ 
++        --with-libxml2=*)                LIBXML2="$value"           ;;
++        --with-libxslt=*)                LIBXSLT="$value"           ;;
++
+         --test-build-devpoll)            NGX_TEST_BUILD_DEVPOLL=YES ;;
+         --test-build-eventport)          NGX_TEST_BUILD_EVENTPORT=YES ;;
+         --test-build-epoll)              NGX_TEST_BUILD_EPOLL=YES   ;;

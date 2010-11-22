@@ -1,0 +1,216 @@
+--- src/http/modules/ngx_http_xslt_filter_module.c.bak	2009-01-09 16:05:41.000000000 +0100
++++ src/http/modules/ngx_http_xslt_filter_module.c	2009-01-09 21:17:16.000000000 +0100
+@@ -9,6 +9,7 @@
+ #include <ngx_http.h>
+ 
+ #include <libxml/parser.h>
++#include <libxml/HTMLparser.h>
+ #include <libxml/tree.h>
+ #include <libxslt/xslt.h>
+ #include <libxslt/xsltInternals.h>
+@@ -19,7 +20,6 @@
+ #include <libexslt/exslt.h>
+ #endif
+ 
+-
+ #ifndef NGX_HTTP_XSLT_REUSE_DTD
+ #define NGX_HTTP_XSLT_REUSE_DTD  1
+ #endif
+@@ -54,6 +54,7 @@
+     ngx_array_t          sheets;       /* ngx_http_xslt_sheet_t */
+     ngx_hash_t           types;
+     ngx_array_t         *types_keys;
++    ngx_flag_t           html_parser;
+ } ngx_http_xslt_filter_loc_conf_t;
+ 
+ 
+@@ -63,6 +64,7 @@
+     xmlSAXHandler       *sax;
+     ngx_http_request_t  *request;
+     ngx_array_t          params;
++    ngx_flag_t           html_parser;
+ 
+     ngx_uint_t           done;         /* unsigned  done:1; */
+ } ngx_http_xslt_filter_ctx_t;
+@@ -144,7 +146,7 @@
+ 
+ 
+ ngx_str_t  ngx_http_xslt_default_types[] = {
+-    ngx_string("text/xml"),
++    ngx_string("example/workaround"),
+     ngx_null_string
+ };
+ 
+@@ -172,6 +174,13 @@
+       offsetof(ngx_http_xslt_filter_loc_conf_t, types_keys),
+       &ngx_http_xslt_default_types[0] },
+ 
++    { ngx_string("xslt_html_parser"),
++      NGX_HTTP_LOC_CONF|NGX_CONF_FLAG,
++      ngx_conf_set_flag_slot,
++      NGX_HTTP_LOC_CONF_OFFSET,
++      offsetof(ngx_http_xslt_filter_loc_conf_t, html_parser),
++      NULL },
++
+       ngx_null_command
+ };
+ 
+@@ -235,6 +244,7 @@
+     ctx = ngx_http_get_module_ctx(r, ngx_http_xslt_filter_module);
+ 
+     if (ctx) {
++        /* ctx->html_parser = conf->html_parser; */
+         return ngx_http_next_header_filter(r);
+     }
+ 
+@@ -247,6 +257,8 @@
+ 
+     r->main_filter_need_in_memory = 1;
+ 
++    ctx->html_parser = conf->html_parser;
++
+     return NGX_OK;
+ }
+ 
+@@ -282,7 +294,11 @@
+                 xmlFreeDoc(ctx->ctxt->myDoc);
+             }
+ 
+-            xmlFreeParserCtxt(ctx->ctxt);
++            if (ctx->html_parser) {
++                htmlFreeParserCtxt(ctx->ctxt);
++            } else {
++                xmlFreeParserCtxt(ctx->ctxt);
++            }
+ 
+             return ngx_http_xslt_send(r, ctx, NULL);
+         }
+@@ -295,14 +311,18 @@
+             ctx->doc->extSubset = NULL;
+ #endif
+ 
+-            xmlFreeParserCtxt(ctx->ctxt);
++            if (ctx->html_parser) {
++                htmlFreeParserCtxt(ctx->ctxt);
++            } else {
++                xmlFreeParserCtxt(ctx->ctxt);
++            }
+ 
+             if (ctx->ctxt->wellFormed) {
+                 return ngx_http_xslt_send(r, ctx,
+                                        ngx_http_xslt_apply_stylesheet(r, ctx));
+             }
+ 
+-            xmlFreeDoc(ctx->doc);
++            xmlFreeDoc(ctx->ctxt->myDoc);
+ 
+             ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+                           "not well formed XML document");
+@@ -386,18 +406,29 @@
+     ngx_buf_t *b)
+ {
+     int                err;
+-    xmlSAXHandler     *sax;
++/*    xmlSAXHandler     *sax; */
+     xmlParserCtxtPtr   ctxt;
+ 
+     if (ctx->ctxt == NULL) {
+-
+-        ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+-        if (ctxt == NULL) {
+-            ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+-                          "xmlCreatePushParserCtxt() failed");
+-            return NGX_ERROR;
++        
++        if (ctx->html_parser) {
++            ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL, XML_CHAR_ENCODING_UTF8);
++            if (ctxt == NULL) {
++                ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
++                              "htmlCreatePushParserCtxt() failed");
++                return NGX_ERROR;
++            } else {
++                htmlCtxtUseOptions(ctxt, HTML_PARSE_RECOVER | HTML_PARSE_NONET | HTML_PARSE_COMPACT);
++            }
++        } else {
++            ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
++            if (ctxt == NULL) {
++                ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
++                              "xmlCreatePushParserCtxt() failed");
++                return NGX_ERROR;
++            }
+         }
+-
++/*
+         ctx->sax = ngx_palloc(r->pool, sizeof(xmlSAXHandler));
+         if (ctx->sax == NULL) {
+             return NGX_ERROR;
+@@ -444,23 +475,38 @@
+ 
+         ctxt->replaceEntities = 1;
+         ctxt->loadsubset = 1;
+-
++*/
+         ctx->ctxt = ctxt;
+         ctx->request = r;
+     }
+ 
+-    err = xmlParseChunk(ctx->ctxt, (char *) b->pos,
+-                        (int) (b->last - b->pos), b->last_buf);
++    if (ctx->html_parser) {
++        err = htmlParseChunk(ctx->ctxt, (char *) b->pos,
++                            (int) (b->last - b->pos), b->last_buf);
++
++        if (err == 0) {
++            b->pos = b->last;
++            return NGX_OK;
++        }
+ 
+-    if (err == 0) {
+-        b->pos = b->last;
+-        return NGX_OK;
+-    }
++        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
++                      "htmlParseChunk() failed, error:%d", err);
+ 
+-    ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+-                  "xmlParseChunk() failed, error:%d", err);
++        return NGX_ERROR;
++    } else {
++        err = xmlParseChunk(ctx->ctxt, (char *) b->pos,
++                            (int) (b->last - b->pos), b->last_buf);
+ 
+-    return NGX_ERROR;
++        if (err == 0) {
++            b->pos = b->last;
++            return NGX_OK;
++        }
++
++        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
++                      "xmlParseChunk() failed, error:%d", err);
++
++        return NGX_ERROR;
++    }
+ }
+ 
+ 
+@@ -1236,8 +1282,11 @@
+      *     conf->sheets = { NULL };
+      *     conf->types = { NULL };
+      *     conf->types_keys = NULL;
++     *     conf->html_parser = NULL;
+      */
+ 
++    conf->html_parser = NGX_CONF_UNSET;
++
+     return conf;
+ }
+ 
+@@ -1264,6 +1313,8 @@
+         return NGX_CONF_ERROR;
+     }
+ 
++    ngx_conf_merge_value(conf->html_parser, prev->html_parser, 0);
++
+     return NGX_CONF_OK;
+ }
+ 

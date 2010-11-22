@@ -1,0 +1,60 @@
+--- auto/lib/libxslt/conf.bak	2009-01-14 17:22:48.000000000 +0100
++++ auto/lib/libxslt/conf	2009-01-14 17:54:22.000000000 +0100
+@@ -13,6 +13,23 @@
+                       #include <libxslt/xsltutils.h>"
+     ngx_feature_path="/usr/include/libxml2"
+     ngx_feature_libs="-lxml2 -lxslt"
++    if [ $LIBXML2 != NONE ]; then
++        ngx_feature_path="$LIBXML2/include/libxml2"
++        if [ $NGX_RPATH = YES ]; then
++            ngx_feature_libs="-R$LIBXML2/lib -L$LIBXML2/lib $ngx_feature_libs"
++        else
++            ngx_feature_libs="-L$LIBXML2/lib $ngx_feature_libs"
++        fi
++    fi
++    if [ $LIBXSLT != NONE ]; then
++        ngx_feature_path="$LIBXSLT/include $ngx_feature_path"
++        if [ $NGX_RPATH = YES ]; then
++            ngx_feature_libs="-R$LIBXSLT/lib -L$LIBXSLT/lib $ngx_feature_libs"
++        else
++            ngx_feature_libs="-L$LIBXSLT/lib $ngx_feature_libs"
++        fi
++    fi    
++
+     ngx_feature_test="xmlParserCtxtPtr    ctxt = NULL;
+                       xsltStylesheetPtr   sheet = NULL;
+                       xmlDocPtr           doc;
+@@ -94,8 +111,7 @@
+     ngx_feature_name=NGX_HAVE_EXSLT
+     ngx_feature_run=no
+     ngx_feature_incs="#include <libexslt/exslt.h>"
+-    ngx_feature_path="/usr/include/libxml2"
+-    ngx_feature_libs="-lexslt"
++    ngx_feature_libs="-lexslt $ngx_feature_libs"
+     ngx_feature_test="exsltRegisterAll();"
+     . auto/feature
+ 
+@@ -103,6 +119,23 @@
+ 
+     # FreeBSD port
+ 
++    ngx_feature="libexslt in /usr/"
++    ngx_feature_path="/usr/local/libxml2 /usr/include"
++
++    if [ $NGX_RPATH = YES ]; then
++        ngx_feature_libs="-R/usr/local/lib -L/usr/local/lib -lexslt"
++    else
++        ngx_feature_libs="-L/usr/local/lib -lexslt"
++    fi
++
++    . auto/feature
++fi
++
++
++if [ $ngx_found = no ]; then
++
++    # FreeBSD port
++
+     ngx_feature="libexslt in /usr/local/"
+     ngx_feature_path="/usr/local/include/libxml2 /usr/local/include"
+ 

@@ -36,7 +36,7 @@ http {
     
     server {
         listen ${site:www-address};
-        server_name ${site:www-server-name};
+        server_name ${site:www-videoserver-name};
         access_log ${buildout:directory}/var/log/main-plone-access.log;
 
         # Show status information on /_main-status
