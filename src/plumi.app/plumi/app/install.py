@@ -568,6 +568,19 @@ def plumi31to311(context, logger=None):
     print str(comments) + 'comments updated in events'
 
 
+def plumi311to4(context, logger=None):
+
+    root = getToolByName(context, 'portal_url')
+    portal = root.getPortalObject()
+    log = portal.plone_log
+    portal_types = portal.portal_types
+    Topic = portal_types.getTypeInfo("Topic")
+    #link.icon_expr = '' 
+    Topic.content_icon = ''
+    Topic.manage_changeProperties(content_icon='', icon_expr='')
+    log("Removing icon type info")
+
+
 def changeWorkflowState(content, state_id, acquire_permissions=False,
                         portal_workflow=None, **kw):
     """Change the workflow state of an object

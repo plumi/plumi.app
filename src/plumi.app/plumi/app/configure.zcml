@@ -44,6 +44,16 @@
       profile="plumi.app:default"
       />
 
+  <genericsetup:upgradeStep
+      title="Plumi 3.11 to 4"
+      description=""
+      source="0.9"
+      destination="4.0"
+      handler="plumi.app.install.plumi311to4"
+      profile="plumi.app:default"
+      />
+
+
   <five:registerPackage package="." initialize=".install.initialize" />
 
   <include package=".policy" />
