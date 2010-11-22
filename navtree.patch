@@ -1,0 +1,14 @@
+--- plone/app/layout/navigation/navtree.py
++++ plone/app/layout/navigation/navtree.py
+@@ -271,7 +271,9 @@
+                 itemPaths[parentPath] = {'children': [newNode]}
+ 
+             # Ask the subtree filter (if any), if we should be expanding this node
+-            if strategy.showAllParents and isCurrentParent:
++            if getattr(item, 'getId', None) == 'Members':
++                expand = False
++            elif strategy.showAllParents and isCurrentParent:
+                 # If we will be expanding this later, we can't prune off children now
+                 expand = True
+             else:
+
