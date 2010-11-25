@@ -11,7 +11,7 @@ Install a Plumi 4.x development instance
 
 If you simply want to evaluate or develop Plumi, then you don't need a fully fledged production build with caching, multiple load balanced zope instances, etc. A more lightweight buildout is provided. Before runing buildout you may want to customize the options inside site.cfg. Then do the following:
 
-  python2.6 bootstrap.py
+  python2.6 bootstrap.py -c devel.cfg
   ./bin/buildout -c devel.cfg
 
 That should take some time. If all goes well your Plumi dev instance will be ready after that point.
@@ -29,11 +29,29 @@ Now start your dev instance
   ./bin/instance-debug fg
 
 
-Installing Plumi for production
+Installing Plumi 4.x for production
 ===============================
 
-TODO
+If you want to run plumi and you need caching and multiple load balanced zope instances, a production buildout is provided to make your life easier. Before running buildout, you may want to customize the options inside site.cfg. 
 
+   python2.6 bootstrap.py -c production.cfg
+   ./bin/buildout -c production.cfg
+
+That should take some time. If all goes well, your Plumi production instance will be ready.
+
+Supervisor should be installed and will be managing the ZEO server, the transcodedaemon, the ftp server, your instances and the load balancer.. Start supervisor like this:
+
+   sudo ./bin/supervisord
+
+Supervisor will start all the software as root and then drop all priviledges and run each software as the user required (www-data for nginx, proxy for the ftp server, etc)
+
+To see if what supervisord controls and which services have started: 
+
+   ./bin/supervisorctl status
+
+A debug insance is also created during the production buildout. If you need to test, debug and catch errors on your production environment you can start it with:
+
+   ./bin/instance-debug fg
 
 3.x install guide. To be replaced
 =================================
