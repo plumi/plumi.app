@@ -1,4 +1,4 @@
-4.0 (2010-11-??) [unweb.me]
+4.0b1 (2010-11-25) [unweb.me]
 ===========================
 
  - remove and replace deprecated code and rebase on Plone 4 [clopy]
