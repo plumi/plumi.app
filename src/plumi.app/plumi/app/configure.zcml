@@ -59,6 +59,7 @@
   <include package=".policy" />
 
   <include package="plumi.content" />
+  <include package="plumi.locales" />
 
   <adapter
       for="Products.CMFDefault.interfaces._content.IFavorite"
