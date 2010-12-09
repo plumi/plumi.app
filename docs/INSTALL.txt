@@ -9,29 +9,35 @@ Before you start
 Install a Plumi 4.x development instance
 ========================================
 
-If you simply want to evaluate or develop Plumi, then you don't need a fully fledged production build with caching, multiple load balanced zope instances, etc. A more lightweight buildout is provided. Before runing buildout you may want to customize the options inside site.cfg. Then do the following:
+If you simply want to evaluate Plumi or to contribute in its development, then you don't need a fully fledged production build with caching, multiple load balanced zope instances, etc. A more lightweight buildout is provided. Before runing buildout you may want to customize some of the options inside site.cfg. Then do the following:
 
   python2.6 bootstrap.py -c devel.cfg
   ./bin/buildout -c devel.cfg
 
 That should take some time. If all goes well your Plumi dev instance will be ready after that point.
 
-Supervisor should be installed and will be managing the ZEO server and the transcodedaemon. Start supervisor like this:
+Supervisor will be managing the ZEO server and the transcodedaemon. Start supervisor like this:
 
   ./bin/supervisord
 
-To test if zeo and transcodedaemon are up use:
+To see if zeo and transcodedaemon are up use:
 
   ./bin/supevisorctl status
 
-Now start your dev instance
+Now start your dev instance in the foreground
 
   ./bin/instance-debug fg
 
+You should be able to access your instance at http://localhost:8080 unless you changed the default host and port in site.cfg. Login using the credentials in site.cfg (admin:admin by default) and create a new Plone site. Enter a site id ('Plone' by default) and create the site without selecting any setup profiles. 
+
 
 Installing Plumi 4.x for production
-===============================
+===================================
 
+This guide assumes that you have sudo access. This is necessary in order to start nginx at port 80, ploneftp at port 21 and for buildout to automatically set the right file permissions for you. Supervisor will be managing all the different services and each service will be limited to the permissions of its effective system user for maximum security. This setup includes all you need in order to run Plumi on a GNU/Linux server for production.
+
+If you don't have sudo access, you have the option of running all the processes as a single user. Edit site.cfg and set your username in the following fields: supervisor-user, ftp-user, www-user, transcode-user, cache-user, balancer-user, zeo-user and zope-user. Then set the ports in the fields www-address and plumiftp-address to values higher than 1024 (port numbers under 1024 can only be reserved by root)
+ 
 If you want to run plumi and you need caching and multiple load balanced zope instances, a production buildout is provided to make your life easier. Before running buildout, you may want to customize the options inside site.cfg. 
 
    python2.6 bootstrap.py -c production.cfg
