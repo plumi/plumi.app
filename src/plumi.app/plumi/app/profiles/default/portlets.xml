@@ -1,22 +1,6 @@
 <?xml version="1.0"?>
 <portlets>
 
-    <assignment name="plumi.browse" category="context" key="/"
-        manager="plone.leftcolumn" type="plone.portlet.static.Static"
-        insert-before="*">
-        <property name="header">browse</property>
-        <property name="more_url"/>
-        <property name="hide">False</property>
-        <property name="footer"/>
-        <property name="text">
-        &lt;div id="portlet-browse"&gt;
-          &lt;a title="Browse Videos" class="internal-link" href="taxonomy"&gt;
-            &lt;span&gt;browse&lt;/span&gt;
-          &lt;/a&gt;
-        &lt;/div&gt;
-        </property>
-        <property name="omit_border">True</property>
-     </assignment>
      <assignment name="plumi.publish" category="context" key="/"
         manager="plone.leftcolumn" type="plone.portlet.static.Static"
         insert-before="plumi.browse">
