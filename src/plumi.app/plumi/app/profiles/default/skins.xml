@@ -2,5 +2,5 @@
 <object name="portal_skins" meta_type="Plone Skins Tool" allow_any="False"
    cookie_persistence="False" 
    request_varname="plone_skin"
-   default_skin="Sunburst Theme">
+   default_skin="Plumi Skin">
 </object>

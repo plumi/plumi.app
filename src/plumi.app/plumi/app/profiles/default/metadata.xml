@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>0.4</version>
+  <version>0.5</version>
   <dependencies>
     <dependency>profile-collective.transcode.star:default</dependency>
     <dependency>profile-Products.LinguaPlone:LinguaPlone</dependency>
@@ -9,5 +9,6 @@
     <dependency>profile-collective.contentlicensing:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plumi.content:default</dependency>
+    <dependency>profile-plumi.skin:default</dependency>
   </dependencies>
 </metadata>
