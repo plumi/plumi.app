@@ -1,20 +1,20 @@
 AUTHORS [ Plumi 0.2.x, 3.x, 4.x ]
--------
+---------------------------------
 
-Andy Nicholson <andy@infiniterecursion.com.au>
-Anna Helme <anna@sagaponic.org>
-Dave Fregon <dave@netaxxs.com.au>
-Keren Moran <keren@springinalaska.com>
-Noa Peer <noa@springinalaska.com>
-Andrew Lowenthal <and@engagemedia.org>
-Souheil Chelfouh <trollfot@gmail.com>
-Lachlan Musicman <datakid@gmail.com>
-Victor Rajewski <vik@engagemedia.org>
-Dimitris Moraitis <dimo@unweb.me>
-Mike Muzurakis <clopy@unweb.me>
-Markos Gogoulos <mgogoulos@unweb.me>
-Baiju PP <baijupp@mahiti.org>
-Pushparani J <pushparanij@mahiti.org>
-Sowmya M <sowmyam@mahiti.org>
-Christos Psaltis <cpsaltis@unweb.me>
+ - Andy Nicholson <andy@infiniterecursion.com.au>
+ - Anna Helme <anna@sagaponic.org>
+ - Dave Fregon <dave@netaxxs.com.au>
+ - Keren Moran <keren@springinalaska.com>
+ - Noa Peer <noa@springinalaska.com>
+ - Andrew Lowenthal <and@engagemedia.org>
+ - Souheil Chelfouh <trollfot@gmail.com>
+ - Lachlan Musicman <datakid@gmail.com>
+ - Victor Rajewski <vik@engagemedia.org>
+ - Dimitris Moraitis <dimo@unweb.me>
+ - Mike Muzurakis <clopy@unweb.me>
+ - Markos Gogoulos <mgogoulos@unweb.me>
+ - Baiju PP <baijupp@mahiti.org>
+ - Pushparani J <pushparanij@mahiti.org>
+ - Sowmya M <sowmyam@mahiti.org>
+ - Christos Psaltis <cpsaltis@unweb.me>
 

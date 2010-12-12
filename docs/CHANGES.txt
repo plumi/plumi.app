@@ -84,7 +84,7 @@ For changes in rc1, see http://plumi.org/query?status=closed&group=resolution&or
 
 
 3.0-beta2 (2010-02-23) [Mike - unweb.me]
-=======================================
+========================================
 
 Beta 2 includes lot of changes, including the use of collective.transcode.daemon for video transcoding.
 
