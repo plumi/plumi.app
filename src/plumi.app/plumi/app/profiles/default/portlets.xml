@@ -3,7 +3,7 @@
 
      <assignment name="plumi.publish" category="context" key="/"
         manager="plone.leftcolumn" type="plone.portlet.static.Static"
-        insert-before="plumi.browse">
+        insert-before="navigation">
         <property name="header">publish</property>
         <property name="more_url"/>
         <property name="hide">False</property>
