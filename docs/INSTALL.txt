@@ -16,7 +16,7 @@ Before runing buildout you may wish to customize some of the options inside site
   python2.6 bootstrap.py -c devel.cfg
   ./bin/buildout -c devel.cfg
 
-That should take some time, so feel free to get some cofee or fresh air while buildout is downloading, installing and compiling dependencies (Zope, Plone, ffmpeg, etc). If all goes well your Plumi dev instance will be ready after that point.
+That should take some time, so feel free to get some cofee or fresh air while buildout is downloading, compiling and installing dependencies (Zope, Plone, ffmpeg, etc). If all goes well your Plumi dev instance will be ready after that point.
 
 Supervisor will be managing the ZEO server and the transcodedaemon. Start supervisor like this:
 
@@ -32,7 +32,7 @@ Now start your dev instance in the foreground
 
 You should be able to access your instance at http://localhost:8080 unless you changed the default host and port in site.cfg. Create a new Plone site using the credentials in site.cfg (admin:admin by default, to change them after the initial setup go to http://localhost:8080/acl_users/users/manage_users ). Enter a site id ('Plone' by default) and create the site without selecting any add-ons at this point. 
 
-Once your Plone site has been created, go to the Add-ons configuration section (e.g. http://localhost:8080/Plone/prefs_install_products_form ) and install the Plumi 4.x add-on. You may also want to install the default Plumi skin (check it out at http://demo.plumi.org). If you don't, your site will be based on the default Plone 4 theme (Sunburst).
+Once your Plone site has been created, go to the Add-ons configuration section (e.g. http://localhost:8080/Plone/prefs_install_products_form ) and install the Plumi 4.x add-on. 
 
 If you have changed the default port, hostname, or the secret encryption key for transcode daemon in site.cfg, go to the transcode settings panel (e.g. http://localhost:8080/Plone/@@transcode-controlpanel ) and enter the same host, port and key there.
 
@@ -64,13 +64,13 @@ Once you're done
    python2.6 bootstrap.py -c production.cfg
    ./bin/buildout -c production.cfg
 
-That should take some time. If all goes well, your production instance will be ready to start.
+That should take some time. At the end of the buildout process you may be asked for your user password. Buildout needs it to change the ownership of log and data files. If you'll be running all the processes as a single user it's ok to just press Enter several times and let this step fail. If all goes well, your production instance will be ready to start.
 
 Supervisor should be installed and will be managing the ZEO server, transcodedaemon, the ftp server, your instances and the load balancer.. Start supervisor like this:
 
    sudo ./bin/supervisord
 
-Supervisor will start all the software as root and then drop all priviledges and run each software as the user required (www-data for nginx, proxy for the ftp server, etc)
+You should start supervisor using sudo so that it can restrict each service to run under the correct user privileges as defined in site.cfg (e.g www-data for nginx, daemon for the transcodedaemon, etc)
 
 Confirm that all the services have been started: 
 
@@ -80,9 +80,21 @@ A debug instance is also created during the production buildout but not started 
 
    ./bin/instance-debug fg
 
-Add a new user to your Plumi site for testing (the admin user may not have the correct folders created for them, as this user is created before the Plumi site is generated). Log out and log back in as your new user.
+You should be able to access your instance through the load balancer at http://localhost:8089 unless you changed the default balancer host and port in site.cfg. Create a new Plone site using the credentials in site.cfg. Enter a the site-id you defined in site.cfg ('Plone' by default) and create the site without selecting any add-ons at this point.
 
+Once your Plone site has been created, go to the Add-ons configuration section (e.g. http://localhost:8089/Plone/prefs_install_products_form ) and install the Plumi 4.x add-on. 
+
+Now go to the transcode settings panel (e.g. http://localhost:8089/Plone/@@transcode-controlpanel ) and enter the www-videoserver-name set in site.cfg and the updated secret key. You may also want to configure caching by installing the http caching support in the add-ons configuration section.
+
+From this point, you should be able to access your site through nginx at the url that you configured in site.cfg (www-server-name).
+
+Add a new user to your Plumi site for testing (the admin user may not have the correct folders created, as this user is created before the Plumi site is generated). Log out and log back in as your new user.
+
+To shutdown Plumi do the following:
+
+  ./bin/supervisorctl shutdown
 
 If you want to ensure that Plumi will start automatically whenever your server is turned on, add the following lines to your /etc/rc.local file replacing PATH_TO_PLUMI with the actual absolute path of your plumi setup:
 
   PATH_TO_PLUMI/bin/supervisord
+
