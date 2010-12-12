@@ -1,5 +1,22 @@
+4.0rc1 (2010-12-12) [unweb.me]
+==============================
+
+ - update plone.app.caching [dimo]
+ - production buildout automatically sets file permissions [dimo]
+ - disable ftp server in debug instance [dimo]
+ - move portlet assignments to plumi.app & remove browse portlet [dimo]
+ - update install docs [dimo]
+ - add custom image workflow [clopy]
+ - return splash image to previous quality [clopy]
+ - update vocabs, move taxonomy generation in a separate product [clopy]
+ - update ffmpeg library paths [clopy]
+ - reduce flowplayer splash image file size [clopy]
+ - update locales [dimo]
+
+For a full list of closed tickets check http://plumi.org/query?group=status&milestone=4.0+RC+1
+
 4.0b1 (2010-11-25) [unweb.me]
-===========================
+=============================
 
  - remove and replace deprecated code and rebase on Plone 4 [clopy]
  - deprecate plumi.buildout which was not a proper egg. Now the buildout lives inside plumi.app [dimo]
@@ -14,6 +31,7 @@
  - build ffmpeg and qt-faststart using buildout [dimo]
  - Remove ability for ordinary users to change video view [clopy]
 
+For a full list of closed tickets check http://plumi.org/query?group=status&milestone=4.0+Beta
 
 
 3.1.1 (2010-10-28) [unweb.me]
