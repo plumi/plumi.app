@@ -4,7 +4,7 @@ Before you start
  * install gcc/g++ dev tools (e.g. sudo apt-get install build-essential)
  * install yasm (e.g. sudo apt-get install yasm)
  * install python2.6 and header files (e.g. sudo apt-get install python2.6-dev)
-
+ * install groff-base (apt-get install groff-base)
 
 Install a Plumi 4.x development instance
 ========================================
