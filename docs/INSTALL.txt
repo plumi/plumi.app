@@ -5,6 +5,8 @@ Before you start
  * install subversion (e.g. sudo apt-get install subversion)
  * install python2.6 and header files (e.g. sudo apt-get install python2.6-dev)
  * install libjpeg and zlib header files (e.g. sudo apt-get install libjpeg62-dev zlib1g-dev)
+ * install groff-base (apt-get install groff-base)
+
 
 Install a Plumi 4.x development instance
 ========================================
