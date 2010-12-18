@@ -370,13 +370,11 @@ def plumi311to4(context, logger=None):
 
     root = getToolByName(context, 'portal_url')
     portal = root.getPortalObject()
+    catalog = getToolByName(context, 'portal_catalog')
     log = portal.plone_log
-    portal_types = portal.portal_types
-    Topic = portal_types.getTypeInfo("Topic")
-    #link.icon_expr = '' 
-    Topic.content_icon = ''
-    Topic.manage_changeProperties(content_icon='', icon_expr='')
-    log("Removing icon type info")
+    users = context.acl_users.getUsers()
+    for user in users:
+        user.setProperties(wysiwyg_editor = 'TinyMCE')
 
 
 def changeWorkflowState(content, state_id, acquire_permissions=False,
