@@ -176,7 +176,7 @@
       <role name="Editor"/>
       <role name="Owner"/>
     </permission>
-    <permission name="Modify view template" acquire="True">
+    <permission name="Modify view template" acquire="False">
       <role name="Editor"/>
       <role name="Manager"/>
     </permission>
