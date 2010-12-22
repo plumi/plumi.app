@@ -60,6 +60,14 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
+    <permission name="ATContentTypes: View history"
+                acquire="True">
+      <role name="Contributor"/>
+      <role name="Editor"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Reviewer"/>
+    </permission>
     <permission name="Access contents information"
                 acquire="True">
       <role name="Contributor"/>
