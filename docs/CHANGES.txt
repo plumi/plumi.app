@@ -1,3 +1,12 @@
+4.0rc2 (2010-12-12) [unweb.me]
+==============================
+
+ - upgrade users from kupu to tinymce [clopy]
+ - Added homepages as a lines field to memberdata, which is aimed at containing URL's of members other homepages, for example Facebook, Myspace, Twitter, Kaskus etc that will later be jazzed up in author.cpt [axxs]
+ - added country information to memberdata [clopy]
+ - added documentation [mgogoulos]
+ - update pcre broken download link [mgogoulos]
+
 4.0rc1 (2010-12-12) [unweb.me]
 ==============================
 
