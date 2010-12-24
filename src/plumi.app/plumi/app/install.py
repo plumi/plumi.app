@@ -1,5 +1,5 @@
 import logging
-from zope.app.component.interfaces import ISite
+from zope.location.interfaces import ISite
 
 #imports from old style plone 'Products' namespace
 from Products.CMFCore.utils import getToolByName
