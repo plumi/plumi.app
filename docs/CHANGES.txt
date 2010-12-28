@@ -1,3 +1,13 @@
+4.0 (2010-12-28) [unweb.me]
+===========================
+
+ - fix authorlisting error if a user doesn't have a member folder [clopy]
+ - remove duplicate icons for news and events  [clopy]
+ - fix login form allignment issue on safari [clopy]
+ - update personalize form for plone 4 [clopy]
+ - restored category and country information on video listings [clopy]
+ - removed homepages field for the final release [clopy]
+
 4.0rc2 (2010-12-12) [unweb.me]
 ==============================
 
