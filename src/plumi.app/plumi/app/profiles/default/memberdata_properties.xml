@@ -19,7 +19,6 @@
  <property name="postcode" type="string"></property>
  <property name="phone" type="string"></property>
  <property name="url" type="string"></property>
- <property name="homepages" type="lines"></property>
  <property name="userbio" type="string"></property>
 
  <property name="genre_interests_selection" type="lines">
