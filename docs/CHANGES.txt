@@ -1,4 +1,4 @@
-4.0 (2010-12-28) [unweb.me]
+4.0 (2010-12-30) [unweb.me]
 ===========================
 
  - fix authorlisting error if a user doesn't have a member folder [clopy]
