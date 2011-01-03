@@ -42,6 +42,12 @@ sub vcl_recv {
         pipe;
     }
 
+    # don't bother caching large files
+    if(req.url ~ "\.(mp3|flv|mov|mp4|mpg|mpeg|avi)") {
+        pipe;
+    }
+
+
     if (req.request != "GET" && req.request != "HEAD") {
         /* We only deal with GET and HEAD by default */
         pass;
