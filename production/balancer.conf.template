@@ -36,8 +36,8 @@ defaults
 
   timeout connect 7s
   timeout queue   15s
-  timeout client  300s
-  timeout server  300s
+  timeout client  600s
+  timeout server  1800s
 
   stats enable
   stats uri /_balancer_status_
