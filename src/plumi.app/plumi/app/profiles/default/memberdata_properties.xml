@@ -291,4 +291,6 @@
  </property>
  <property name="countries" select_variable="countries_selection" type="multiple selection"/>
 
+ <property name="paypal" type="string"></property>
+
 </object>
