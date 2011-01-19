@@ -50,6 +50,7 @@ setup(name='plumi.app',
           'qi.portlet.TagClouds',
           'Products.LinguaPlone',
           'plone.contentratings',
+          'collective.seeder',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
