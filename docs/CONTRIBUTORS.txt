@@ -1,5 +1,4 @@
-AUTHORS [ Plumi 0.2.x, 3.x, 4.x ]
----------------------------------
+[ Plumi 0.2.x, 3.x, 4.x ]
 
  - Andy Nicholson <andy@infiniterecursion.com.au>
  - Anna Helme <anna@sagaponic.org>

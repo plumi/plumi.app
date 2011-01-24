@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.0'
+version = '4.1'
 
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
@@ -51,6 +51,7 @@ setup(name='plumi.app',
           'Products.LinguaPlone',
           'plone.contentratings',
           'collective.seeder',
+          'collective.piwik.flowplayer',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
