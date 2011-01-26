@@ -246,7 +246,7 @@
    <property name="icon_expr"></property>
    <property name="available_expr">object/displayContentsTab</property>
    <property name="permissions">
-    <element value="List folder contents"/>
+    <element value="Review portal content"/>
    </property>
    <property name="visible">True</property>
   </object>
