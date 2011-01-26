@@ -1,3 +1,13 @@
+4.1 Beta1 (2011-01-26) [unweb.me]
+
+ - Torrent support [clopy]
+ - Show available seeders on video view [clopy]
+ - Views/ Downloads stats for videos [dimo, mgogoulos]
+ - High / Low quality for videos [clopy]
+ - Remove Action - Renaming Video Item - When in Pending/Published State [dave]
+ - Remove ability of ordinary Members to change folder view of any folder [dave]
+ - Add link to video author in taxonomy and other video listings [dave]
+
 4.0 (2010-12-30) [unweb.me]
 ===========================
 
