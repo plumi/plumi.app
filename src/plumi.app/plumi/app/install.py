@@ -173,12 +173,29 @@ def setupCollections(portal, logger):
                                         show_more=True,
                                         show_dates=False)
           
-    
             def saveAssignment(mapping, assignment):
                 chooser = INameChooser(mapping)
                 mapping[chooser.chooseName(None, assignment)] = assignment
             if not rightColumnInThisContext.has_key('callouts'):    
                 saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+
+            
+            #Past callouts collection
+            fv.invokeFactory('Topic',
+                           id = 'past_callouts',
+                           title = 'Past Callouts',
+                           description = _(u'Past callouts.').translate({}))
+            pc = getattr(fv, 'past_callouts')
+            pc.setAcquireCriteria(True)
+            pc.unmarkCreationFlag()
+            date_crit = pc.addCriterion('expires','ATFriendlyDateCriteria')  
+            date_crit.setValue(0)
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('less')
+            type_criterion.setValue( ("Plumi Call Out") )        
+            sort_crit = pc.addCriterion('effective',"ATSortCriterion")
+            publishObject(wftool, pc)
+
         elif item['id'] is 'recent_comments':
             type_criterion.setValue( ("Comment") )
             sort_crit = fv.addCriterion('created',"ATSortCriterion")
