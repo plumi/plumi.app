@@ -1,3 +1,12 @@
+4.1rc1 (2011-02-11) [unweb.me]
+==============================
+
+ - use multiple threads on mp4 transcoding [clopy]
+ - cross browser compatible video play and download count support using collective.piwik.flowplayer [dimo]
+ - remove stale rtorrent entry [clopy]
+ - upgrade step to create torrents for existing videos [clopy]
+ - add an exception to varnish for m4v files [clopy]
+
 4.1 Beta1 (2011-02-01) [unweb.me]
 =================================
 
