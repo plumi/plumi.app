@@ -10,4 +10,5 @@ Plumi 3.x to 4.x migration guide
  - Migrate plone
  - Reinstall plumi
  - Update site title, description, email, analytics code
+ - Optionally run the plumi.app upgrade step from the ZMI to set the deafult editor to TinyMCE for all users
 

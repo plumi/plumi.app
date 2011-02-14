@@ -100,3 +100,10 @@ If you want to ensure that Plumi will start automatically whenever your server i
 
   PATH_TO_PLUMI/bin/supervisord
 
+
+Configuring Torrents and Video statistics
+=========================================
+To configure torrent support, visit Site Setup->Seeder Settings and fill in the announce urls of the tracker you want to use and the absolute paths to store the torrents. To start autoseeding and show the number of seeders, you need to install deluged and deluge-console in your system. You can optionally install deluge-web or deluge-gtk for a graphic environent and configure Deluge to automatically seed all torrents inside your torrent folder and download all files to that folder too.
+
+To record and show video views and downloads you'll need a working Piwik installation. Add the tracking tag in Site-Setup->Site and fill the form in Site-Setup-> Piwik Settings with the piwik url, the site id on piwik and the api key (if you have anonymous access on piwik for your site you can leave anonymous instead of the API key).
+
