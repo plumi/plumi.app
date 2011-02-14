@@ -8,6 +8,11 @@ def install(self, reinstall=False):
     logger.info('starting install')
     portal_quickinstaller = getToolByName(self, 'portal_quickinstaller')
     portal_setup = getToolByName(self, 'portal_setup')
+
+    # install collective.transcode.star seperately to avoid utility removal on reinstall
+    if not portal_quickinstaller.isProductInstalled('collective.transcode.star'):
+        portal_quickinstaller.installProduct('collective.transcode.star')
+
     logger.info('starting extension profiles')
 
     portal_setup.runAllImportStepsFromProfile('profile-plumi.app:default', purge_old=False)

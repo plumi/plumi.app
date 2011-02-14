@@ -6,7 +6,8 @@ vocab_set = {}
 taxonomy_sub_folder={'topic':'video_categories','genre':'video_genre','callouts':'submission_categories','countries':'video_countries'}
 
 vocab_set['video_countries'] = (
-         ('XX', _(u'----------------')),
+         ('none', _(u'----------------')),
+         ('XX', _('-- International --')),
          ('AF', _(u'Afghanistan')),
          ('AL', _(u'Albania')),
          ('DZ', _(u'Algeria ')),
@@ -260,7 +261,7 @@ vocab_set['video_genre'] = (
          ('animation', _(u'Animation')),
         )
 vocab_set['submission_categories'] = (
-         ('XX', _(u'----------------')),
+         ('none', _(u'----------------')),
          ('dvd', _(u'DVD')),
          ('production', _(u'Production')),
          ('other', _(u'Other')),

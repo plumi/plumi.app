@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <import-steps>
-  <import-step id="plumi.app.various"
+  <import-step id="plumi.app.misc"
                version="20101110-01"
                handler="plumi.app.setuphandlers.setupVarious"
                title="Plumi: miscellaneous import steps">

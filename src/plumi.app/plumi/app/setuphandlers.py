@@ -29,6 +29,13 @@ def setupTranscoding(portal, logger):
     registry = getUtility(IRegistry)
     registry['collective.transcode.star.interfaces.ITranscodeSettings.portal_types'] = (u'PlumiVideo:video_file',)
 
+def setupSeeding(portal, logger):
+    """
+        configure PlumiVideo as seedable
+    """
+    registry = getUtility(IRegistry)
+    registry['collective.seeder.interfaces.ISeederSettings.portal_types'] = (u'PlumiVideo:video_file',)
+
 def setupVocabs(portal, logger):
     #
     #ATVocabManager setup
@@ -76,6 +83,7 @@ def setupVarious(context):
     setupHome(portal, logger)
     setupSiteSecurity(portal, logger)
     setupTranscoding(portal, logger)
+    setupSeeding(portal, logger)
     setupVocabs(portal, logger)
 
 def uninstall(context):

@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>0.5</version>
+  <version>1.0</version>
   <dependencies>
-    <dependency>profile-collective.transcode.star:default</dependency>
     <dependency>profile-Products.LinguaPlone:LinguaPlone</dependency>
     <dependency>profile-plone.contentratings:default</dependency>
     <dependency>profile-Products.ATVocabularyManager:default</dependency>
@@ -10,5 +9,6 @@
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plumi.content:default</dependency>
     <dependency>profile-plumi.skin:default</dependency>
+    <dependency>profile-collective.seeder:default</dependency>
   </dependencies>
 </metadata>

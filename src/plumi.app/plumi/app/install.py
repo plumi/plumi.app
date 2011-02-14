@@ -33,6 +33,17 @@ from zope.annotation.interfaces import IAnnotations
 from collective.transcode.star.interfaces import ITranscodeTool
 from DateTime import DateTime
 from Products.CMFCore.interfaces import IPropertiesTool
+from plone.registry.interfaces import IRegistry 
+import os
+import os.path
+import subprocess
+import shutil
+import sys
+import time
+import bencode
+from hashlib import sha1 as sha
+import Zope2
+from collective.seeder.subscribers import make_meta_file, makeinfo, subfiles, gmtime,get_filesystem_encoding, decode_from_filesystem
 
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
@@ -173,12 +184,29 @@ def setupCollections(portal, logger):
                                         show_more=True,
                                         show_dates=False)
           
-    
             def saveAssignment(mapping, assignment):
                 chooser = INameChooser(mapping)
                 mapping[chooser.chooseName(None, assignment)] = assignment
             if not rightColumnInThisContext.has_key('callouts'):    
                 saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+
+            
+            #Past callouts collection
+            fv.invokeFactory('Topic',
+                           id = 'past_callouts',
+                           title = 'Past Callouts',
+                           description = _(u'Past callouts.').translate({}))
+            pc = getattr(fv, 'past_callouts')
+            pc.setAcquireCriteria(True)
+            pc.unmarkCreationFlag()
+            date_crit = pc.addCriterion('expires','ATFriendlyDateCriteria')  
+            date_crit.setValue(0)
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('less')
+            type_criterion.setValue( ("Plumi Call Out") )        
+            sort_crit = pc.addCriterion('effective',"ATSortCriterion")
+            publishObject(wftool, pc)
+
         elif item['id'] is 'recent_comments':
             type_criterion.setValue( ("Comment") )
             sort_crit = fv.addCriterion('created',"ATSortCriterion")
@@ -375,6 +403,58 @@ def plumi311to4(context, logger=None):
     users = context.acl_users.getUsers()
     for user in users:
         user.setProperties(wysiwyg_editor = 'TinyMCE')
+
+
+def plumi4to41(context, logger=None):
+    
+    catalog = getToolByName(context, 'portal_catalog')
+    # Create torrents for videos
+    videos = catalog(portal_type='PlumiVideo')
+    for video in videos:
+        obj = video.getObject()
+        if not obj.UID():
+            return
+        try:
+            registry = getUtility(IRegistry)
+            types = registry['collective.seeder.interfaces.ISeederSettings.portal_types']
+            torrent_dir = registry['collective.seeder.interfaces.ISeederSettings.torrent_dir']
+            announce_urls = registry['collective.seeder.interfaces.ISeederSettings.announce_urls']
+            safe_torrent_dir = registry['collective.seeder.interfaces.ISeederSettings.safe_torrent_dir']
+            #Check if the torrent directory exists, otherwise create it
+            if not os.path.exists(torrent_dir):
+                os.makedirs(torrent_dir)
+            #Check if the torrent safe directory exists, otherwise create it
+            if not os.path.exists(safe_torrent_dir):
+                os.makedirs(safe_torrent_dir)
+            newTypes = [t.split(':')[0] for t in types]
+            if unicode(obj.portal_type) not in newTypes:
+                return
+            fieldNames = [str(t.split(':')[1]) for t in types if ('%s:' % unicode(obj.portal_type)) in t]
+            fts= Zope2.DB._storage.fshelper
+            if not fieldNames:
+                fields = [obj.getPrimaryField()]
+            else:
+                fields = [obj.getField(f) for f in fieldNames]
+            for field in fields:
+                oid = field.getUnwrapped(obj).getBlob()._p_oid
+                if not oid:
+                    return
+                #Symlink the blob object to the original filename
+                blobDir = fts.getPathForOID(oid)
+                blobName = os.listdir(blobDir)
+                blobPath = os.path.join(blobDir,blobName[0])
+                fileName = obj.UID() + '_' + field.getFilename(obj)
+                linkPath = os.path.join(torrent_dir, fileName)
+                os.symlink(blobPath, linkPath)
+
+                torrentName = fileName + '.torrent'
+                torrentPath = os.path.join(torrent_dir, torrentName)
+                make_meta_file(linkPath, str(",".join(str(v) for v in announce_urls)), 262144)
+
+                torrentSafePath = safe_torrent_dir + '/' + fileName + '.torrent'
+                shutil.copyfile(torrentPath, torrentSafePath)      
+        except:
+            pass     
 
 
 def changeWorkflowState(content, state_id, acquire_permissions=False,
