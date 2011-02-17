@@ -111,6 +111,12 @@ def setupCollections(portal, logger):
                   layout  = "folder_summary_view",
                   exclude = True),
 
+             dict(id      = 'news',
+                  title   = _(u'News'),
+                  desc    = _(u'Latest news.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
              dict(id      = 'recent_comments',
                   title   = _(u'Recent Comments'),
                   desc    = _(u'Recent comments.'),
@@ -150,21 +156,7 @@ def setupCollections(portal, logger):
         if item['id'] is 'news_and_events':
             type_criterion.setValue( ("News Item","Event") )
             sort_crit = fv.addCriterion('effective',"ATSortCriterion")          
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            newsCollectionPortlet = Assignment(header=u"News",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=True)
-    
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-
-            saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
+            
         elif item['id'] is 'callouts':
             date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
             # Set date reference to now
@@ -226,6 +218,33 @@ def setupCollections(portal, logger):
                 mapping[chooser.chooseName(None, assignment)] = assignment
             if not rightColumnInThisContext.has_key('recent-comments'):
                 saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
+          
+    
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('recent-comments'):
+                saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
+
+        elif item['id'] is 'news':
+            type_criterion.setValue( ("News Item") )        
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            calloutsCollectionPortlet = Assignment(header=u"News",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=False)
+          
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('news'):    
+                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+
         else:
             type_criterion.setValue("Video")
             sort_crit = fv.addCriterion('effective',"ATSortCriterion")
