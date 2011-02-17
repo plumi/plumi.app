@@ -252,6 +252,11 @@ def setupCollections(portal, logger):
                 saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
 
         elif item['id'] is 'events':
+            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
+            # Set date reference to now
+            date_crit.setValue(0)
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('more')
             type_criterion.setValue( ("Event") )        
             sort_crit = fv.addCriterion('effective',"ATSortCriterion")
             right = getUtility(IPortletManager, name='plone.rightcolumn')
