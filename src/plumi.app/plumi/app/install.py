@@ -258,7 +258,7 @@ def setupCollections(portal, logger):
             date_crit.setDateRange('-') # This is irrelevant when the date is now
             date_crit.setOperation('more')
             type_criterion.setValue( ("Event") )        
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+            sort_crit = fv.addCriterion('end',"ATSortCriterion")
             right = getUtility(IPortletManager, name='plone.rightcolumn')
             rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
             urltool  = getToolByName(portal, 'portal_url')
@@ -289,7 +289,7 @@ def setupCollections(portal, logger):
             date_crit.setDateRange('-') # This is irrelevant when the date is now
             date_crit.setOperation('less')
             type_criterion.setValue( ("Event") )        
-            sort_crit = pc.addCriterion('effective',"ATSortCriterion")
+            sort_crit = pc.addCriterion('end',"ATSortCriterion")
             publishObject(wftool, pc)
 
         else:
