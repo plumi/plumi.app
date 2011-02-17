@@ -117,6 +117,12 @@ def setupCollections(portal, logger):
                   layout  = "folder_summary_view",
                   exclude = True),
 
+             dict(id      = 'events',
+                  title   = _(u'Events'),
+                  desc    = _(u'Upcoming events.'),
+                  layout  = "folder_summary_view",
+                  exclude = True),
+
              dict(id      = 'recent_comments',
                   title   = _(u'Recent Comments'),
                   desc    = _(u'Recent comments.'),
@@ -232,7 +238,7 @@ def setupCollections(portal, logger):
             right = getUtility(IPortletManager, name='plone.rightcolumn')
             rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
             urltool  = getToolByName(portal, 'portal_url')
-            calloutsCollectionPortlet = Assignment(header=u"News",
+            newsCollectionPortlet = Assignment(header=u"News",
                                         limit=5,
                                         target_collection = '/'.join(urltool.getRelativeContentPath(portal.news)),
                                         random=False,
@@ -243,7 +249,26 @@ def setupCollections(portal, logger):
                 chooser = INameChooser(mapping)
                 mapping[chooser.chooseName(None, assignment)] = assignment
             if not rightColumnInThisContext.has_key('news'):    
-                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
+                saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
+
+        elif item['id'] is 'events':
+            type_criterion.setValue( ("Event") )        
+            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
+            right = getUtility(IPortletManager, name='plone.rightcolumn')
+            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
+            urltool  = getToolByName(portal, 'portal_url')
+            eventsCollectionPortlet = Assignment(header=u"Upcoming Events",
+                                        limit=5,
+                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.events)),
+                                        random=False,
+                                        show_more=True,
+                                        show_dates=False)
+          
+            def saveAssignment(mapping, assignment):
+                chooser = INameChooser(mapping)
+                mapping[chooser.chooseName(None, assignment)] = assignment
+            if not rightColumnInThisContext.has_key('events'):    
+                saveAssignment(rightColumnInThisContext, eventsCollectionPortlet)
 
         else:
             type_criterion.setValue("Video")
