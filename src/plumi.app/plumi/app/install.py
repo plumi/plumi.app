@@ -275,6 +275,23 @@ def setupCollections(portal, logger):
             if not rightColumnInThisContext.has_key('events'):    
                 saveAssignment(rightColumnInThisContext, eventsCollectionPortlet)
 
+
+            #Past events collection
+            fv.invokeFactory('Topic',
+                           id = 'past_events',
+                           title = 'Past Events',
+                           description = _(u'Past events.').translate({}))
+            pc = getattr(fv, 'past_events')
+            pc.setAcquireCriteria(True)
+            pc.unmarkCreationFlag()
+            date_crit = pc.addCriterion('end','ATFriendlyDateCriteria')  
+            date_crit.setValue(0)
+            date_crit.setDateRange('-') # This is irrelevant when the date is now
+            date_crit.setOperation('less')
+            type_criterion.setValue( ("Event") )        
+            sort_crit = pc.addCriterion('effective',"ATSortCriterion")
+            publishObject(wftool, pc)
+
         else:
             type_criterion.setValue("Video")
             sort_crit = fv.addCriterion('effective',"ATSortCriterion")
