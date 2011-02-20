@@ -44,6 +44,7 @@ import bencode
 from hashlib import sha1 as sha
 import Zope2
 from collective.seeder.subscribers import make_meta_file, makeinfo, subfiles, gmtime,get_filesystem_encoding, decode_from_filesystem
+from Products.CMFPlone.utils import base_hasattr
 
 def initialize(context):  
     """Initializer called when used as a Zope 2 product."""
@@ -522,6 +523,22 @@ def plumi4to41(context, logger=None):
         except:
             pass     
 
+    #update user favorite folders
+    users = context.acl_users.getUsers()
+    pm = context.portal_membership
+    addable_types = ['Link']
+    for user in users:
+        mf =  pm.getHomeFolder(user.getId())
+        try:
+            favs = mf.Favorites
+            if base_hasattr(favs, 'setConstrainTypesMode'):
+                favs.setConstrainTypesMode(1)
+                favs.setImmediatelyAddableTypes(addable_types)
+                favs.setLocallyAllowedTypes(addable_types)
+        except:
+            pass
+        
+        
 
 def changeWorkflowState(content, state_id, acquire_permissions=False,
                         portal_workflow=None, **kw):
