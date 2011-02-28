@@ -1,3 +1,14 @@
+4.1 (2011-02-28) [unweb.me]
+===========================
+
+ - fix news and events portlets that occasonaly diplayed mixed up listings [clopy]
+ - fix favorite folder for old members on upgrade step [clopy]
+ - only create torrents for published and featured videos on upgrade  [clopy]
+ - fixed bug where first field was being taken as a string, rather than list on user homepages [dave]
+ - added some failsafes when getting torrent seeders [clopy]
+ - ajaxify seeders request in video template [clopy]
+ - add views tracking to featured video [dimo]
+
 4.1rc1 (2011-02-11) [unweb.me]
 ==============================
 
