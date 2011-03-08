@@ -543,6 +543,31 @@ def plumi4to41(context, logger=None):
                 favs.setLocallyAllowedTypes(addable_types)
         except:
             pass
+
+
+def plumi41to411(context, logger=None):
+    AllVideos=context.portal_catalog(portal_type='PlumiVideo',sort_on='Date',sort_order='reverse')
+    print len(AllVideos)
+    for video in AllVideos:
+        try:
+            trans = video.isTranscodedPlumiVideoObj
+            if dict(trans)['low']['status'] == 0:
+                print "%s already transcoded. Moving on" % video.id
+                continue
+        except:
+            print "error checking transcoding status for %s" % video.id
+
+        try:
+            VideoObj=video.getObject()
+            print "transcoding %s" % video.id
+            tt = getUtility(ITranscodeTool)
+            tt.add(VideoObj, force=True, profiles=['low'])
+        except:
+            print 'Some Error In Transcoded'
+            print VideoObj.id
+     
+    print 'success'
+
         
         
 
