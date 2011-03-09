@@ -48,6 +48,12 @@ sub vcl_recv {
     }
 
 
+    # dont't cache serve_daemon view
+    if(req.url ~ "serve_daemon"){
+        pipe;
+    }
+
+
     if (req.request != "GET" && req.request != "HEAD") {
         /* We only deal with GET and HEAD by default */
         pass;
