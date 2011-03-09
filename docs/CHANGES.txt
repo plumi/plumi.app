@@ -1,3 +1,14 @@
+4.1.1 (2011-03-09) [unweb.me]
+=============================
+
+ - add logging to upgrade step [clopy]
+ - update load balancer configuration [dimo]
+ - don't cache the serve_daemon view, fixes possible issue with transcoding large videos [dimo]
+ - use multiple threads when transcoding mp4 low quality [clopy]
+ - add upgrade step to retranscode videos in low res profile [clopy]
+ - depend on collective.transcode.star 0.8 and plumi.content 4.1.1 [dimo]
+
+
 4.1 (2011-02-28) [unweb.me]
 ===========================
 
