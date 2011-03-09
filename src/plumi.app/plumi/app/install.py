@@ -16,6 +16,11 @@ from plone.portlet.collection.collection import Assignment
 from plone.app.discussion.interfaces import ICommentingTool
 from plone.app.discussion.interfaces import IConversation
 
+from plone.registry import field as Field
+from plone.registry import Record
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry 
+
 from AccessControl import allow_module
 allow_module('plumi.app.member_area.py')
 
@@ -471,9 +476,17 @@ def plumi311to4(context, logger=None):
     for user in users:
         user.setProperties(wysiwyg_editor = 'TinyMCE')
 
-
 def plumi4to41(context, logger=None):
-    
+    # add html5 field to transcode.star registry
+    registry = getUtility(IRegistry)
+    html5_field = Field.Choice(title = u'Choose video embed method',
+                               description=u"Choose if you would like to use just the HTML5 video tag, or Flash (Flowplayer) or if you would like to use HTML5 with Flowplayer as failback for browsers that don't support the HTML5 video tag",
+                               values = ['HTML5 video tag', 'HTML5 Flash fallback', 'Flash - Flowplayer'],
+                               default = "HTML5 Flash fallback",
+                              )
+    html5_record = Record(html5_field)
+    registry.records['collective.transcode.star.interfaces.ITranscodeSettings.html5'] = html5_record
+
     catalog = getToolByName(context, 'portal_catalog')
     # Create torrents for videos
     videos = catalog(portal_type='PlumiVideo')
@@ -547,26 +560,28 @@ def plumi4to41(context, logger=None):
 
 def plumi41to411(context, logger=None):
     AllVideos=context.portal_catalog(portal_type='PlumiVideo',sort_on='Date',sort_order='reverse')
-    print len(AllVideos)
+    logger=logging.getLogger('plumi.app')
+    logger.info('All videos: %s ' % len(AllVideos))
+
     for video in AllVideos:
         try:
             trans = video.isTranscodedPlumiVideoObj
             if dict(trans)['low']['status'] == 0:
-                print "%s already transcoded. Moving on" % video.id
+                logger.info("%s already transcoded. Moving on" % video.id)
                 continue
         except:
-            print "error checking transcoding status for %s" % video.id
+            logger.info("error checking transcoding status for %s" % video.id)
 
         try:
             VideoObj=video.getObject()
-            print "transcoding %s" % video.id
+            logger.info("transcoding %s" % video.id)
             tt = getUtility(ITranscodeTool)
             tt.add(VideoObj, force=True, profiles=['low'])
         except:
-            print 'Some Error In Transcoded'
-            print VideoObj.id
+            logger.info('Some Error In Transcoded')
+            logger.info(VideoObj.id)
      
-    print 'success'
+    logger.info('success')
 
         
         
