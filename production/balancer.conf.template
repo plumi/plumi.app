@@ -61,11 +61,11 @@ backend zope
   cookie serverid
   option httpchk GET /
 
-  server  zope0101 ${site:instance1-address} cookie z0101 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 5
-  server  zope0102 ${site:instance2-address} cookie z0102 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
-  server  zope0103 ${site:instance3-address} cookie z0103 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
-  server  zope0104 ${site:instance4-address} cookie z0104 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
-  server  zope0105 ${site:instance5-address} cookie z0105 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
-  server  zope0106 ${site:instance6-address} cookie z0106 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
-  server  zope0107 ${site:instance7-address} cookie z0107 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
-  server  zope0108 ${site:instance8-address} cookie z0108 check maxconn 2 maxqueue 2 check inter 2000 rise 2 fall 
+  server  zope0101 ${site:instance1-address} cookie z0101 check maxconn 2 maxqueue 2
+  server  zope0102 ${site:instance2-address} cookie z0102 check maxconn 2 maxqueue 2
+  server  zope0103 ${site:instance3-address} cookie z0103 check maxconn 2 maxqueue 2
+  server  zope0104 ${site:instance4-address} cookie z0104 check maxconn 2 maxqueue 2
+  server  zope0105 ${site:instance5-address} cookie z0105 check maxconn 2 maxqueue 2
+  server  zope0106 ${site:instance6-address} cookie z0106 check maxconn 2 maxqueue 2
+  server  zope0107 ${site:instance7-address} cookie z0107 check maxconn 2 maxqueue 2
+  server  zope0108 ${site:instance8-address} cookie z0108 check maxconn 2 maxqueue 2
