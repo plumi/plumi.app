@@ -13,7 +13,8 @@ Before you start
     e.g. sudo apt-get install python2.6-dev
  * install libjpeg and zlib header files 
     e.g. sudo apt-get install libjpeg62-dev zlib1g-dev
-    or for Ubuntu 11.04: sudo apt-get install libjpeg8-dev 
+    or for Ubuntu 11.04 jpeg support: sudo apt-get install libjpeg8-dev
+    for png support in Ubuntu 11.04 you may have to install zlib from source
  * install groff-base
     e.g. sudo apt-get install groff-base
  * install libxslt header files
@@ -51,21 +52,14 @@ Now start your dev instance in the foreground
 
   ./bin/instance-debug fg
 
-You should be able to access your instance at http://localhost:8080 unless you
-changed the default host and port in site.cfg. Create a new Plone site using
-the credentials in site.cfg (admin:admin by default, to change them after the
-initial setup go to http://localhost:8080/acl_users/users/manage_users ).
-Enter a site id ('Plone' by default) and create the site without selecting any
-add-ons at this point. 
-
-Once your Plone site has been created, go to the Add-ons configuration section
-(e.g. http://localhost:8080/Plone/prefs_install_products_form ) and install the
-Plumi 4.x add-on. 
+You should be able to access your Plumi instance at http://localhost:8080/Plone
+unless you changed the default host, port or site-id in site.cfg. You can login 
+as an admin using the credentials in site.cfg (admin:admin by default). 
 
 If you have changed the default port, hostname, or the secret encryption key
-for transcode daemon in site.cfg, go to the transcode settings panel
-(e.g. http://localhost:8080/Plone/@@transcode-controlpanel ) and enter the same
-host, port and key there.
+for the transcode daemon in site.cfg, you should go to the transcode settings 
+panel (e.g. http://localhost:8080/Plone/@@transcode-controlpanel ) and enter 
+the same host, port and key there.
 
 Your dev instance should be ready for testing at this point. Add a new user to
 your Plumi site for testing (the admin user may not have the correct folders
@@ -155,29 +149,30 @@ Confirm that all the services have been started:
 
    ./bin/supervisorctl status
 
+You should now be able to view your site at the hostname you configured in 
+site.cfg (www-server-name setting e.g. http://testing.plumi.org) as long as 
+the hostname is configured correctly and points to the ip address of your 
+server. Also verify that you can access the transcode daemon and videoserver
+in the hostname you provided in site.cfg (www-videoserver-name e.g 
+http://videos.testing.plumi.org).
+ 
 A debug instance is also created during the production buildout but not started
 by default. If you need to test, debug and catch errors on your production
 environment you can start it in the foreground:
 
    ./bin/instance-debug fg
 
-You should be able to access your instance through the load balancer at
-http://localhost:8089 unless you changed the default balancer host and port in
-site.cfg. Create a new Plone site using the credentials in site.cfg. Enter a
-the site-id you defined in site.cfg ('Plone' by default) and create the site
-without selecting any add-ons at this point.
+By default the debug instance will listen on any ip address provided by your 
+server, on port 8080 (instance-debug-address in site.cfg)
 
-Once your Plone site has been created, go to the Add-ons configuration section
-(e.g. http://localhost:8089/Plone/prefs_install_products_form ) and install the Plumi 4.x add-on. 
+You can login to your new Plumi site using the admin credentials you provided
+in site.cfg (admin:admin by default).
 
-Now go to the transcode settings panel (e.g.
-http://localhost:8089/Plone/@@transcode-controlpanel ) and enter the
+Once you login for the first time, go to the transcode settings panel (e.g.
+http://testing.plumi.org/@@transcode-controlpanel ) and enter the
 www-videoserver-name set in site.cfg and the updated secret key. You may also
 want to configure caching by installing the http caching support in the add-ons
 configuration section.
-
-From this point, you should be able to access your site through nginx at the
-url that you configured in site.cfg (www-server-name).
 
 Add a new user to your Plumi site for testing (the admin user may not have the
 correct folders created, as this user is created before the Plumi site is

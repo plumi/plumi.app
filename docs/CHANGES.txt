@@ -1,7 +1,39 @@
+4.2rc2 (2011-05-19) [unweb.me]
+==============================
+
+ - install base plumi profiles on site creation [clopy]
+ - restore default effective user name to zope [clopy]
+ - fix permission issues on production buildout [clopy, dimo]
+ - configure PYTHON_EGG_CACHE [dimo]
+ - update navtree-patch [clopy]
+ - disable Werror compile option to prevent possible nginx breakage [dimo, clopy]
+ - unpin plumi.app since we should already have it [dimo]
+ - use 3 threads and 3 maxconnections per instance in production buildouts [dimo]
+ - automatically create plumi site on first buildout run [dimo]
+ - update to Plone 4.0.5 & add collective.xdv in buildout [dimo]
+ - move plumi egg pins to production buildout only, dev buildout should work with latest trunks [dimo]
+ - ftp-user should be root by default in order to bind to port 21 [dimo]
+ - remove effective user from zeoserver buildout section, since supervisor takes care of that, prevents possible permission issue in dev buildouts [dimo]
+ - update INSTALL docs [dimo]
+ - get thumb from 8th second instead of 4th [dimo]
+ - force lxml build to prevent possible ngnix build issue if lxml already present [dimo]
+ - do not use content language negotiation by default [clopy]
+
+
+4.2rc1 (2011-05-10) [unweb.me]
+==============================
+
+ - enable 2 instances by default in production builds [dimo]
+ - change default user mappings and varnish port [dimo]
+ - use setuptools by default instead of distribute in bootstrap.py [dimo]
+ - update plumi manual link [dimo]
+
+
 4.1.2 (2011-03-26) [unweb.me]
 =============================
 
  - updated navtree patch for plone 4.0.4 [clopy]
+
 
 4.1.1 (2011-03-09) [unweb.me]
 =============================
