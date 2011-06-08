@@ -2,6 +2,7 @@
 =============================
 
  - Update to Plone 4.0.7 that includes the latest security fixes [dimo]
+ - don't use sudo in front of chown commands in production buildout [dimo]
 
 
 4.2 (2011-06-02) [unweb.me]
