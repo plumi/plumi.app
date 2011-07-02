@@ -1,3 +1,9 @@
+4.2.2 (2011-07-01) [unweb.me]
+=============================
+
+ - Include Zope_Hotfix_20110622 that patches a serious security vulnerability [dimo]
+
+
 4.2.1 (2011-06-08) [unweb.me]
 =============================
 
