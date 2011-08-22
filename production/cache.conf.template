@@ -43,7 +43,7 @@ sub vcl_recv {
     }
 
     # don't bother caching large files
-    if(req.url ~ "\.(mp3|flv|mov|mp4|mpg|mpeg|avi|m4v)") {
+    if(req.url ~ "\.(mp3|flv|mov|mp4|mpg|mpeg|avi|m4v|mkv|wmv)") {
         pipe;
     }
 
