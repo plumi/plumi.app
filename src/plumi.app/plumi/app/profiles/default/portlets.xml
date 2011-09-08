@@ -1,27 +1,6 @@
 <?xml version="1.0"?>
 <portlets>
 
-     <assignment name="plumi.publish" category="context" key="/"
-        manager="plone.leftcolumn" type="plone.portlet.static.Static"
-        insert-before="navigation">
-        <property name="header">publish</property>
-        <property name="more_url"/>
-        <property name="hide">False</property>
-        <property name="footer"/>
-        <property name="text">
-            &lt;div id="portlet-publish"&gt;
-              &lt;a title="Publish Video" class="internal-link" href="publish"&gt;
-                &lt;span&gt;publish&lt;/span&gt;
-              &lt;/a&gt;
-            &lt;/div&gt;
-        </property>
-        <property name="omit_border">True</property>
-    </assignment>
-    <assignment name="navigation" category="context" key="/"
-        manager="plone.leftcolumn" type="portlets.Navigation">
-    </assignment>
-
-
     <assignment name="recent-items" category="user" key="Plumi"
                 manager="plone.dashboard2" type="portlets.Recent">
         <property name="count">5</property>
@@ -43,7 +22,6 @@
                 manager="plone.leftcolumn" type="portlets.Navigation">
         <property name="topLevel">0</property>
     </assignment>
-
 
     <assignment manager="plone.leftcolumn"
                 category="context"
