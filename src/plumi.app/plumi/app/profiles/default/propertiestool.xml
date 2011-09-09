@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="navtree_properties" meta_type="Plone Property Sheet">
+  <property name="includeTop" type="boolean">False</property>
+  <property name="idsNotToList" type="lines">
+   <element value="portal_atmediafiletool"/>
+   <element value="default_member_content"/>
+  </property>
+ </object>
+</object>
