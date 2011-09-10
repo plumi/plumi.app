@@ -6,9 +6,15 @@
 bin/
 buildout.cfg
 develop-eggs/
+downloads/
 include/
 lib/
 parts/
+production/balancer.conf
+production/cache.conf
+production/logrotate.conf
+production/main.conf
+production/nginx/
 src/collective.contentlicensing/
 src/contentlicensingollective.piwik.core/
 src/collective.piwik.flowplayer/
@@ -17,6 +23,7 @@ src/collective.transcode.daemon/
 src/collective.transcode.recipe/
 src/collective.transcode.star/
 src/plone.app.locales/
+src/plonetheme.plumigreen/
 src/plumi.app/plumi.app.egg-info/
 src/plumi.content/
 src/plumi.locales/
