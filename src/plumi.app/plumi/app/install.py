@@ -56,9 +56,6 @@ def app_installation_tasks(self, reinstall=False):
     logger=logging.getLogger('plumi.app')
     logger.info('starting app_installation_tasks. self is %s' %self)
     portal=getToolByName(self,'portal_url').getPortalObject()
-    if not ISite.providedBy(portal):
-        enableSite(portal)
-    
     setupRSS(portal, logger)
     setupCollections(portal, logger)
 
