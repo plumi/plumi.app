@@ -72,7 +72,27 @@
       />
 
 
-  <include package=".policy" />
+  <!-- new indexes -->
+  <adapter
+    name="hasImageAndCaption"
+    factory=".indexes.hasImageAndCaption"
+    />
+  <adapter
+    name="isTranscodedPlumiVideoObj"
+    factory=".indexes.isTranscodedPlumiVideoObj"
+    />
+  <adapter
+    name="isPublishablePlumiVideoObj"
+    factory=".indexes.isPublishablePlumiVideoObj"
+    />
+  <adapter
+    name="hasImageAndCaption"
+    factory=".indexes.hasImageAndCaptionForNews"
+    />
+  <adapter
+    name="videoDuration"
+    factory=".indexes.videoDuration" />
+
 
   <include package="plumi.content" />
   <include package="plumi.locales" />
