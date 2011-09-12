@@ -51,13 +51,6 @@ import Zope2
 from collective.seeder.subscribers import make_meta_file, makeinfo, subfiles, gmtime,get_filesystem_encoding, decode_from_filesystem
 from Products.CMFPlone.utils import base_hasattr
 
-def initialize(context):  
-    """Initializer called when used as a Zope 2 product."""
-    logger=logging.getLogger('plumi.app')
-    logger.debug('beginning initialize')
-    # this is called at Zope instance startup, ie not installation.
-    logger.debug('ending  initialize')
-
 def app_installation_tasks(self, reinstall=False):
     """Custom Plumi setup code"""
     logger=logging.getLogger('plumi.app')

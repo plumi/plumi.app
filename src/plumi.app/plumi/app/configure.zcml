@@ -72,8 +72,6 @@
       />
 
 
-  <five:registerPackage package="." initialize=".install.initialize" />
-
   <include package=".policy" />
 
   <include package="plumi.content" />
