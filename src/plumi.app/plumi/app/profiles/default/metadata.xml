@@ -9,5 +9,6 @@
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plumi.content:default</dependency>
     <dependency>profile-collective.seeder:default</dependency>
+    <dependency>profile-collective.transcode.star:default</dependency>
   </dependencies>
 </metadata>
