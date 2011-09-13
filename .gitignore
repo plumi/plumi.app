@@ -7,6 +7,7 @@ bin/
 buildout.cfg
 develop-eggs/
 downloads/
+eggs/
 include/
 lib/
 parts/
@@ -28,4 +29,7 @@ src/plumi.app/plumi.app.egg-info/
 src/plumi.content/
 src/plumi.locales/
 src/plumi.skin/
+torrents/
+torrents_safe/
+transcoded/
 var/
