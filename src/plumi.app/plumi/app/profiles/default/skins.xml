@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<object name="portal_skins" meta_type="Plone Skins Tool">
+
+ <object name="plumi_app"
+    meta_type="Filesystem Directory View"
+    directory="plumi.app:skins/plumi_app"/>
+
+ <skin-path name="*">
+  <layer name="plumi_app" insert-after="custom"/>
+ </skin-path>
+
+</object>

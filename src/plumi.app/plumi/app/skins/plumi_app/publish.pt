@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plumi">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+
+<tal:block tal:condition="exists: here/portal_skins | nothing"
+           tal:replace="nothing">
+    <tal:block tal:condition="here/portal_skins/updateSkinCookie | nothing"
+               tal:define="dummy here/setupCurrentSkin" />
+</tal:block>
+
+<div metal:fill-slot="main">
+<!--  <div tal:condition="not:isAnon"> -->
+    <div tal:define="came_from request/came_from|nothing;
+                     initial_login request/initial_login|nothing;
+                     js_enabled python:request.get('js_enabled','1')!='0';
+                     portal context/@@plone_portal_state/portal;">
+
+      <div tal:condition="initial_login">
+        <p i18n:translate="description_logged_in_explain">
+          Now that you have registered and logged in you'll notice that the site looks a little different. You can add videos, events, news, set up your members workspace or personalise your profile page.
+    Take the time to have a look around the site and explore what you can do. Check out the <a tal:attributes="href string:${portal_url}/help-and-tutorials">help and tutorials page</a> for more information.
+        </p>
+
+      </div>
+
+      <div tal:condition="not:initial_login">
+        <br />
+      </div>
+
+<div class="loginOption"><a tal:attributes="href string:${portal/portal_membership/getHomeUrl}/videos/createObject?type_name=PlumiVideo"><img class="bigbutton" tal:attributes="src string:${portal_url}/publishvideo.gif"></a><b><a class="optionHeader" tal:attributes="href string:${portal/portal_membership/getHomeUrl}/videos/createObject?type_name=PlumiVideo" i18n:translate="">Publish Video</a></b><br />
+<tal:publish_video_blurb i18n:translate="publish_video_blurb">
+Share your productions by uploading video to
+<span tal:replace="portal/Title" i18n:name="site_name">EngageMedia</span>. 
+Videos will be automatically submitted for publishing approval.
+</tal:publish_video_blurb>
+<a tal:attributes="href string:${portal_url}/editorial-policy"
+   i18n:translate="view_editorial_policy" i18n:domain="plumi">View editorial policy</a>. 
+</div>
+<div class="loginOption"><a tal:attributes="href string:${portal/portal_membership/getHomeUrl}/events/createObject?type_name=Event"><img class="bigbutton" tal:attributes="src string:${portal_url}/myevents.gif"></a><b><a class="optionHeader" tal:attributes="href string:${portal/portal_membership/getHomeUrl}/events/createObject?type_name=Event" i18n:translate="">Publish Event</a></b><br />
+<tal:publish_event_blurb i18n:translate="publish_event_blurb">
+List your events such as screenings, film festivals or workshops here.
+</tal:publish_event_blurb>
+</div>
+<div class="loginOption"><a tal:attributes="href string:${portal/portal_membership/getHomeUrl}/news/createObject?type_name=News Item"><img class="bigbutton" tal:attributes="src string:${portal_url}/mynews.gif"></a><b><a class="optionHeader" tal:attributes="href string:${portal/portal_membership/getHomeUrl}/news/createObject?type_name=News Item" i18n:translate="">Publish News</a></b><br />
+<tal:publish_news_blurb i18n:translate="publish_news_blurb">
+Tell us news about your past and future productions and promote your work.
+</tal:publish_news_blurb>
+</div>
+<div class="loginOption"><a tal:attributes="href string:${portal/portal_membership/getHomeUrl}/callouts/createObject?type_name=PlumiCallOut"><img class="bigbutton" tal:attributes="src string:${portal_url}/callouts.gif"></a><b><a class="optionHeader" tal:attributes="href string:${portal/portal_membership/getHomeUrl}/callouts/createObject?type_name=PlumiCallOut" i18n:translate="">Call Out!</a></b><br />
+<tal:publish_callout_blurb i18n:translate="publish_callout_blurb">
+Looking for content for a DVD compilation, screening, film festival or crew for a production? Let people know about it by adding a call-out.
+</tal:publish_callout_blurb>
+</div>
+<br />
+      <div tal:condition="not:js_enabled">
+         <p i18n:translate="description_javascript_advantage">
+            You can take fuller advantage of the features of this site
+            if you enable javascript in your browser. 
+         </p>
+
+         <p i18n:translate="description_enable_cookies_for_login">
+            Note: If you do not remain logged in after leaving this
+            page, it is because you need to
+            <span i18n:name="enable_cookies">
+                <a href="enabling_cookies"
+                   i18n:translate="label_enable_cookies">
+                    enable cookies
+                </a>
+            </span>
+            in your browser.
+         </p>
+      </div>
+
+    </div>
+<!--  </div> -->
+<!--
+  <div tal:condition="isAnon">
+    <div metal:use-macro="here/login_failed/macros/login_failed" />
+  </div>
+-->
+</div>
+
+</body>
+</html>
+

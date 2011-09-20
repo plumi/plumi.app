@@ -1,10 +1,46 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser" 
-    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plumi">
+
+  <include package="plumi.content" />
+  <include package="plumi.locales" />
+
+  <!-- new indexes -->
+  <adapter
+    name="hasImageAndCaption"
+    factory=".indexes.hasImageAndCaption"
+    />
+  <adapter
+    name="isTranscodedPlumiVideoObj"
+    factory=".indexes.isTranscodedPlumiVideoObj"
+    />
+  <adapter
+    name="isPublishablePlumiVideoObj"
+    factory=".indexes.isPublishablePlumiVideoObj"
+    />
+  <adapter
+    name="hasImageAndCaption"
+    factory=".indexes.hasImageAndCaptionForNews"
+    />
+  <adapter
+    name="videoDuration"
+    factory=".indexes.videoDuration" />
+
+
+  <adapter
+      for="Products.CMFDefault.interfaces._content.IFavorite"
+      factory=".adapters.FavoriteConversation"
+      provides="plone.app.discussion.interfaces.IConversation"
+      />
+
+
+  <cmf:registerDirectory name="plumi_app" />
+
 
   <!-- Generic Setup Profile -->
   <genericsetup:registerProfile
@@ -71,37 +107,5 @@
       profile="plumi.app:default"
       />
 
-
-  <!-- new indexes -->
-  <adapter
-    name="hasImageAndCaption"
-    factory=".indexes.hasImageAndCaption"
-    />
-  <adapter
-    name="isTranscodedPlumiVideoObj"
-    factory=".indexes.isTranscodedPlumiVideoObj"
-    />
-  <adapter
-    name="isPublishablePlumiVideoObj"
-    factory=".indexes.isPublishablePlumiVideoObj"
-    />
-  <adapter
-    name="hasImageAndCaption"
-    factory=".indexes.hasImageAndCaptionForNews"
-    />
-  <adapter
-    name="videoDuration"
-    factory=".indexes.videoDuration" />
-
-
-  <include package="plumi.content" />
-  <include package="plumi.locales" />
-
-  <adapter
-      for="Products.CMFDefault.interfaces._content.IFavorite"
-      factory=".adapters.FavoriteConversation"
-      provides="plone.app.discussion.interfaces.IConversation"
-      />
-      
 </configure>
 
