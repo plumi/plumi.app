@@ -1,6 +1,6 @@
 --- plone/app/layout/navigation/navtree.py
 +++ plone/app/layout/navigation/navtree.py
-@@ -271,7 +271,9 @@
+@@ -273,7 +273,9 @@
                  itemPaths[parentPath] = {'children': [newNode]}
  
              # Ask the subtree filter (if any), if we should be expanding this node
