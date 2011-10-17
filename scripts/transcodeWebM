@@ -1,0 +1,3 @@
+#!/bin/sh
+PATH=.:./bin:$PATH
+ffmpeg -i "$1" -acodec libvorbis -ac 2 -ab 96k -ar 44100 -b 345k -vf "scale=-1:480" "$2"
