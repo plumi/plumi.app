@@ -1,0 +1,3 @@
+#!/bin/sh
+PATH=.:./bin:$PATH
+ffmpeg -y -i "$1" -threads 0 -r 25 -threads 0 -ar 44100 -acodec libvorbis -crf 25 -ab 64k -vf scale="ceil(a*240)+mod(ceil(a*240)\,2):240" "$2"
