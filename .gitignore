@@ -23,6 +23,7 @@ src/collective.piwik.core/
 src/collective.transcode.daemon/
 src/collective.transcode.recipe/
 src/collective.transcode.star/
+src/collective.seeder/
 src/plone.app.locales/
 src/plonetheme.plumigreen/
 src/plumi.app/plumi.app.egg-info/
