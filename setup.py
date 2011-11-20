@@ -50,7 +50,7 @@ setup(name='plumi.app',
           'Products.LinguaPlone',
           'plone.contentratings',
           'collective.seeder',
-          'collective.piwik.flowplayer',
+          'collective.piwik.mediaelement',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
