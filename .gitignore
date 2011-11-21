@@ -30,6 +30,8 @@ src/plumi.app/plumi.app.egg-info/
 src/plumi.content/
 src/plumi.locales/
 src/plumi.skin/
+src/collective.mediaelementjs/
+src/collective.piwik.mediaelement/
 torrents/
 torrents_safe/
 transcoded/
