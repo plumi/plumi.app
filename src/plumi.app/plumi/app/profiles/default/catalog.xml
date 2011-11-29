@@ -10,11 +10,15 @@
  <column value="getCategories"/>
  <column value="getCountries"/>
  <column value="getSubmissionCategories"/>
+ <column value="getVideoLanguage"/>
 
  
  <!-- indexes -->
  <index name="getGenre" meta_type="KeywordIndex">
     <indexed_attr value="getGenre"/>
+ </index>
+ <index name="getVideoLanguage" meta_type="KeywordIndex">
+    <indexed_attr value="getVideoLanguage"/>
  </index>
  <index name="getCategories" meta_type="KeywordIndex">
     <indexed_attr value="getCategories"/>

@@ -13,6 +13,18 @@
         <criteria>ATSimpleIntCriterion</criteria>
         <criteria>ATSimpleStringCriterion</criteria>
       </index>
+       <index name="getVideoLanguage" description="The language of content" enabled="True" friendlyName="Video Language">
+        <criteria>ATBooleanCriterion</criteria>
+        <criteria>ATCurrentAuthorCriterion</criteria>
+        <criteria>ATDateRangeCriterion</criteria>
+        <criteria>ATFriendlyDateCriteria</criteria>
+        <criteria>ATListCriterion</criteria>
+        <criteria>ATPortalTypeCriterion</criteria>
+        <criteria>ATReferenceCriterion</criteria>
+        <criteria>ATSelectionCriterion</criteria>
+        <criteria>ATSimpleIntCriterion</criteria>
+        <criteria>ATSimpleStringCriterion</criteria>
+      </index>
     <index name="getCategories" description="The categories of content" enabled="True" friendlyName="Video Categories">
         <criteria>ATBooleanCriterion</criteria>
         <criteria>ATCurrentAuthorCriterion</criteria>
