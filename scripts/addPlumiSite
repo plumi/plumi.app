@@ -1,0 +1,44 @@
+# We need to do that when IPython is installed
+#try:
+#    import IPython
+#    IPython.Shell.IPShell(user_ns=locals()).mainloop(sys_exit=1)
+#    app = __IP.internal_ns['app']
+#except:
+#    pass
+    
+from Testing import makerequest
+from AccessControl.SecurityManagement import newSecurityManager
+
+# we need to be authenticated
+admin = app.acl_users.getUserById('admin')
+# or whatever admin id you have
+admin = admin.__of__(app.acl_users)
+newSecurityManager(None, admin)
+
+# ATDocument (front-page) needs a request :-(
+app=makerequest.makerequest(app)
+
+# here we go
+from Products.CMFPlone.factory import addPloneSite
+from sys import argv
+
+if len(argv) > 1:
+    site_id = argv[1]
+else:
+    site_id = 'Plone'
+    
+extension_profiles = ('plonetheme.classic:default', 'plonetheme.sunburst:default', )
+
+if not app.get(site_id,False):
+    addPloneSite(app, site_id, extension_ids=extension_profiles, setup_content=True)
+    app[site_id].portal_setup.runAllImportStepsFromProfile('profile-plumi.app:default')
+
+    if len(argv) < 3 or argv[2] == 'default':
+        app[site_id].portal_setup.runAllImportStepsFromProfile('profile-plumi.skin:default')
+    elif argv[2] == 'sunburst':
+        pass
+
+    import transaction
+    transaction.commit()
+else:
+    print "Portal with id %s already exists. Moving along" % site_id

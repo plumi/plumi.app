@@ -4,7 +4,6 @@
   <dependencies>
     <dependency>profile-Products.LinguaPlone:LinguaPlone</dependency>
     <dependency>profile-plone.contentratings:default</dependency>
-    <dependency>profile-Products.ATVocabularyManager:default</dependency>
     <dependency>profile-collective.contentlicensing:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plumi.content:default</dependency>

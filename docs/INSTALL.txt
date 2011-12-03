@@ -31,7 +31,7 @@ Before runing buildout you may wish to customize some of the options inside
 site.cfg, especially if ports 8080, 8888 or 8100 are already used by other apps
 in your system. Once you're ready do the following:
 
-  python2.6 bootstrap.py -c devel.cfg -v 1.4.3
+  python2.6 bootstrap.py -c devel.cfg
   ./bin/buildout -c devel.cfg
 
 That should take some time, so feel free to get some cofee or fresh air while
@@ -47,6 +47,10 @@ Start supervisor like this:
 Confirm that zeo and transcodedaemon are up and running:
 
   ./bin/supevisorctl status
+
+Run the plumisite command to create a new Plumi site
+
+  ./bin/plumisite
 
 Now start your dev instance in the foreground
 
@@ -125,7 +129,7 @@ very least you should change the following:
 
 Once you're done
 
-   python2.6 bootstrap.py -c production.cfg -v 1.4.3
+   python2.6 bootstrap.py -c production.cfg
    sudo ./bin/buildout -c production.cfg
 
 That should take some time. At the end of the buildout process you may be asked
