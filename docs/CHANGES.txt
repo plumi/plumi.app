@@ -1,3 +1,26 @@
+4.3b2 (2011-12-03) [unweb.me]
+=============================
+
+ - added mkv and wmv files to cache exceptions [clopy]
+ - moved repo to github [garbas]
+ - added support for 16:9 transcoding, updated ffmpeg version [clopy]
+ - removing propertiestool.xml - functionality was moved to other packages [garbas]
+ - publish link should be part of desgin (moving to plumi.skin) [garbas]
+ - removed boilerplate code [garbas]
+ - added iw.debug into devel.cfg [garbas]
+ - update to Plone 4.1.2 [garbas, dimo]
+ - add publish and notifyMemberAreaCreated via portal_skins (from plumi.skin) [garbas]
+ - added webm transcoding support [clopy, cpsaltis, dimo]
+ - updated transcode script to catch odd resolutions [clopy]
+ - update thumbnail generation script for 16:9 [clopy]
+ - replace collective.flowplayer with collective.mediaelementjs [clopy, dimo]
+ - replace collective.piwik.flowplayer with collective.piwik.mediaelement [dimo]
+ - add plone.app.theming support & update lxml [dimo]
+ - pump up versions of external tools [cpsaltis]
+ - add vocabulary and index for video languages [clopy]
+ - update installation method and docs [dimo]
+ 
+ 
 4.2.2 (2011-07-01) [unweb.me]
 =============================
 
