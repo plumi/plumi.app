@@ -8,7 +8,7 @@ Before you start
  * install gcc/g++ dev tools and yasm
     e.g. sudo apt-get install build-essential yasm
  * install subversion
-    e.g. sudo apt-get install subversion
+    e.g. sudo apt-get install git-core
  * install python2.6 and header files
     e.g. sudo apt-get install python2.6-dev
  * install libjpeg and zlib header files 

@@ -37,7 +37,7 @@ setup(name='plumi.app',
       license='GPL',
       packages=find_packages('src/plumi.app',exclude=['ez_setup']),
       package_dir = {'':'src/plumi.app'},
-      namespace_packages=['plumi', 'plumi.app'],
+      namespace_packages=['plumi', ],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
