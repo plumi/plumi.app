@@ -6,13 +6,13 @@ Before you start
 ================
 
  * install gcc/g++ dev tools and yasm
-    e.g. sudo apt-get install build-essential yasm
+    e.g. sudo apt-get install build-essential yasm pkg-config
  * install subversion
     e.g. sudo apt-get install git-core
  * install python2.6 and header files
     e.g. sudo apt-get install python2.6-dev
- * install libjpeg and zlib header files 
-    e.g. sudo apt-get install libjpeg62-dev zlib1g-dev
+ * install libjpeg, zlib, libpcre header files 
+    e.g. sudo apt-get install libjpeg62-dev zlib1g-dev libpcre3-dev
     or for Ubuntu 11.04 jpeg support: sudo apt-get install libjpeg8-dev
     for png support in Ubuntu 11.04 you may have to install zlib from source
  * install groff-base
