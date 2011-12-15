@@ -9,38 +9,13 @@
 
   <include package="plumi.content" />
   <include package="plumi.locales" />
-
-  <!-- new indexes -->
-  <adapter
-    name="hasImageAndCaption"
-    factory=".indexes.hasImageAndCaption"
-    />
-  <adapter
-    name="isTranscodedPlumiVideoObj"
-    factory=".indexes.isTranscodedPlumiVideoObj"
-    />
-  <adapter
-    name="isPublishablePlumiVideoObj"
-    factory=".indexes.isPublishablePlumiVideoObj"
-    />
-  <adapter
-    name="hasImageAndCaption"
-    factory=".indexes.hasImageAndCaptionForNews"
-    />
-  <adapter
-    name="videoDuration"
-    factory=".indexes.videoDuration" />
-
-
+    
   <adapter
       for="Products.CMFDefault.interfaces._content.IFavorite"
       factory=".adapters.FavoriteConversation"
-      provides="plone.app.discussion.interfaces.IConversation"
-      />
-
-
+      provides="plone.app.discussion.interfaces.IConversation" />
+      
   <cmf:registerDirectory name="plumi_app" />
-
 
   <!-- Generic Setup Profile -->
   <genericsetup:registerProfile
@@ -48,8 +23,7 @@
         title="Plumi"
         directory="profiles/default"
         description="Video sharing"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+        provides="Products.GenericSetup.interfaces.EXTENSION" />
 
   <!-- Generic Setup Profile -->
   <genericsetup:registerProfile
@@ -57,9 +31,7 @@
         title="Plumi uninstall"
         directory="profiles/uninstall"
         description="Video sharing"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
-
+        provides="Products.GenericSetup.interfaces.EXTENSION" />
 
   <!-- Register the upgrade steps -->
   <genericsetup:upgradeStep
@@ -68,8 +40,7 @@
       source="0.2"
       destination="0.9"
       handler="plumi.app.install.plumi30to31"
-      profile="plumi.app:default"
-      />
+      profile="plumi.app:default" />
 
   <genericsetup:upgradeStep
       title="Plumi 3.1 to 3.1.1"
@@ -77,8 +48,7 @@
       source="0.2"
       destination="0.9"
       handler="plumi.app.install.plumi31to311"
-      profile="plumi.app:default"
-      />
+      profile="plumi.app:default" />
 
   <genericsetup:upgradeStep
       title="Plumi 3.11 to 4"
@@ -86,8 +56,7 @@
       source="0.9"
       destination="4.0"
       handler="plumi.app.install.plumi311to4"
-      profile="plumi.app:default"
-      />
+      profile="plumi.app:default" />
 
   <genericsetup:upgradeStep
       title="Plumi 4 to 4.1"
@@ -95,8 +64,7 @@
       source="4.0"
       destination="4.1"
       handler="plumi.app.install.plumi4to41"
-      profile="plumi.app:default"
-      />
+      profile="plumi.app:default" />
 
   <genericsetup:upgradeStep
       title="Plumi 4.1 to 4.11"
@@ -104,8 +72,7 @@
       source="4.1"
       destination="4.11"
       handler="plumi.app.install.plumi41to411"
-      profile="plumi.app:default"
-      />
-
+      profile="plumi.app:default" />
+      
 </configure>
 
