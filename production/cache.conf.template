@@ -8,8 +8,8 @@
 
 /* Configure balancer server as back end */
 backend transform {
-    .host = "${site:balancer-host}";
-    .port = "${site:balancer-port}";
+     .host = "${site:balancer-host}";
+     .port = "${site:balancer-port}";
 }
 
 /* Only allow PURGE from localhost */
@@ -28,7 +28,7 @@ sub vcl_recv {
         if (!client.ip ~ purge) {
             error 405 "Not allowed.";
         }
-        lookup;
+        return(lookup);
     }
 
     if (req.request != "GET" &&
@@ -39,31 +39,31 @@ sub vcl_recv {
         req.request != "OPTIONS" &&
         req.request != "DELETE") {
         /* Non-RFC2616 or CONNECT which is weird. */
-        pipe;
+        return(pipe);
     }
 
     # don't bother caching large files
     if(req.url ~ "\.(mp3|flv|mov|mp4|mpg|mpeg|avi|m4v|mkv|wmv)") {
-        pipe;
+        return(pipe);
     }
 
 
     # dont't cache serve_daemon view
     if(req.url ~ "serve_daemon"){
-        pipe;
+        return(pipe);
     }
 
 
     if (req.request != "GET" && req.request != "HEAD") {
         /* We only deal with GET and HEAD by default */
-        pass;
+        return(pass);
     }
 
     if (req.http.If-None-Match) {
-        pass;
+        return(pass);
     }
 
-    lookup;
+    return(lookup);
 }
 
 sub vcl_pipe {
@@ -78,7 +78,7 @@ sub vcl_hit {
     }
 
     if (!obj.cacheable) {
-        pass;
+        return(pass);
     }
 }
 
@@ -90,19 +90,19 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-    set obj.grace = 120s;
+    set beresp.grace = 120s;
 
-    if (!obj.cacheable) {
-        pass;
+    if (!beresp.cacheable) {
+        return(pass);
     }
-    if (obj.http.Set-Cookie) {
-        pass;
+    if (beresp.http.Set-Cookie) {
+        return(pass);
     }
-    if (obj.http.Cache-Control ~ "(private|no-cache|no-store)") {
-        pass;
+    if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
+        return(pass);
     }
-    if (req.http.Authorization && !obj.http.Cache-Control ~ "public") {
-        pass;
+    if (req.http.Authorization && !beresp.http.Cache-Control ~ "public") {
+        return(pass);
     }
     
 }
