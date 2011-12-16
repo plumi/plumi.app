@@ -21,23 +21,32 @@ app=makerequest.makerequest(app)
 # here we go
 from Products.CMFPlone.factory import addPloneSite
 from sys import argv
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 
 if len(argv) > 1:
     site_id = argv[1]
 else:
     site_id = 'Plone'
-    
+   
+if len(argv) > 2:
+    videoserver = argv[2]
+else:
+    videoserver = 'videos.testing.plumi.org'
+
 extension_profiles = ('plonetheme.classic:default', 'plonetheme.sunburst:default', )
 
 if not app.get(site_id,False):
     addPloneSite(app, site_id, extension_ids=extension_profiles, setup_content=True)
     app[site_id].portal_setup.runAllImportStepsFromProfile('profile-plumi.app:default')
 
-    if len(argv) < 3 or argv[2] == 'default':
+    if len(argv) < 4 or argv[3] == 'default':
         app[site_id].portal_setup.runAllImportStepsFromProfile('profile-plumi.skin:default')
-    elif argv[2] == 'sunburst':
+    elif argv[3] == 'sunburst':
         pass
 
+    registry = getUtility(IRegistry, context=app[site_id])
+    registry['collective.transcode.star.interfaces.ITranscodeSettings.daemon_address'] = (u'http://%s' % videoserver,)
     import transaction
     transaction.commit()
 else:
