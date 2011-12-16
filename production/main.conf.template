@@ -76,5 +76,11 @@ http {
         location /transcoded {
             root ${buildout:directory}/;
         }
+
+        types {
+            video/mp4 mp4;
+            video/webm webm;
+            image/jpeg jpg;
+        }
     }
 }
