@@ -107,8 +107,8 @@ higher than 1024. Port numbers under 1024 can only be reserved by processes
 with root privileges.
 
 You should also have 2 different hostnames available, one for your Plumi site
-(e.g. testing.plumi.org) and another for the transcoding server (e.g.
-videos.testing.plumi.org), both pointing to your public ip address. You could
+(e.g. new.plumi.org) and another for the transcoding server (e.g.
+newvideos.plumi.org), both pointing to your public ip address. You could
 also install the transcoding server in a different machine or even have
 multiple transcoding servers with load balancing, but this setup will not be
 covered in this guide. Please ensure that these hostnames are set up in advance
@@ -154,11 +154,11 @@ Confirm that all the services have been started:
    ./bin/supervisorctl status
 
 You should now be able to view your site at the hostname you configured in 
-site.cfg (www-server-name setting e.g. http://testing.plumi.org) as long as 
+site.cfg (www-server-name setting e.g. http://new.plumi.org) as long as 
 the hostname is configured correctly and points to the ip address of your 
 server. Also verify that you can access the transcode daemon and videoserver
 in the hostname you provided in site.cfg (www-videoserver-name e.g 
-http://videos.testing.plumi.org).
+http://newvideos.plumi.org).
  
 A debug instance is also created during the production buildout but not started
 by default. If you need to test, debug and catch errors on your production
@@ -173,7 +173,7 @@ You can login to your new Plumi site using the admin credentials you provided
 in site.cfg (admin:admin by default).
 
 Once you login for the first time, go to the transcode settings panel (e.g.
-http://testing.plumi.org/@@transcode-controlpanel ) and enter the
+http://new.plumi.org/@@transcode-controlpanel ) and enter the
 www-videoserver-name set in site.cfg and the updated secret key. You may also
 want to configure caching by installing the http caching support in the add-ons
 configuration section.
