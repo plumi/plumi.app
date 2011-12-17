@@ -1,0 +1,19 @@
+--- plone/app/upgrade/v41/alphas.py
++++ plone/app/upgrade/v41/alphas.py
+@@ -207,11 +207,11 @@
+                     paths = dict((tuple(catalog.getpath(k).split('/')), k)
+                                  for k in v.keys())
+                     shortest = min(paths, key=len)
+-                    for path, key in paths.iteritems():
+-                        if path[:len(shortest)] != shortest:
+-                            raise ValueError(
+-                                'Inconsistent UID index, UID %s is associated '
+-                                'with multiple docids: %r' % (k, paths))
++                    #for path, key in paths.iteritems():
++                        #if path[:len(shortest)] != shortest:
++                            #raise ValueError(
++                            #    'Inconsistent UID index, UID %s is associated '
++                            #    'with multiple docids: %r' % (k, paths))
+ 
+                     # All other docids are sub-paths of another
+                     # indicating the UID was just acquired, 
