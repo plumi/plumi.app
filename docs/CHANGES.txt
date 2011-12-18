@@ -1,3 +1,18 @@
+4.3rc1 (2011-12-18) [unweb.me]
+==============================
+
+ - disable static compilation for lxml [clopy]
+ - update ffmpeg and Plone versions [cpsaltis]
+ - update installation instructions [dimo]
+ - fix pcre, varnish, nginx builds [clopy, dimo]
+ - update cache template for varnish 2.1 [dimo]
+ - configure videoserver on new site creation [dimo]
+ - fix auto-install-plumisite step in production builds [dimo]
+ - add required mime types to nginx conf [dimo]
+ - added upgrade patch [clopy]
+ - update navtree patch [dimo]
+ 
+
 4.3b2 (2011-12-03) [unweb.me]
 =============================
 
