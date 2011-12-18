@@ -1,7 +1,6 @@
 A more comprehensive (but not always up to date!) install guide can be found at
 http://en.flossmanuals.net/Plumi/Introduction
 
-
 Before you start
 ================
 
@@ -107,7 +106,7 @@ higher than 1024. Port numbers under 1024 can only be reserved by processes
 with root privileges.
 
 You should also have 2 different hostnames available, one for your Plumi site
-(e.g. new.plumi.org) and another for the transcoding server (e.g.
+(e.g. new.plumi.org) and another for the transcoder/videoserver (e.g.
 newvideos.plumi.org), both pointing to your public ip address. You could
 also install the transcoding server in a different machine or even have
 multiple transcoding servers with load balancing, but this setup will not be
@@ -127,19 +126,24 @@ very least you should change the following:
   * www-videoserver-name: the hostname of your transcoder & videoserver
       (e.g. videos.engagemedia.org)
 
+If you decided not to change the default user for zope and zeo in site.cfg make
+sure that it exists in your system. If not, add it:
+
+   sudo useradd zope
+   
 Once you're done
 
    python2.6 bootstrap.py -c production.cfg
    sudo ./bin/buildout -c production.cfg
 
-That should take some time. At the end of the buildout process you may be asked
-for your user password. Buildout needs it to change the ownership of log and
+That should take some time. If you run the last command without sudo, the last
+step will fail as it will not be able to change the ownership of log and
 data files. If you'll be running all the processes as a single user it's ok to
-just press Enter several times and let this step fail. If all goes well, your
-production instance will be ready to start.
+let this step fail. If all goes well, your production instance will be ready to
+start.
 
-Supervisor should be installed and will be managing the ZEO server,
-transcodedaemon, the ftp server, your instances and the load balancer..
+Plumi uses Supervisor to manage the ZEO server, transcodedaemon, the ftp proxy,
+your zope instances, the load balancer, the cache and the nginx web server.
 
 Start supervisor like this:
 
