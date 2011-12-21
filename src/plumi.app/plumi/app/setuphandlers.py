@@ -7,6 +7,10 @@ from zope.component import getUtility
 from plumi.app.vocabs  import vocab_set as vocabs
 from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
 from Products.CMFPlone.utils import _createObjectByType
+from plumi.app.install import app_installation_tasks
+from plone.registry.record import Record
+from collective.seeder.interfaces import ISeederSettings
+
 
 def setupHome(portal, out):
     """
@@ -35,6 +39,7 @@ def setupSeeding(portal, logger):
         configure PlumiVideo as seedable
     """
     registry = getUtility(IRegistry)
+    registry.registerInterface(ISeederSettings)
     registry['collective.seeder.interfaces.ISeederSettings.portal_types'] = (u'PlumiVideo:video_file',)
 
 def setupVocabs(portal, logger):
@@ -86,6 +91,7 @@ def setupVarious(context):
     setupTranscoding(portal, logger)
     setupSeeding(portal, logger)
     setupVocabs(portal, logger)
+    app_installation_tasks(portal)
 
 def uninstallVocabs(portal, logger):
     #
