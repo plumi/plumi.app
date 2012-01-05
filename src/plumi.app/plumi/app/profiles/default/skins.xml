@@ -9,4 +9,8 @@
   <layer name="plumi_app" insert-after="custom"/>
  </skin-path>
 
+ <skin-path name="*">
+  <layer name="ContentLicensing" insert-after="plumi_content"/>
+ </skin-path>
+
 </object>
