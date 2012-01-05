@@ -1,3 +1,9 @@
+4.3 (2012-01-05) [unweb.me]
+============================
+
+ - add video/x-matroska to supported mimetypes [dimo]
+ - fix contentlicensing viewlet appearing twice in static pages [clopy]
+
 4.3rc2 (2011-12-21) [unweb.me]
 ==============================
 
