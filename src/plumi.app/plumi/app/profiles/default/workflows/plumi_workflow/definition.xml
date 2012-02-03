@@ -10,7 +10,7 @@
 - While the content is awaiting review it is readable by anybody.
 - If content is published, it can only be retracted by a Manager."
              state_variable="review_state"
-             initial_state="visible"
+             initial_state="private"
              i18n:attributes="title; description">
 
  <permission>Access contents information</permission>
