@@ -1,3 +1,7 @@
+4.3.1 (2012-03-28) [unweb.me]
+========================
+- make private state the default state [dimo]
+
 4.3 (2012-01-05) [unweb.me]
 ============================
 
