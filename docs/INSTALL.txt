@@ -4,9 +4,9 @@ http://en.flossmanuals.net/Plumi/Introduction
 Before you start
 ================
 
- * install gcc/g++ dev tools and yasm
-    e.g. sudo apt-get install build-essential yasm pkg-config
- * install subversion
+ * install gcc/g++ dev tools
+    e.g. sudo apt-get install build-essential pkg-config
+ * install git
     e.g. sudo apt-get install git-core
  * install python2.6 and header files
     e.g. sudo apt-get install python2.6-dev
