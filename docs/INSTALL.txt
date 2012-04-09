@@ -10,21 +10,19 @@ Before you start
     e.g. sudo apt-get install git-core
  * install python2.6 and header files
     e.g. sudo apt-get install python2.6-dev
- * install libjpeg, zlib, libpcre header files 
-    e.g. sudo apt-get install libjpeg62-dev zlib1g-dev libpcre3-dev
+ * install libjpeg, zlib, libpcre header files
+    e.g. sudo apt-get install libjpeg62-dev zlib1g-dev
     or for Ubuntu 11.04 jpeg support: sudo apt-get install libjpeg8-dev
     for png support in Ubuntu 11.04 you may have to install zlib from source
  * install groff-base
     e.g. sudo apt-get install groff-base
- * install libxslt header files
-    e.g sudo apt-get install libxslt1-dev
 
 Install a Plumi 4.x development instance
 ========================================
 
 If you simply want to evaluate or develop Plumi, then you don't need a fully
 fledged production build with caching, multiple load balanced zope instances,
-etc. A much more lightweight buildout is provided instead. 
+etc. A much more lightweight buildout is provided instead.
 
 Before runing buildout you may wish to customize some of the options inside
 site.cfg, especially if ports 8080, 8888 or 8100 are already used by other apps
@@ -56,12 +54,12 @@ Now start your dev instance in the foreground
   ./bin/instance-debug fg
 
 You should be able to access your Plumi instance at http://localhost:8080/Plone
-unless you changed the default host, port or site-id in site.cfg. You can login 
-as an admin using the credentials in site.cfg (admin:admin by default). 
+unless you changed the default host, port or site-id in site.cfg. You can login
+as an admin using the credentials in site.cfg (admin:admin by default).
 
 If you have changed the default port, hostname, or the secret encryption key
-for the transcode daemon in site.cfg, you should go to the transcode settings 
-panel (e.g. http://localhost:8080/Plone/@@transcode-controlpanel ) and enter 
+for the transcode daemon in site.cfg, you should go to the transcode settings
+panel (e.g. http://localhost:8080/Plone/@@transcode-controlpanel ) and enter
 the same host, port and key there.
 
 Your dev instance should be ready for testing at this point. Add a new user to
@@ -74,7 +72,7 @@ formats.
 When you're done, you can press Ctrl-C to stop your dev instance running in the
 foreground. In order to shutdown zeo, transcodedaemon and supervisor use the
 command:
- 
+
   ./bin/supervisorctl shutdown
 
 
@@ -100,7 +98,7 @@ as a single user. Edit site.cfg and set your username in the following fields:
  * balancer-user
  * zeo-user
  * zope-user
- 
+
 Then set the ports in the fields www-address and plumiftp-address to values
 higher than 1024. Port numbers under 1024 can only be reserved by processes
 with root privileges.
@@ -116,9 +114,9 @@ Internet (eg: 24-48 hours). If you server is not going to be accessed from the
 Internet, you still need to set up the domains within your private network
 (eg: internal DNS server, /etc/hosts files on all workstations, etc).
 
- 
+
 Before running buildout, should customize the options inside site.cfg. At the
-very least you should change the following: 
+very least you should change the following:
 
   * secret: a shared secret key for encrypted communication between Plumi and
       transcodedaemon. Just enter a random string of 4, 8, 16 or 32 characters.
@@ -130,7 +128,7 @@ If you decided not to change the default user for zope and zeo in site.cfg make
 sure that it exists in your system. If not, add it:
 
    sudo useradd zope
-   
+
 Once you're done
 
    python2.6 bootstrap.py -c production.cfg
@@ -153,24 +151,24 @@ You should start supervisor using sudo so that it can restrict each service to
 run under the correct user privileges as defined in site.cfg (e.g www-data for
 nginx, daemon for the transcodedaemon, etc)
 
-Confirm that all the services have been started: 
+Confirm that all the services have been started:
 
    ./bin/supervisorctl status
 
-You should now be able to view your site at the hostname you configured in 
-site.cfg (www-server-name setting e.g. http://new.plumi.org) as long as 
-the hostname is configured correctly and points to the ip address of your 
+You should now be able to view your site at the hostname you configured in
+site.cfg (www-server-name setting e.g. http://new.plumi.org) as long as
+the hostname is configured correctly and points to the ip address of your
 server. Also verify that you can access the transcode daemon and videoserver
-in the hostname you provided in site.cfg (www-videoserver-name e.g 
+in the hostname you provided in site.cfg (www-videoserver-name e.g
 http://newvideos.plumi.org).
- 
+
 A debug instance is also created during the production buildout but not started
 by default. If you need to test, debug and catch errors on your production
 environment you can start it in the foreground:
 
    ./bin/instance-debug fg
 
-By default the debug instance will listen on any ip address provided by your 
+By default the debug instance will listen on any ip address provided by your
 server, on port 8080 (instance-debug-address in site.cfg)
 
 You can login to your new Plumi site using the admin credentials you provided
@@ -212,4 +210,3 @@ installation. Add the tracking tag in Site-Setup->Site and fill the form in
 Site-Setup-> Piwik Settings with the piwik url, the site id on piwik and the
 api key (if you have anonymous access on piwik for your site you can leave
 anonymous instead of the API key).
-
