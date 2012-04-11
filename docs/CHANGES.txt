@@ -1,6 +1,12 @@
-4.3.1 (2012-03-28) [unweb.me]
-========================
-- make private state the default state [dimo]
+4.3.1 (2012-04-11) [unweb.me]
+=============================
+
+ - make private state the default state [dimo]
+ - add yasm build to buildout [dimo]
+ - use generic cpu in haproxy-build [dimo]
+ - Update install instructions [cpsaltis]
+ - chown eggs dir on production build [dimo]
+
 
 4.3 (2012-01-05) [unweb.me]
 ============================
@@ -8,11 +14,13 @@
  - add video/x-matroska to supported mimetypes [dimo]
  - fix contentlicensing viewlet appearing twice in static pages [clopy]
 
+
 4.3rc2 (2011-12-21) [unweb.me]
 ==============================
 
  - add missing install steps [dimo]
  - update dependencies [dimo]
+
 
 4.3rc1 (2011-12-18) [unweb.me]
 ==============================
