@@ -1,0 +1,13 @@
+--- ZServer/PubCore/__init__.py	2012-05-14 04:54:46.411165957 -0700
++++ ZServer/PubCore/__init__.py	2012-05-14 04:48:45.195171925 -0700
+@@ -28,5 +28,8 @@
+     """
+     global _n
+     _n=n
+-    global setNumberOfThreads
+-    del setNumberOfThreads
++    try:
++        global setNumberOfThreads
++        del setNumberOfThreads
++    except:
++        pass
