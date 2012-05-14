@@ -11,8 +11,8 @@ pipeline =
 
 [server:main]
 use = egg:gunicorn#main
-host = ${hosts:any}
-port = ${ports:main}
+host = ${site:localhost}
+port = ${site:gunicorn-port}
 workers = 4
 
 # Begin logging configuration
