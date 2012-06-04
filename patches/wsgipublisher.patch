@@ -49,9 +49,11 @@
 +    except Unauthorized:
 +        raise
 +    except:
++        v = parents[-1].standard_error_message
++        if 'DTML' in str(v.__class__):
++            raise
 +        response.setStatus(500)
-+        v = parents[0].standard_error_message()
-+        response.setBody(v)
++        response.setBody(v())
  
 -    notify(PubBeforeCommit(request))
      return response
