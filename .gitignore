@@ -1,6 +1,4 @@
 *.py?
-
-
 .installed.cfg
 .mr.developer.cfg
 bin/
@@ -11,11 +9,11 @@ eggs/
 include/
 lib/
 parts/
-production/balancer.conf
-production/cache.conf
-production/logrotate.conf
-production/main.conf
-production/nginx/
+templates/balancer.conf
+templates/cache.conf
+templates/logrotate.conf
+templates/main.conf
+templates/nginx/
 src/collective.contentlicensing/
 src/contentlicensingollective.piwik.core/
 src/collective.piwik.flowplayer/
@@ -37,3 +35,10 @@ torrents_safe/
 transcoded/
 var/
 versions.cfg
+development.ini
+production.ini
+active.ini
+.project
+.pydevproject
+.settings
+uuid.txt
