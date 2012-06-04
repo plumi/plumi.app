@@ -13,6 +13,7 @@ pipeline =
 use = egg:paste#http
 host = ${site:anyhost}
 port = ${site:gunicorn-port}
+timeout = 300
 
 # Begin logging configuration
 
