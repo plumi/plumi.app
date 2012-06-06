@@ -13,7 +13,7 @@ pipeline =
 use = egg:gunicorn#main
 host = ${site:localhost}
 port = ${site:gunicorn-port}
-workers = 4
+workers = 2
 timeout = 300
 
 # Begin logging configuration
