@@ -1,0 +1,21 @@
+--- plone/app/async/service.py	2012-04-26 08:33:42.000000000 +0300
++++ plone/app/async/service.py	2012-06-13 18:51:48.834273591 +0300
+@@ -101,6 +101,9 @@
+ 
+     def queueJobInQueue(self, queue, quota_names, func, context, *args, **kwargs):
+         """Queue a job in the specified queue."""
++        begin_after = kwargs.get('begin_after', None)
++        if begin_after:
++            kwargs.pop('begin_after')
+         portal = getUtility(ISiteRoot)
+         portal_path = portal.getPhysicalPath()
+         context_path = context.getPhysicalPath()
+@@ -109,7 +112,7 @@
+                   func, *args, **kwargs)
+         if quota_names:
+             job.quota_names = quota_names
+-        job = queue.put(job)
++        job = queue.put(job, begin_after=begin_after)
+         job.addCallbacks(success=job_success_callback,
+                          failure=job_failure_callback)
+         return job
