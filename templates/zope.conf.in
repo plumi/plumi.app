@@ -34,7 +34,7 @@ zserver-threads 2
     <zeoclient>
       blob-dir ${buildout:directory}/var/blobstorage
       shared-blob-dir on
-      server 8100
+      server ${site:zeo-address}
       storage 1
       name zeostorage
       var ${buildout:directory}/parts/plone/var

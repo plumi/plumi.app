@@ -14,7 +14,8 @@ use = egg:gunicorn#main
 host = ${site:localhost}
 port = ${site:gunicorn-port}
 workers = 2
-timeout = 300
+timeout = 7200
+keepalive = 7200
 
 # Begin logging configuration
 
