@@ -26,6 +26,10 @@ zserver-threads 2
   </logfile>
 </logger>
 
+<environment>
+    ZC_ASYNC_UUID ${buildout:directory}/var/instance-uuid.txt
+</environment>
+
 <zodb_db main>
     # Main database
     cache-size 10000
