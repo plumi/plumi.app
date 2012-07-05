@@ -1,0 +1,41 @@
+[app:plone]
+use = egg:Zope2#main
+zope_conf = ${plone:location}/etc/zope.conf
+
+[pipeline:main]
+pipeline =
+    egg:repoze.retry#retry
+    egg:repoze.tm2#tm
+    egg:repoze.vhm#vhm_xheaders
+    plone
+
+[server:main]
+use = egg:paste#http
+host = ${site:anyhost}
+port = ${site:gunicorn-port}
+
+# Begin logging configuration
+
+[loggers]
+keys = root
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s
+
+# End logging configuration

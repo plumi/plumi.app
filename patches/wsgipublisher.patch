@@ -1,0 +1,61 @@
+--- ZPublisher/WSGIPublisher.py	2012-05-31 18:09:43.000000000 +0300
++++ ZPublisher/WSGIPublisher.py	2012-05-31 18:04:07.627129737 +0300
+@@ -18,6 +18,7 @@
+ import transaction
+ from zExceptions import Redirect
+ from zExceptions import Unauthorized
++from ZPublisher import NotFound
+ from zope.event import notify
+ from zope.publisher.skinnable import setDefaultSkin
+ from ZServer.medusa.http_date import build_http_date
+@@ -184,14 +185,16 @@
+     # According to RFC1738 a trailing space in the path is valid.
+     path = request.get('PATH_INFO')
+ 
+-    request['PARENTS'] = [object]
+-    object = request.traverse(path, validated_hook=validated_hook)
+-    notify(PubAfterTraversal(request))
++    request['PARENTS'] = parents = [object]
+ 
+-    if transactions_manager:
+-        transactions_manager.recordMetaData(object, request)
++    try:
++        object = request.traverse(path, validated_hook=validated_hook)
++        notify(PubAfterTraversal(request))
+ 
+-    result = mapply(object,
++        if transactions_manager:
++            transactions_manager.recordMetaData(object, request)
++
++        result = mapply(object,
+                     request.args,
+                     request,
+                     call_object,
+@@ -202,10 +205,22 @@
+                     bind=1,
+                     )
+ 
+-    if result is not response:
+-        response.setBody(result)
++        if result is not response:
++            response.setBody(result)
++
++        notify(PubBeforeCommit(request))
++
++    except NotFound:
++        response.setStatus(404)
++        v = parents[0].standard_error_message(error_type='NotFound')
++        response.setBody(v)
++    except Unauthorized:
++        raise
++    except:
++        v = parents[-1].standard_error_message
++        if 'DTML' in str(v.__class__):
++            raise
++        response.setStatus(500)
++        response.setBody(v())
+ 
+-    notify(PubBeforeCommit(request))
+     return response
+ 
+ 

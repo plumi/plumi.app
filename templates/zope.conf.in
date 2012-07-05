@@ -1,0 +1,62 @@
+%define INSTANCEHOME ${buildout:directory}/parts/plone
+instancehome $INSTANCEHOME
+%define CLIENTHOME ${buildout:directory}/var/plone
+clienthome $CLIENTHOME
+
+debug-mode off
+security-policy-implementation C
+verbose-security off
+default-zpublisher-encoding utf-8
+
+zserver-threads 2
+
+<eventlog>
+  level INFO
+  <logfile>
+    path ${buildout:directory}/var/log/plone.log
+    level INFO
+  </logfile>
+</eventlog>
+
+<logger access>
+  level WARN
+  <logfile>
+    path ${buildout:directory}/var/log/plone-Z2.log
+    format %(message)s
+  </logfile>
+</logger>
+
+<environment>
+    ZC_ASYNC_UUID ${buildout:directory}/var/instance-uuid.txt
+</environment>
+
+<zodb_db main>
+    # Main database
+    cache-size 10000
+    
+    # Blob-enabled ZEOStorage database
+    <zeoclient>
+      blob-dir ${buildout:directory}/var/blobstorage
+      shared-blob-dir on
+      server ${site:zeo-address}
+      storage 1
+      name zeostorage
+      var ${buildout:directory}/parts/plone/var
+      cache-size 128MB
+    </zeoclient>
+    mount-point /
+</zodb_db>
+
+<zodb_db temporary>
+    # Temporary storage database (for sessions)
+    <temporarystorage>
+      name temporary storage for sessioning
+    </temporarystorage>
+    mount-point /temp_folder
+    container-class Products.TemporaryFolder.TemporaryContainer
+</zodb_db>
+
+pid-filename ${buildout:directory}/var/plone.pid
+lock-filename ${buildout:directory}/var/plone.lock
+python-check-interval 1000
+enable-product-installation off
