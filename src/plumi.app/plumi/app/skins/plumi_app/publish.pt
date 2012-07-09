@@ -35,7 +35,7 @@
         <br />
       </div>
 
-<div class="loginOption"><a tal:attributes="href string:${portal/portal_membership/getHomeUrl}/videos/createObject?type_name=PlumiVideo"><img class="bigbutton" tal:attributes="src string:${portal_url}/publishvideo.gif"></a><b><a class="optionHeader" tal:attributes="href string:${portal/portal_membership/getHomeUrl}/videos/createObject?type_name=PlumiVideo" i18n:translate="">Publish Video</a></b><br />
+<div class="loginOption"><a tal:attributes="href string:${portal/portal_membership/getHomeUrl}/videos/createObject?type_name=PlumiVideo"><img class="bigbutton" tal:attributes="src string:${portal_url}/publishvideo.gif"></a><b><a class="optionHeader" tal:attributes="href string:${portal/portal_membership/getHomeUrl}/videos/@@publish_video" i18n:translate="">Publish Video</a></b><br />
 <tal:publish_video_blurb i18n:translate="publish_video_blurb">
 Share your productions by uploading video to
 <span tal:replace="portal/Title" i18n:name="site_name">EngageMedia</span>. 
