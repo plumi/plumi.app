@@ -17,31 +17,42 @@ Before you start
  * install groff-base
     e.g. sudo apt-get install groff-base
 
-Install a Plumi 4.x development instance
+Install Plumi 4.x 
 ========================================
 
-If you simply want to evaluate or develop Plumi, then you don't need a fully
-fledged production build with caching, multiple load balanced zope instances,
-etc. A much more lightweight buildout is provided instead.
 
 Before runing buildout you may wish to customize some of the options inside
-site.cfg, especially if ports 8080, 8888 or 8100 are already used by other apps
+site.cfg, especially if ports 8080, 8888 or 8000 are already used by other apps
 in your system. Once you're ready do the following:
 
-  python2.6 bootstrap.py -c devel.cfg
-  ./bin/buildout -c devel.cfg
+  python2.6 bootstrap.py 
+  ./bin/buildout -v
 
 That should take some time, so feel free to get some cofee or fresh air while
 buildout is downloading, compiling and installing dependencies (Zope, Plone,
-ffmpeg, etc). If all goes well your Plumi dev instance will be ready after that
+ffmpeg, etc). If all goes well your Plumi instance will be ready after that
 point.
 
-Supervisor will be managing the ZEO server and the transcodedaemon.
+Plumi buildout has created two files, development.ini and production.ini. The first one
+loads gunicorn http server, plus transcodedaemon, and is suitable to evaluate or develop Plumi,
+ while the second one loads caching, more gunicorn instances and is suitable for
+deploying Plumi portals. 
+
+A sumlink file, active.ini manages which one of the two is loaded. By default, development.ini will be 
+used. If you want to use production.ini settings, delete active.ini and create a sumlink 
+to production.ini.
+
+rm active.ini ; ln -s production.ini active.ini 
+
+Running Plumi 4.x 
+========================================
+
+Supervisor will be managing the ZEO server and the transcodedaemon (plus caching, if using production.ini)
 Start supervisor like this:
 
   ./bin/supervisord
 
-Confirm that zeo and transcodedaemon are up and running:
+Confirm that zeo, gunicorn and transcodedaemon are up and running:
 
   ./bin/supevisorctl status
 
@@ -49,34 +60,35 @@ Run the plumisite command to create a new Plumi site
 
   ./bin/plumisite
 
-Now start your dev instance in the foreground
+Instead of gunicorn http server, you can also use paster which is lighter and suitable for development:
 
-  ./bin/instance-debug fg
+  ./bin/supervisorctl stop gunicorn
+  gunicorn: stopped
 
-You should be able to access your Plumi instance at http://localhost:8080/Plone
+  ./bin/paster serve development.ini 
+
+You should be able to access your Plumi instance at http://localhost:8000/Plone
 unless you changed the default host, port or site-id in site.cfg. You can login
 as an admin using the credentials in site.cfg (admin:admin by default).
 
 If you have changed the default port, hostname, or the secret encryption key
 for the transcode daemon in site.cfg, you should go to the transcode settings
-panel (e.g. http://localhost:8080/Plone/@@transcode-controlpanel ) and enter
+panel (e.g. http://localhost:8000/Plone/@@transcode-controlpanel ) and enter
 the same host, port and key there.
 
-Your dev instance should be ready for testing at this point. Add a new user to
-your Plumi site for testing (the admin user may not have the correct folders
+Add a new user to your Plumi site for testing (the admin user may not have the correct folders
 created for them, as this user is created before the Plumi site is generated).
 Log out and log back in as your new user. You should be able to start
 publishing videos which should be automatically transcoded to web friendly
 formats.
 
-When you're done, you can press Ctrl-C to stop your dev instance running in the
-foreground. In order to shutdown zeo, transcodedaemon and supervisor use the
+In order to shutdown zeo, transcodedaemon and supervisor use the
 command:
 
   ./bin/supervisorctl shutdown
 
 
-Installing Plumi 4.x for production
+Running Plumi 4.x for production
 ===================================
 
 This guide assumes that you have sudo/root access. This is necessary in order
@@ -129,19 +141,15 @@ sure that it exists in your system. If not, add it:
 
    sudo useradd zope
 
-Once you're done
 
-   python2.6 bootstrap.py -c production.cfg
-   sudo ./bin/buildout -c production.cfg
-
-That should take some time. If you run the last command without sudo, the last
+If you run the buildout command without sudo, the last
 step will fail as it will not be able to change the ownership of log and
 data files. If you'll be running all the processes as a single user it's ok to
 let this step fail. If all goes well, your production instance will be ready to
 start.
 
 Plumi uses Supervisor to manage the ZEO server, transcodedaemon, the ftp proxy,
-your zope instances, the load balancer, the cache and the nginx web server.
+gunicorn, the load balancer, the cache and the nginx web server.
 
 Start supervisor like this:
 
