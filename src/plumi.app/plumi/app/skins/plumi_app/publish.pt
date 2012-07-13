@@ -36,11 +36,11 @@
             </div>
     
             <div class="loginOption">
-                <a tal:attributes="href string:${base_path}@@publish_video">
+                <a tal:attributes="href string:${base_path}/@@publish_video">
                     <img class="bigbutton" tal:attributes="src string:${portal_url}/publishvideo.gif">        
                 </a>
                 <strong>
-                    <a class="optionHeader" tal:attributes="href string:${base_path}@@publish_video" i18n:translate="">Publish Video</a>
+                    <a class="optionHeader" tal:attributes="href string:${base_path}/@@publish_video" i18n:translate="">Publish Video</a>
                 </strong><br />
                 <tal:publish_video_blurb i18n:translate="publish_video_blurb">
                 Share your productions by uploading video to
