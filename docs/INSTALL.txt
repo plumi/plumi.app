@@ -10,125 +10,34 @@ Before you start
     e.g. sudo apt-get install git-core
  * install python2.6 and header files
     e.g. sudo apt-get install python2.6-dev
- * install libjpeg, zlib, libpcre header files
-    e.g. sudo apt-get install libjpeg62-dev zlib1g-dev
+ * install libjpeg, zlib, libpcre, libxslt header files
+    e.g. sudo apt-get install libjpeg62-dev zlib1g-dev, libxslt1-dev
     or for Ubuntu 11.04 jpeg support: sudo apt-get install libjpeg8-dev
     for png support in Ubuntu 11.04 you may have to install zlib from source
  * install groff-base
     e.g. sudo apt-get install groff-base
 
-Install Plumi 4.x 
-========================================
+Initial configuration
+======================
+This step is optional for testing/development builds. However, even in those 
+cases you may wish to customize some of the options inside site.cfg, especially 
+if ports 8080, 8888, 8021, 8000, 8100 or 8890 are already used by other apps in 
+your system. 
 
+If you're deploying for production you should have 2 different hostnames 
+available, one for your Plumi site (e.g. new.plumi.org) and another for the 
+transcoder/videoserver (e.g.newvideos.plumi.org), both pointing to your public 
+ip address. You could also install the transcoding server in a different 
+machine or even have multiple transcoding servers with load balancing, but this 
+setup will not be covered in this guide. Please ensure that these hostnames are 
+set up in advance of your site installation and have had sufficient time to 
+propagate through the Internet (eg: 24-48 hours). If you server is not going to 
+be accessed from the Internet, you still need to set up the domains within your 
+private network (eg: internal DNS server, /etc/hosts files on all workstations, 
+etc).
 
-Before runing buildout you may wish to customize some of the options inside
-site.cfg, especially if ports 8080, 8888 or 8000 are already used by other apps
-in your system. Once you're ready do the following:
-
-  python2.6 bootstrap.py 
-  ./bin/buildout -v
-
-That should take some time, so feel free to get some cofee or fresh air while
-buildout is downloading, compiling and installing dependencies (Zope, Plone,
-ffmpeg, etc). If all goes well your Plumi instance will be ready after that
-point.
-
-Plumi buildout has created two files, development.ini and production.ini. The first one
-loads gunicorn http server, plus transcodedaemon, and is suitable to evaluate or develop Plumi,
- while the second one loads caching, more gunicorn instances and is suitable for
-deploying Plumi portals. 
-
-A sumlink file, active.ini manages which one of the two is loaded. By default, development.ini will be 
-used. If you want to use production.ini settings, delete active.ini and create a sumlink 
-to production.ini.
-
-rm active.ini ; ln -s production.ini active.ini 
-
-Running Plumi 4.x 
-========================================
-
-Supervisor will be managing the ZEO server and the transcodedaemon (plus caching, if using production.ini)
-Start supervisor like this:
-
-  ./bin/supervisord
-
-Confirm that zeo, gunicorn and transcodedaemon are up and running:
-
-  ./bin/supevisorctl status
-
-Run the plumisite command to create a new Plumi site
-
-  ./bin/plumisite
-
-Instead of gunicorn http server, you can also use paster which is lighter and suitable for development:
-
-  ./bin/supervisorctl stop gunicorn
-  gunicorn: stopped
-
-  ./bin/paster serve development.ini 
-
-You should be able to access your Plumi instance at http://localhost:8000/Plone
-unless you changed the default host, port or site-id in site.cfg. You can login
-as an admin using the credentials in site.cfg (admin:admin by default).
-
-If you have changed the default port, hostname, or the secret encryption key
-for the transcode daemon in site.cfg, you should go to the transcode settings
-panel (e.g. http://localhost:8000/Plone/@@transcode-controlpanel ) and enter
-the same host, port and key there.
-
-Add a new user to your Plumi site for testing (the admin user may not have the correct folders
-created for them, as this user is created before the Plumi site is generated).
-Log out and log back in as your new user. You should be able to start
-publishing videos which should be automatically transcoded to web friendly
-formats.
-
-In order to shutdown zeo, transcodedaemon and supervisor use the
-command:
-
-  ./bin/supervisorctl shutdown
-
-
-Running Plumi 4.x for production
-===================================
-
-This guide assumes that you have sudo/root access. This is necessary in order
-to start the nginx web server at port 80, ploneftp at port 21 and for buildout
-to automatically set the right file permissions for you. Supervisor will be
-managing all the different services and each service will be limited to the
-permissions of its effective system user for maximum security. This setup
-includes all you need in order to run Plumi on a GNU/Linux server for
-production.
-
-If you don't have sudo access, you have the option of running all the processes
-as a single user. Edit site.cfg and set your username in the following fields:
-
- * supervisor-user
- * ftp-user
- * www-user
- * transcode-user
- * cache-user
- * balancer-user
- * zeo-user
- * zope-user
-
-Then set the ports in the fields www-address and plumiftp-address to values
-higher than 1024. Port numbers under 1024 can only be reserved by processes
-with root privileges.
-
-You should also have 2 different hostnames available, one for your Plumi site
-(e.g. new.plumi.org) and another for the transcoder/videoserver (e.g.
-newvideos.plumi.org), both pointing to your public ip address. You could
-also install the transcoding server in a different machine or even have
-multiple transcoding servers with load balancing, but this setup will not be
-covered in this guide. Please ensure that these hostnames are set up in advance
-of your site installation and have had sufficient time to propagate through the
-Internet (eg: 24-48 hours). If you server is not going to be accessed from the
-Internet, you still need to set up the domains within your private network
-(eg: internal DNS server, /etc/hosts files on all workstations, etc).
-
-
-Before running buildout, should customize the options inside site.cfg. At the
-very least you should change the following:
+Before running buildout, you should customize the options inside site.cfg. 
+At the very least you should change the following:
 
   * secret: a shared secret key for encrypted communication between Plumi and
       transcodedaemon. Just enter a random string of 4, 8, 16 or 32 characters.
@@ -140,61 +49,81 @@ If you decided not to change the default user for zope and zeo in site.cfg make
 sure that it exists in your system. If not, add it:
 
    sudo useradd zope
+   
+
+Install Plumi 4.x 
+=================
+
+Once you're ready with the initial configuration execute the following two 
+commands. Do it as your regular user for testing/dev builds but make sure you 
+are root for production builds:
+
+  python2.6 bootstrap.py 
+  ./bin/buildout
+
+That should take some time, so feel free to get some cofee or fresh air while
+buildout is downloading, compiling and installing dependencies (Zope, Plone,
+ffmpeg, etc). If all goes well your Plumi instance will be ready after that
+point.
 
 
-If you run the buildout command without sudo, the last
-step will fail as it will not be able to change the ownership of log and
-data files. If you'll be running all the processes as a single user it's ok to
-let this step fail. If all goes well, your production instance will be ready to
-start.
+Running Plumi 4.x 
+==================
 
-Plumi uses Supervisor to manage the ZEO server, transcodedaemon, the ftp proxy,
-gunicorn, the load balancer, the cache and the nginx web server.
+Supervisor will be managing the internal ZEO server, the transcodedaemon, 
+the async worker instance, the varnish cache server, the gunicorn WSGI web 
+server, as well as the externally facing ploneFTP server and the nginx web 
+server in production builds.
 
 Start supervisor like this:
 
-   sudo ./bin/supervisord
+  ./bin/supervisord
 
-You should start supervisor using sudo so that it can restrict each service to
-run under the correct user privileges as defined in site.cfg (e.g www-data for
-nginx, daemon for the transcodedaemon, etc)
+Confirm that zeo, gunicorn and transcodedaemon are up and running:
 
-Confirm that all the services have been started:
+  ./bin/supevisorctl status
+  
+If you ran buildout as a regular (non root) user and you did not change the 
+default ports for nginx and ploneftp in site.cfg (www-address & plumiftp-address 
+respectively) you'll see that both ploneftp and nginx failed to start because
+you don't have permission to bind on to the priviledged ports 80 and 21. 
+Nothing to worry about if you're just evaluating Plumi, you can still use it
+without nginx. Just go to port 8000 on localhost to access directly the gunicorn
+web server. 
 
-   ./bin/supervisorctl status
+Run the plumisite command to create a new Plumi site
 
-You should now be able to view your site at the hostname you configured in
-site.cfg (www-server-name setting e.g. http://new.plumi.org) as long as
-the hostname is configured correctly and points to the ip address of your
-server. Also verify that you can access the transcode daemon and videoserver
-in the hostname you provided in site.cfg (www-videoserver-name e.g
-http://newvideos.plumi.org).
+  ./bin/plumisite
+  
+Alternatively, if you can create the Plumi site through the web, using the ZMI. 
 
-A debug instance is also created during the production buildout but not started
-by default. If you need to test, debug and catch errors on your production
-environment you can start it in the foreground:
+After that step you're ready to roll! Your new Plumi site will be available
+at http://localhost:8000/Plone or at http://{www-server-name} for production
+builds.
 
-   ./bin/instance-debug fg
+If you want to do some development, you can use Paster instead of gunicorn 
+since the latter is more suited for production. Stop gunicorn and start paster 
+as shown below:
 
-By default the debug instance will listen on any ip address provided by your
-server, on port 8080 (instance-debug-address in site.cfg)
+  ./bin/supervisorctl stop gunicorn
 
-You can login to your new Plumi site using the admin credentials you provided
-in site.cfg (admin:admin by default).
+  ./bin/paster serve development.ini --reload 
 
-Once you login for the first time, go to the transcode settings panel (e.g.
-http://new.plumi.org/@@transcode-controlpanel ) and enter the
-www-videoserver-name set in site.cfg and the updated secret key. You may also
-want to configure caching by installing the http caching support in the add-ons
-configuration section.
+The --reload option will consume more resources but it's very handy for dev
+since it will automatically reload any python modules that you edit.
 
-Add a new user to your Plumi site for testing (the admin user may not have the
-correct folders created, as this user is created before the Plumi site is
-generated). Log out and log back in as your new user.
+If you have changed the default port, hostname, or the secret encryption key
+for the transcode daemon in site.cfg, you should go to the transcode settings
+panel (e.g. http://localhost:8000/Plone/@@transcode-controlpanel ) and enter
+the same host, port and key there.
 
-To shutdown Plumi do the following:
+Add a new user to your Plumi site for testing and start publishing videos!
+
+
+In order to shutdown all Plumi related services, use the following command:
 
   ./bin/supervisorctl shutdown
+
 
 If you want to ensure that Plumi will start automatically whenever your server
 is turned on, add the following lines to your /etc/rc.local file replacing
