@@ -49,7 +49,6 @@ setup(name='plumi.app',
           'qi.portlet.TagClouds',
           'Products.LinguaPlone',
           'plone.contentratings',
-          'collective.seeder',
           'collective.piwik.mediaelement',
           # -*- Extra requirements: -*-
       ],
