@@ -1,55 +1,44 @@
 import logging
-from zope.location.interfaces import ISite
 
-#imports from old style plone 'Products' namespace
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.Five.component import enableSite
-from Products.CMFPlone.interfaces import IPropertiesTool
-
-from zope.component import getUtility , queryUtility
-from zope.component import getMultiAdapter
-from zope.app.container.interfaces import INameChooser
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
-from plone.portlet.collection.collection import Assignment
-from plone.app.discussion.interfaces import ICommentingTool
-from plone.app.discussion.interfaces import IConversation
-
-from plone.registry import field as Field
-from plone.registry import Record
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry 
-
-from AccessControl import allow_module
-allow_module('plumi.app.member_area.py')
-
-#i18n
-from zope.i18nmessageid import MessageFactory
-_ = MessageFactory("plumi")
-from plumi.app.translations import createTranslations, deleteTranslations
-
-#upgrade
 from hashlib import md5
 from datetime import datetime
 from StringIO import StringIO
 from persistent.dict import PersistentDict
-from zope.annotation.interfaces import IAnnotations
-from collective.transcode.star.interfaces import ITranscodeTool
 from DateTime import DateTime
-from Products.CMFCore.interfaces import IPropertiesTool
-from plone.registry.interfaces import IRegistry 
-import os
-import os.path
-import subprocess
-import shutil
-import sys
-import time
-import bencode
 from hashlib import sha1 as sha
-import Zope2
-from collective.seeder.subscribers import make_meta_file, makeinfo, subfiles, gmtime,get_filesystem_encoding, decode_from_filesystem
+from AccessControl import allow_module
+
+from zope.location.interfaces import ISite
+from zope.annotation.interfaces import IAnnotations
+from zope.i18nmessageid import MessageFactory
+from zope.component import getUtility , queryUtility
+from zope.component import getMultiAdapter
+from zope.app.container.interfaces import INameChooser
+
+from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.Five.component import enableSite
+from Products.CMFPlone.interfaces import IPropertiesTool
 from Products.CMFPlone.utils import base_hasattr
+
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignmentMapping, ILocalPortletAssignmentManager
+from plone.portlet.collection.collection import Assignment
+from plone.registry import field as Field
+from plone.registry import Record
+from plone.registry.interfaces import IRegistry 
+from plone.app.discussion.interfaces import ICommentingTool
+from plone.app.discussion.interfaces import IConversation
+
+from collective.transcode.star.interfaces import ITranscodeTool
+
+from plumi.app.translations import createTranslations, deleteTranslations
+
+allow_module('plumi.app.member_area.py')
+
+_ = MessageFactory("plumi")
+
 
 def app_installation_tasks(self, reinstall=False):
     """Custom Plumi setup code"""
@@ -476,61 +465,6 @@ def plumi4to41(context, logger=None):
                               )
     html5_record = Record(html5_field)
     registry.records['collective.transcode.star.interfaces.ITranscodeSettings.html5'] = html5_record
-
-    catalog = getToolByName(context, 'portal_catalog')
-    # Create torrents for videos
-    videos = catalog(portal_type='PlumiVideo')
-    workflowTool = getToolByName(context, "portal_workflow")
-    for video in videos:
-        obj = video.getObject()
-        if not obj.UID():
-            return
-        try:
-            status = workflowTool.getStatusOf("plumi_workflow", obj)
-            state = status["review_state"]
-            if (state == "published") or (state == "featured"):
-                registry = getUtility(IRegistry)
-                types = registry['collective.seeder.interfaces.ISeederSettings.portal_types']
-                torrent_dir = registry['collective.seeder.interfaces.ISeederSettings.torrent_dir']
-                announce_urls = registry['collective.seeder.interfaces.ISeederSettings.announce_urls']
-                safe_torrent_dir = registry['collective.seeder.interfaces.ISeederSettings.safe_torrent_dir']
-                #Check if the torrent directory exists, otherwise create it
-                if not os.path.exists(torrent_dir):
-                    os.makedirs(torrent_dir)
-                #Check if the torrent safe directory exists, otherwise create it
-                if not os.path.exists(safe_torrent_dir):
-                    os.makedirs(safe_torrent_dir)
-                newTypes = [t.split(':')[0] for t in types]
-                if unicode(obj.portal_type) not in newTypes:
-                    return
-                fieldNames = [str(t.split(':')[1]) for t in types if ('%s:' % unicode(obj.portal_type)) in t]
-                fts= Zope2.DB._storage.fshelper
-                if not fieldNames:
-                    fields = [obj.getPrimaryField()]
-                else:
-                    fields = [obj.getField(f) for f in fieldNames]
-                for field in fields:
-                    oid = field.getUnwrapped(obj).getBlob()._p_oid
-                    if not oid:
-                        return
-                    #Symlink the blob object to the original filename
-                    blobDir = fts.getPathForOID(oid)
-                    blobName = os.listdir(blobDir)
-                    blobPath = os.path.join(blobDir,blobName[0])
-                    fileName = obj.UID() + '_' + field.getFilename(obj)
-                    linkPath = os.path.join(torrent_dir, fileName)
-                    os.symlink(blobPath, linkPath)
-
-                    torrentName = fileName + '.torrent'
-                    torrentPath = os.path.join(torrent_dir, torrentName)
-                    make_meta_file(linkPath, str(",".join(str(v) for v in announce_urls)), 262144)
-
-                    torrentSafePath = safe_torrent_dir + '/' + fileName + '.torrent'
-                    shutil.copyfile(torrentPath, torrentSafePath)      
-            else:
-                pass
-        except:
-            pass     
 
     #update user favorite folders
     users = context.acl_users.getUsers()
