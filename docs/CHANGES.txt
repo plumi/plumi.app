@@ -7,6 +7,7 @@
  - update to Plone 4.2 [mgogoulos]
  - use pcre-source for nginx and compiled pcre for varnish build [dimo]
  - drop dependency on collective.seeder [mgogoulos, dimo]
+ - add plone.app.theming to buildout eggs [dimo]
 
 
 4.3.1 (2012-04-11) [unweb.me]
