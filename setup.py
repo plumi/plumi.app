@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.4'
+version = '4.5dev'
 
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
@@ -50,6 +50,7 @@ setup(name='plumi.app',
           'Products.LinguaPlone',
           'plone.contentratings',
           'collective.piwik.mediaelement',
+          'archetypes.clippingimage',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

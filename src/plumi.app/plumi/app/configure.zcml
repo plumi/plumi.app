@@ -9,6 +9,8 @@
 
   <include package="plumi.content" />
   <include package="plumi.locales" />
+
+  <include package="archetypes.clippingimage" file="patch.zcml" /> 
     
   <adapter
       for="Products.CMFDefault.interfaces._content.IFavorite"
