@@ -1,5 +1,5 @@
-4.4b1 (2012-07-14) [unweb.me]
-===========================
+4.4 (2012-07-26) [unweb.me]
+==============================
 
  - deploy as a WSGI app using gunicorn, drop haproxy load balancing [dimo, mgogoulos, cpsaltis]
  - new publish form with progress indicator [dimo, mgogoulos, clopy, cpsaltis]
@@ -7,6 +7,8 @@
  - update to Plone 4.2 [mgogoulos]
  - use pcre-source for nginx and compiled pcre for varnish build [dimo]
  - drop dependency on collective.seeder [mgogoulos, dimo]
+ - add plone.app.theming to buildout eggs [dimo]
+ - remove debug instance [dimo]
 
 
 4.3.1 (2012-04-11) [unweb.me]

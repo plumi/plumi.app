@@ -7,4 +7,18 @@
    <element value="default_member_content"/>
   </property>
  </object>
+ 
+ <object name="imaging_properties" meta_type="Plone Property Sheet">
+  <property name="title">Image handling properties</property>
+  <property name="allowed_sizes" type="lines">
+   <element value="large 768:768"/>
+   <element value="preview 711:400"/>
+   <element value="mini 355:200"/>
+   <element value="thumb 230:130"/>
+   <element value="tile 64:64"/>
+   <element value="icon 32:32"/>
+   <element value="listing 16:16"/>
+
+  </property>
+ </object> 
 </object>
