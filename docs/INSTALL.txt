@@ -8,7 +8,7 @@ Before you start
     e.g. sudo apt-get install build-essential pkg-config
  * install git
     e.g. sudo apt-get install git-core
- * install python and header files
+ * install python and header files (tested with python 2.6 and 2.7)
     e.g. sudo apt-get install python-dev
  * install libjpeg, zlib, libpcre, libxslt header files
     e.g. sudo apt-get install libjpeg62-dev zlib1g-dev, libxslt1-dev
@@ -75,7 +75,7 @@ Once you're ready with the initial configuration execute the following two
 commands. Do it as your regular user for testing/dev builds but make sure you 
 are root for production builds:
 
-  python2.6 bootstrap.py 
+  python bootstrap.py 
   ./bin/buildout
 
 That should take some time, so feel free to get some cofee or fresh air while
