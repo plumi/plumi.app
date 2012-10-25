@@ -64,5 +64,13 @@ def notifyMemberAreaCreated(container,context):
     #finally, acquire ownership for the new member
     #run the recursive update creator and ownership
     updateCreatorAndOwnership(container,member_id,context)
+
+    #register users to mailchimp, for engagemedia.org
+    try:
+        logger.info('calling inviteToList, that registers engagemedia.org users to the relevant mailing list')
+        from em.skin.mailchimp import inviteToList
+        inviteToList(container,context)
+    except:
+        pass
  
     logger.info('ending notifyMemberAreaCreated')
