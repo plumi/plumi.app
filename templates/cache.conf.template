@@ -9,7 +9,7 @@
 /* Configure gunicorn server as back end */
 backend transform {
      .host = "${site:localhost}";
-     .port = "${site:gunicorn-port}";
+     .port = "${site:wsgi-port}";
 }
 
 /* Only allow PURGE from localhost */

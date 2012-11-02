@@ -155,8 +155,7 @@ def setupCollections(portal, logger):
                                         target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
                                         random=False,
                                         show_more=True,
-                                        show_dates=False,
-                                        state='published')
+                                        show_dates=False)
 
             def saveAssignment(mapping, assignment):
                 chooser = INameChooser(mapping)
@@ -244,8 +243,7 @@ def setupCollections(portal, logger):
                                         target_collection = '/'.join(urltool.getRelativeContentPath(portal.news)),
                                         random=False,
                                         show_more=True,
-                                        show_dates=False,
-                                        state='published')
+                                        show_dates=False)
           
             def saveAssignment(mapping, assignment):
                 chooser = INameChooser(mapping)

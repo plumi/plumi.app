@@ -51,6 +51,7 @@ setup(name='plumi.app',
           'plone.contentratings',
           'collective.piwik.mediaelement',
           'archetypes.clippingimage',
+          'PasteDeploy',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
@@ -58,5 +59,8 @@ setup(name='plumi.app',
 
       [z3c.autoinclude.plugin]
       target = plone
+
+      [paste.paster_command]
+      uwsgi = pasteuwsgi.serve:ServeCommand
       """,
       )

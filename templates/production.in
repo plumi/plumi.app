@@ -12,7 +12,7 @@ pipeline =
 [server:main]
 use = egg:gunicorn#main
 host = ${site:localhost}
-port = ${site:gunicorn-port}
+port = ${site:wsgi-port}
 workers = 2
 timeout = 7200
 keepalive = 7200
