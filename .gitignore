@@ -4,10 +4,10 @@
 bin/
 buildout.cfg
 develop-eggs/
-downloads/
 eggs/
 include/
 lib/
+local/
 parts/
 templates/balancer.conf
 templates/cache.conf
@@ -20,6 +20,7 @@ src/plumi.app/plumi.app.egg-info/
 src/plumi.content/
 src/plumi.locales/
 src/plumi.skin/
+src/eqb.recipe.uwsgi/
 torrents/
 torrents_safe/
 transcoded/
