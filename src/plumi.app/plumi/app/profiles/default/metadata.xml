@@ -8,5 +8,6 @@
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plumi.content:default</dependency>
     <dependency>profile-collective.transcode.star:default</dependency>
+    <dependency>profile-plumi.skin:default</dependency>
   </dependencies>
 </metadata>
