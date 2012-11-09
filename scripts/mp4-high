@@ -1,5 +1,7 @@
 #!/bin/sh
 PATH=.:./bin:$PATH
+LD_LIBRARY_PATH=./ffmpeg/parts/vorbis-build/lib:./ffmpeg/parts/theora-build/lib:./ffmpeg/parts/ffmpeg-build/lib:./ffmpeg/parts/x264-build/lib:./ffmpeg/parts/faac-build/lib:./ffmpeg/parts/faad-build/lib:./ffmpeg/parts/lame-build/lib:./ffmpeg/parts/vpx-build/lib:./ffmpeg/parts/ogg-build/lib', '--extra-ldflags=-I./ffmpeg/parts/mp4v2-build/lib
+export LD_LIBRARY_PATH
 ffmpeg -y -i "$1" -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" -threads 0 -r 25 -ar 44100 -vcodec libx264 -crf 22 -acodec libfaac -ab 64k -f mp4 "$2"
 qt-faststart "$2" "${2}.fst"
 mv "${2}.fst" "$2"
