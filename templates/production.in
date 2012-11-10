@@ -17,6 +17,10 @@ workers = 2
 timeout = 7200
 keepalive = 7200
 
+[uwsgi]
+http-socket = ${site:localhost}:${site:wsgi-port}
+workers = ${site:wsgi-workers}
+
 # Begin logging configuration
 
 [loggers]

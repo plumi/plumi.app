@@ -14,6 +14,9 @@ use = egg:paste#http
 host = ${site:anyhost}
 port = ${site:wsgi-port}
 
+[uwsgi]
+http-socket = ${site:anyhost}:${site:wsgi-port}
+
 # Begin logging configuration
 
 [loggers]
