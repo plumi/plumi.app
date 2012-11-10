@@ -80,7 +80,7 @@ def setupCollections(portal, logger):
 
              dict(id      = 'latestvideos',
                   title   = _(u'Latest Videos'),
-                  desc    = _(u'Latest videos contributed by the users.'),
+                  desc    = _(u''),
                   layout  = "video_listing_view",
                   exclude = False),
 
