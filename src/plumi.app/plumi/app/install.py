@@ -84,30 +84,6 @@ def setupCollections(portal, logger):
                   layout  = "video_listing_view",
                   exclude = False),
 
-             dict(id      = 'news_and_events',
-                  title   = _(u'News and Events'),
-                  desc    = _(u'Latest news and events on the site.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'callouts',
-                  title   = _(u'Callouts'),
-                  desc    = _(u'Latest callouts.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'news',
-                  title   = _(u'News'),
-                  desc    = _(u'Latest news.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
-             dict(id      = 'events',
-                  title   = _(u'Events'),
-                  desc    = _(u'Upcoming events.'),
-                  layout  = "folder_summary_view",
-                  exclude = True),
-
              dict(id      = 'recent_comments',
                   title   = _(u'Recent Comments'),
                   desc    = _(u'Recent comments.'),
@@ -144,68 +120,7 @@ def setupCollections(portal, logger):
         # this will actually use ALL objects with title 'Video', which 
         #    means atm, ATEngageVideo and ATVideo
         type_criterion = fv.addCriterion('Type', 'ATPortalTypeCriterion')
-        if item['id'] is 'news_and_events':
-            type_criterion.setValue( ("News Item","Event") )
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            newsandeventsCollectionPortlet = Assignment(header=u"News and Events",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news_and_events)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=False)
-
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('news_and_events'):
-                saveAssignment(rightColumnInThisContext, newsandeventsCollectionPortlet)
-
-        elif item['id'] is 'callouts':
-            date_crit = fv.addCriterion('expires','ATFriendlyDateCriteria')
-            # Set date reference to now
-            date_crit.setValue(0)
-            # Only take events in the past
-            date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('more')
-            type_criterion.setValue( ("Plumi Call Out") )        
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            calloutsCollectionPortlet = Assignment(header=u"Callouts",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.callouts)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=False)
-          
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('callouts'):    
-                saveAssignment(rightColumnInThisContext, calloutsCollectionPortlet)
-
-            
-            #Past callouts collection
-            fv.invokeFactory('Topic',
-                           id = 'past_callouts',
-                           title = 'Past Callouts',
-                           description = _(u'Past callouts.').translate({}))
-            pc = getattr(fv, 'past_callouts')
-            pc.setAcquireCriteria(True)
-            pc.unmarkCreationFlag()
-            date_crit = pc.addCriterion('expires','ATFriendlyDateCriteria')  
-            date_crit.setValue(0)
-            date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('less')
-            type_criterion.setValue( ("Plumi Call Out") )        
-            sort_crit = pc.addCriterion('effective',"ATSortCriterion")
-            publishObject(wftool, pc)
-
-        elif item['id'] is 'recent_comments':
+        if item['id'] is 'recent_comments':
             type_criterion.setValue( ("Comment") )
             sort_crit = fv.addCriterion('created',"ATSortCriterion")
             right = getUtility(IPortletManager, name='plone.rightcolumn')
@@ -231,66 +146,6 @@ def setupCollections(portal, logger):
                 mapping[chooser.chooseName(None, assignment)] = assignment
             if not rightColumnInThisContext.has_key('recent-comments'):
                 saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
-
-        elif item['id'] is 'news':
-            type_criterion.setValue( ("News Item") )        
-            sort_crit = fv.addCriterion('effective',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            newsCollectionPortlet = Assignment(header=u"News",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.news)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=False)
-          
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('news'):    
-                saveAssignment(rightColumnInThisContext, newsCollectionPortlet)
-
-        elif item['id'] is 'events':
-            date_crit = fv.addCriterion('end','ATFriendlyDateCriteria')
-            # Set date reference to now
-            date_crit.setValue(0)
-            date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('more')
-            type_criterion.setValue( ("Event") )
-            sort_crit = fv.addCriterion('end',"ATSortCriterion")
-            right = getUtility(IPortletManager, name='plone.rightcolumn')
-            rightColumnInThisContext = getMultiAdapter((portal, right), IPortletAssignmentMapping)
-            urltool  = getToolByName(portal, 'portal_url')
-            eventsCollectionPortlet = Assignment(header=u"Upcoming Events",
-                                        limit=5,
-                                        target_collection = '/'.join(urltool.getRelativeContentPath(portal.events)),
-                                        random=False,
-                                        show_more=True,
-                                        show_dates=False)
-          
-            def saveAssignment(mapping, assignment):
-                chooser = INameChooser(mapping)
-                mapping[chooser.chooseName(None, assignment)] = assignment
-            if not rightColumnInThisContext.has_key('events'):    
-                saveAssignment(rightColumnInThisContext, eventsCollectionPortlet)
-
-
-            #Past events collection
-            fv.invokeFactory('Topic',
-                           id = 'past_events',
-                           title = 'Past Events',
-                           description = _(u'Past events.').translate({}))
-            pc = getattr(fv, 'past_events')
-            pc.setAcquireCriteria(True)
-            pc.unmarkCreationFlag()
-            date_crit = pc.addCriterion('end','ATFriendlyDateCriteria')  
-            date_crit.setValue(0)
-            date_crit.setDateRange('-') # This is irrelevant when the date is now
-            date_crit.setOperation('less')
-            type_criterion.setValue( ("Event") )        
-            sort_crit = pc.addCriterion('end',"ATSortCriterion")
-            publishObject(wftool, pc)
 
         else:
             type_criterion.setValue("Video")

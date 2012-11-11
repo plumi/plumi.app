@@ -5,29 +5,5 @@
                 manager="plone.dashboard2" type="portlets.Recent">
         <property name="count">5</property>
     </assignment>
-    
-    <assignment name="news" category="user" key="Plumi"
-                manager="plone.dashboard1" type="portlets.News">
-        <property name="count">5</property>
-        <property name="state"/>
-    </assignment>
-    
-    <assignment name="events" category="user" key="Plumi"
-                manager="plone.dashboard1" type="portlets.Events">
-        <property name="count">5</property>
-        <property name="state"/>
-    </assignment>
 
-    <assignment name="navigation" category="context" key="/"
-                manager="plone.leftcolumn" type="portlets.Navigation">
-        <property name="topLevel">0</property>
-    </assignment>
-
-    <assignment manager="plone.leftcolumn"
-                category="context"
-                key="/"
-                type="qi.portlet.TagClouds.TagCloudPortlet"
-                name="tagcloud"
-     />
-     
 </portlets>
