@@ -5,5 +5,10 @@
                 manager="plone.dashboard2" type="portlets.Recent">
         <property name="count">5</property>
     </assignment>
+    
+    <assignment name="navigation" category="context" key="/"
+                manager="plone.leftcolumn" type="portlets.Navigation">
+        <property name="topLevel">0</property>
+    </assignment>
 
 </portlets>
