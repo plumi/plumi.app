@@ -8,14 +8,31 @@ Before you start
     e.g. sudo apt-get install build-essential pkg-config
  * install git
     e.g. sudo apt-get install git-core
- * install python2.6 and header files
-    e.g. sudo apt-get install python2.6-dev
+ * install python and header files (tested with python 2.6 and 2.7)
+    e.g. sudo apt-get install python-dev
  * install libjpeg, zlib, libpcre, libxslt header files
     e.g. sudo apt-get install libjpeg62-dev zlib1g-dev, libxslt1-dev
     or for Ubuntu 11.04 jpeg support: sudo apt-get install libjpeg8-dev
     for png support in Ubuntu 11.04 you may have to install zlib from source
  * install groff-base
     e.g. sudo apt-get install groff-base
+
+
+Creating a Python Virtual Environment
+=====================================
+If you are running other applications and web sites on your server, 
+it may be worth while creating a python virtual environment for developing
+in - this can avoid problems between python packages installed by your 
+operating system and those installed by easy_install. 
+You will need to have the virtualenv package installed first - in Debian and
+Ubuntu systems you can apt-get install python-virtualenv, then:
+
+  virtualenv -p /usr/bin/python --no-site-packages pyvirt
+  . pyvirt/bin/activate
+  easy_install http://dist.repoze.org/PIL-1.1.6.tar.gz
+
+This will install the virtual env into pyvirt, activate it and then 
+install the (required) Python Imaging Library into the virtual env.
 
 Initial configuration
 ======================
@@ -45,7 +62,7 @@ At the very least you should change the following:
   * www-videoserver-name: the hostname of your transcoder & videoserver
       (e.g. videos.engagemedia.org)
 
-If you decided not to change the default user for zope and zeo in site.cfg make
+If you decided not to change the default user for zope, zeo and transcode in site.cfg make
 sure that it exists in your system. If not, add it:
 
    sudo useradd zope
@@ -58,7 +75,7 @@ Once you're ready with the initial configuration execute the following two
 commands. Do it as your regular user for testing/dev builds but make sure you 
 are root for production builds:
 
-  python2.6 bootstrap.py 
+  python bootstrap.py 
   ./bin/buildout
 
 That should take some time, so feel free to get some cofee or fresh air while
