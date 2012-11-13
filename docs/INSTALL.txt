@@ -122,7 +122,7 @@ If you want to do some development, you can use Paster instead of gunicorn
 since the latter is more suited for production. Stop gunicorn and start paster 
 as shown below:
 
-  ./bin/supervisorctl stop gunicorn
+  ./bin/supervisorctl stop uwsgi
 
   ./bin/paster serve development.ini --reload 
 
