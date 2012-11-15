@@ -81,14 +81,18 @@ are root for production builds:
 That should take some time, so feel free to get some cofee or fresh air while
 buildout is downloading, compiling and installing dependencies (Zope, Plone,
 ffmpeg, etc). If all goes well your Plumi instance will be ready after that
-point.
+point. To enable transcoding, you must also run the ffmpeg buildout:
+
+  cd ffmpeg
+  python bootstrap.py
+  ./bin/buildout
 
 
 Running Plumi 4.x 
 ==================
 
 Supervisor will be managing the internal ZEO server, the transcodedaemon, 
-the async worker instance, the varnish cache server, the gunicorn WSGI web 
+the async worker instance, the varnish cache server, the uwsgi WSGI web 
 server, as well as the externally facing ploneFTP server and the nginx web 
 server in production builds.
 
@@ -96,7 +100,7 @@ Start supervisor like this:
 
   ./bin/supervisord
 
-Confirm that zeo, gunicorn and transcodedaemon are up and running:
+Confirm that zeo, uwsgi and transcodedaemon are up and running:
 
   ./bin/supevisorctl status
   
@@ -105,7 +109,7 @@ default ports for nginx and ploneftp in site.cfg (www-address & plumiftp-address
 respectively) you'll see that both ploneftp and nginx failed to start because
 you don't have permission to bind on to the priviledged ports 80 and 21. 
 Nothing to worry about if you're just evaluating Plumi, you can still use it
-without nginx. Just go to port 8000 on localhost to access directly the gunicorn
+without nginx. Just go to port 8000 on localhost to access directly the uwsgi
 web server. 
 
 Run the plumisite command to create a new Plumi site
@@ -118,8 +122,8 @@ After that step you're ready to roll! Your new Plumi site will be available
 at http://localhost:8000/Plone or at http://{www-server-name} for production
 builds.
 
-If you want to do some development, you can use Paster instead of gunicorn 
-since the latter is more suited for production. Stop gunicorn and start paster 
+If you want to do some development, you can use Paster instead of uwsgi 
+since the latter is more suited for production. Stop uwsgi and start paster 
 as shown below:
 
   ./bin/supervisorctl stop uwsgi

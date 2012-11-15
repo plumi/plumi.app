@@ -1,3 +1,16 @@
+4.5 (2012-11-14)
+=================
+
+ - Replaced gunicorn with uwsgi
+ - Created a new mobile friendly Plumi Skin using diazo
+ - Cleaned up default portlets
+ - Fix uploads for bigger files
+ - Remove views/downloads from iframe
+ - Fixed fullscreen on Embedded Videos
+ - Implemented a Video Upload Progress Bar
+ - Updated mediaelement.js
+ - Added the ability to select/de-select Universal Subtitles
+
 4.4 (2012-07-26) [unweb.me]
 ==============================
 
