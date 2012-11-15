@@ -160,3 +160,7 @@ installation. Add the tracking tag in Site-Setup->Site and fill the form in
 Site-Setup-> Piwik Settings with the piwik url, the site id on piwik and the
 api key (if you have anonymous access on piwik for your site you can leave
 anonymous instead of the API key).
+
+Configuring subtitles and downloads
+==========================================
+By default, subtitle support through Universal Subtitles is enabled. You can disable it through Site Setup-> Transcode Settings. You can also disable downloads through embedded videos there.
