@@ -1,4 +1,4 @@
 #!/bin/sh
-PATH=.:./bin:$PATH
+PATH=.:./bin:$PATH:./ffmpeg/bin:$PATH
 
 ffmpeg2theora "$1" -o "$2" --max_size 400 --no-upscaling -H 44100
