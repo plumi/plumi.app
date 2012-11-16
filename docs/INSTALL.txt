@@ -75,18 +75,20 @@ Once you're ready with the initial configuration execute the following two
 commands. Do it as your regular user for testing/dev builds but make sure you 
 are root for production builds:
 
+  cd ffmpeg
+  python bootstrap.py
+  ./bin/buildout
+
+After the ffmpeg buildout is finished you should run the plumi buildout:
+
+  cd ..
   python bootstrap.py 
   ./bin/buildout
 
 That should take some time, so feel free to get some cofee or fresh air while
 buildout is downloading, compiling and installing dependencies (Zope, Plone,
 ffmpeg, etc). If all goes well your Plumi instance will be ready after that
-point. To enable transcoding, you must also run the ffmpeg buildout:
-
-  cd ffmpeg
-  python bootstrap.py
-  ./bin/buildout
-
+point.
 
 Running Plumi 4.x 
 ==================
