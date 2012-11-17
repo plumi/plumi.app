@@ -44,7 +44,13 @@
 +
 +    except NotFound:
 +        response.setStatus(404)
-+        errorBody = parents[0].standard_error_message(error_type='NotFound')
++        i = 0
++        while True:
++            try:
++                errorBody = parents[i].standard_error_message(error_type='NotFound')
++                break
++            except:
++                i+=1
 +        from plone.app.theming.transform import ThemeTransform
 +        try:
 +            errorBody = ThemeTransform(None, request).transformIterable([errorBody],'utf-8').serialize()
