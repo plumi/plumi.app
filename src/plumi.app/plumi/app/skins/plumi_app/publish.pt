@@ -36,9 +36,6 @@
             </div>
     
             <div class="loginOption">
-                <a tal:attributes="href string:${base_path}/@@publish_video">
-                    <img class="bigbutton" tal:attributes="src string:${portal_url}/publishvideo.gif">        
-                </a>
                 <strong>
                     <a class="optionHeader" tal:attributes="href string:${base_path}/@@publish_video" i18n:translate="">Publish Video</a>
                 </strong><br />
@@ -52,34 +49,23 @@
             </div>
         
             <div class="loginOption" tal:condition="home_url">
-                <a tal:attributes="href string:${home_url}/events/createObject?type_name=Event"><img class="bigbutton" tal:attributes="src string:${portal_url}/myevents.gif"></a><b><a class="optionHeader" tal:attributes="href string:${home_url}/events/createObject?type_name=Event" i18n:translate="">Publish Event</a></b><br />
+                <strong>
+                    <a class="optionHeader" tal:attributes="href string:${home_url}/events/createObject?type_name=Event" i18n:translate="">Publish Event</a>
+                </strong><br />
                 <tal:publish_event_blurb i18n:translate="publish_event_blurb">
                 List your events such as screenings, film festivals or workshops here.
                 </tal:publish_event_blurb>
             </div>
             
             <div class="loginOption" tal:condition="home_url">
-                <a tal:attributes="href string:${home_url}/news/createObject?type_name=News Item">
-                    <img class="bigbutton" tal:attributes="src string:${portal_url}/mynews.gif">        
-                </a>
-                <b>
+                <strong>
                     <a class="optionHeader" tal:attributes="href string:${home_url}/news/createObject?type_name=News Item" i18n:translate="">Publish News</a>
-                </b><br />
+                </strong><br />
                 <tal:publish_news_blurb i18n:translate="publish_news_blurb">
                 Tell us news about your past and future productions and promote your work.
                 </tal:publish_news_blurb>
             </div>
     
-            <div class="loginOption" tal:condition="home_url">
-                <a tal:attributes="href string:${home_url}/callouts/createObject?type_name=PlumiCallOut">
-                    <img class="bigbutton" tal:attributes="src string:${portal_url}/callouts.gif"></a>
-                <b><a class="optionHeader" tal:attributes="href string:${home_url}/callouts/createObject?type_name=PlumiCallOut" i18n:translate="">Call Out!</a>
-                </b><br />
-                <tal:publish_callout_blurb i18n:translate="publish_callout_blurb">
-                Looking for content for a DVD compilation, screening, film festival or crew for a production? Let people know about it by adding a call-out.
-                </tal:publish_callout_blurb>
-            </div>
-            <br />
             
             <div tal:condition="not:js_enabled">
                 <p i18n:translate="description_javascript_advantage">
