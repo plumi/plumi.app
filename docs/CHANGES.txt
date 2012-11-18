@@ -1,5 +1,5 @@
-4.5 (2012-11-14)
-=================
+4.5b1 (2012-11-14) [unweb.me]
+==============================
 
  - Replaced gunicorn with uwsgi
  - Created a new mobile friendly Plumi Skin using diazo
