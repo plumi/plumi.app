@@ -24,7 +24,9 @@ src/eqb.recipe.uwsgi/
 torrents/
 torrents_safe/
 transcoded/
+transcoded
 var/
+var
 videos/
 versions.cfg
 development.ini
