@@ -16,6 +16,7 @@ port = ${site:wsgi-port}
 
 [uwsgi]
 http-socket = ${site:anyhost}:${site:wsgi-port}
+die-on-term = true
 
 # Begin logging configuration
 

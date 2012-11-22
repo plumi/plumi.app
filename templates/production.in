@@ -9,17 +9,17 @@ pipeline =
     egg:repoze.vhm#vhm_xheaders
     plone
 
-[server:main]
-use = egg:gunicorn#main
-host = ${site:localhost}
-port = ${site:wsgi-port}
-workers = 2
-timeout = 7200
-keepalive = 7200
-
 [uwsgi]
 http-socket = ${site:localhost}:${site:wsgi-port}
 workers = ${site:wsgi-workers}
+harakiri = 120
+#vacuum = true
+no-orphans = true
+single-interpreter = true
+master = 1
+cpu-affinity = 1
+lazy = true
+die-on-term = true
 
 # Begin logging configuration
 
