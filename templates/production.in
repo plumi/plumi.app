@@ -20,6 +20,7 @@ master = 1
 cpu-affinity = 1
 lazy = true
 die-on-term = true
+max-requests = 1000
 
 # Begin logging configuration
 
