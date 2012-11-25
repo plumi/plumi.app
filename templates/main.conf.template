@@ -35,11 +35,14 @@ http {
     upstream cache {
         server ${site:cache-address};
     }
+
     
     server {
         listen ${site:www-address};
         server_name ${site:www-server-name};
         access_log ${buildout:directory}/var/log/main-plone-access.log;
+
+        client_max_body_size 2048M;
 
         # Show status information on /_main-status
         location = /_main_status_ {
@@ -52,10 +55,35 @@ http {
         
         location / {
             proxy_pass http://cache/VirtualHostBase/http/${site:www-server-name}:80/${site:portal-id}/VirtualHostRoot/;
-            proxy_connect_timeout 75;
+            proxy_connect_timeout 200;
             proxy_read_timeout 185;
-            client_max_body_size 512M;
         }
+
+    location ~ plumi_uploader$ {
+        # Pass altered request body to this location
+        upload_pass /_upload_media;
+
+        # Store files to this directory
+        upload_store /tmp/plumitmp ;
+        # Allow uploaded files to be read only by user
+	upload_store_access user:rw group:rw all:rw;
+
+        # Set specified fields in request body
+        upload_set_form_field $upload_field_name.name "$upload_file_name";
+        upload_set_form_field $upload_field_name.content_type "$upload_content_type";
+        upload_set_form_field $upload_field_name.path "$upload_tmp_path";
+
+        # Inform backend about hash and size of a file
+        upload_aggregate_form_field "$upload_field_name.md5" "$upload_file_md5";
+        upload_aggregate_form_field "$upload_field_name.size" "$upload_file_size";
+
+        upload_cleanup 400-505;
+    }
+
+   location /_upload_media {
+       proxy_pass http://cache/VirtualHostBase/http/${site:www-server-name}:80/${site:portal-id}/VirtualHostRoot/$request_uri;
+    }
+
     }
 
     upstream transcoder {

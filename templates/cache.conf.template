@@ -54,6 +54,16 @@ sub vcl_recv {
     }
 
 
+    # dont't cache plumi_uploader view
+    if(req.url ~ "plumi_uploader"){
+        return(pipe);
+    }
+
+    # dont't cache video_file view
+    if(req.url ~ "video_file"){
+        return(pipe);
+    }
+
     if (req.request != "GET" && req.request != "HEAD") {
         /* We only deal with GET and HEAD by default */
         return(pass);
