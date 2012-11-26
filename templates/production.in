@@ -21,6 +21,7 @@ cpu-affinity = 1
 lazy = true
 die-on-term = true
 max-requests = 1000
+enable-threads = true
 
 # Begin logging configuration
 
