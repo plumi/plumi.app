@@ -47,12 +47,15 @@ sub vcl_recv {
         return(pipe);
     }
 
+    # dont't cache publish view
+    if(req.url ~ "video_file"){
+        return(pipe);
+    }
 
     # dont't cache serve_daemon view
     if(req.url ~ "serve_daemon"){
         return(pipe);
     }
-
 
     # dont't cache plumi_uploader view
     if(req.url ~ "plumi_uploader"){
