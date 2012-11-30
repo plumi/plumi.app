@@ -2,4 +2,12 @@
 PATH=.:./bin:$PATH:./ffmpeg/bin:$PATH
 LD_LIBRARY_PATH=./ffmpeg/parts/vorbis-build/lib:./ffmpeg/parts/theora-build/lib:./ffmpeg/parts/ffmpeg-build/lib:./ffmpeg/parts/x264-build/lib:./ffmpeg/parts/faac-build/lib:./ffmpeg/parts/faad-build/lib:./ffmpeg/parts/lame-build/lib:./ffmpeg/parts/vpx-build/lib:./ffmpeg/parts/ogg-build/lib', '--extra-ldflags=-I./ffmpeg/parts/mp4v2-build/lib
 export LD_LIBRARY_PATH
-ffmpeg -y -i "$1" -threads 0 -acodec libvorbis -ac 2 -ab 64k -ar 44100 -b 250k -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" "$2"
+mkdir -p /tmp/plumitranscodetmp
+VIDEO_FILE=/tmp/plumitranscodetmp/wget.`date +%s`
+wget "$1" -O $VIDEO_FILE
+chmod 700 $VIDEO_FILE
+ffmpeg -y -i "$VIDEO_FILE" -threads 0 -acodec libvorbis -ac 2 -ab 64k -ar 44100 -b 250k -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" "$2"
+RET=$?
+rm $VIDEO_FILE
+exit $RET
+

@@ -3,4 +3,11 @@ PATH=.:./bin:$PATH:./ffmpeg/bin:$PATH
 LD_LIBRARY_PATH=./ffmpeg/parts/vorbis-build/lib:./ffmpeg/parts/theora-build/lib:./ffmpeg/parts/ffmpeg-build/lib:./ffmpeg/parts/x264-build/lib:./ffmpeg/parts/faac-build/lib:./ffmpeg/parts/faad-build/lib:./ffmpeg/parts/lame-build/lib:./ffmpeg/parts/vpx-build/lib:./ffmpeg/parts/ogg-build/lib', '--extra-ldflags=-I./ffmpeg/parts/mp4v2-build/lib
 export LD_LIBRARY_PATH
 sleep 2
-ffmpeg -i "$1" -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" -f image2 -ss 8 -vframes 1 "$2"
+mkdir -p /tmp/plumitranscodetmp
+VIDEO_FILE=/tmp/plumitranscodetmp/wget.`date +%s`
+wget $1 -O $VIDEO_FILE
+chmod 700 $VIDEO_FILE
+ffmpeg -i "$VIDEO_FILE" -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" -f image2 -ss 8 -vframes 1 "$2"
+RET=$?
+rm $VIDEO_FILE
+exit $RET
