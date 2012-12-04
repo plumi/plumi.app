@@ -4,6 +4,7 @@
  <action-provider name="portal_workflow"/>
  <action-provider name="portal_types"/>
  <action-provider name="portal_actions"/>
+ 
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>
   <object name="rss" meta_type="CMF Action" i18n:domain="ContentLicensing">
@@ -139,7 +140,7 @@
     <element value="View"/>
    </property>
    <property name="visible">True</property>
-  </object>
+  </object>    
   <object name="plone_setup" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Site Setup</property>
    <property name="description" i18n:translate=""></property>
@@ -152,6 +153,7 @@
    </property>
    <property name="visible">True</property>
   </object>
+
   <object name="review-comments" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Moderate comments</property>
    <property name="description" i18n:translate=""></property>
@@ -380,8 +382,40 @@
    <property name="visible">True</property>
   </object>
  </object>
+ 
  <object name="user" meta_type="CMF Action Category">
   <property name="title"></property>
+  
+  <object name="My Account" meta_type="CMF Action" insert-before="*">
+   <property name="title">My Account</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal_url}/@@personal-information</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object> 
+
+  <object name="Review List" meta_type="CMF Action" insert-before="review-comments">
+   <property name="title">Review List</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${portal_url}/@@full_review_list</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="Review portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+  
   <object name="preferences" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Preferences</property>
    <property name="description" i18n:translate=""></property>
@@ -467,7 +501,7 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="mystuff" meta_type="CMF Action" i18n:domain="plone">
+  <object name="mystuff" meta_type="CMF Action" i18n:domain="plone" insert-after="My Account">
    <property name="title" i18n:translate="">My Folder</property>
    <property name="description" i18n:translate=""></property>
    <property
@@ -480,7 +514,7 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="logout" meta_type="CMF Action" i18n:domain="plone">
+  <object name="logout" meta_type="CMF Action" i18n:domain="plone" insert-after="*">
    <property name="title" i18n:translate="">Log out</property>
    <property name="description" i18n:translate=""></property>
    <property
