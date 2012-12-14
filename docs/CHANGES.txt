@@ -1,10 +1,11 @@
-4.5rc (2012-11-14) [unweb.me]
+4.5rc1 (2012-12-14) [unweb.me]
 ==============================
 
  - Lots of enhancements on the new Plumi Skin [dimo, mgogoulos, clopy, cpsaltis]
  - Rearranged user menu [clopy]
  - Removed callouts folder from member creation [clopy]
- - More stable uploads [dimo. mgogoulos]
+ - More stable uploads [dimo, mgogoulos]
+
 
 4.5b1 (2012-11-14) [unweb.me]
 ==============================
@@ -18,6 +19,7 @@
  - Implemented a Video Upload Progress Bar
  - Updated mediaelement.js
  - Added the ability to select/de-select Universal Subtitles
+
 
 4.4 (2012-07-26) [unweb.me]
 ==============================
