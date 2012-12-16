@@ -16,4 +16,5 @@
  - Pushparani J <pushparanij@mahiti.org>
  - Sowmya M <sowmyam@mahiti.org>
  - Christos Psaltis <cpsaltis@unweb.me>
+ - Angelos Tzotsos <gcpp.kalxas@gmail.com>
 
