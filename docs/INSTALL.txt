@@ -1,6 +1,7 @@
 A more comprehensive (but not always up to date!) install guide can be found at
 http://en.flossmanuals.net/Plumi/Introduction
 
+
 Before you start
 ================
 
@@ -34,6 +35,7 @@ Ubuntu systems you can apt-get install python-virtualenv, then:
 This will install the virtual env into pyvirt, activate it and then 
 install the (required) Python Imaging Library into the virtual env.
 
+
 Initial configuration
 ======================
 This step is optional for testing/development builds. However, even in those 
@@ -62,8 +64,8 @@ At the very least you should change the following:
   * www-videoserver-name: the hostname of your transcoder & videoserver
       (e.g. videos.engagemedia.org)
 
-If you decided not to change the default user for zope, zeo and transcode in site.cfg make
-sure that it exists in your system. If not, add it:
+If you decided not to change the default user for zope, zeo and transcode in 
+site.cfg make sure that it exists in your system. If not, add it:
 
    sudo useradd zope
    
@@ -89,6 +91,7 @@ That should take some time, so feel free to get some cofee or fresh air while
 buildout is downloading, compiling and installing dependencies (Zope, Plone,
 ffmpeg, etc). If all goes well your Plumi instance will be ready after that
 point.
+
 
 Running Plumi 4.x 
 ==================
@@ -147,7 +150,6 @@ In order to shutdown all Plumi related services, use the following command:
 
   ./bin/supervisorctl shutdown
 
-
 If you want to ensure that Plumi will start automatically whenever your server
 is turned on, add the following lines to your /etc/rc.local file replacing
 PATH_TO_PLUMI with the actual absolute path of your plumi setup:
@@ -163,6 +165,9 @@ Site-Setup-> Piwik Settings with the piwik url, the site id on piwik and the
 api key (if you have anonymous access on piwik for your site you can leave
 anonymous instead of the API key).
 
+
 Configuring subtitles and downloads
 ==========================================
-By default, subtitle support through Universal Subtitles is enabled. You can disable it through Site Setup-> Transcode Settings. You can also disable downloads through embedded videos there.
+By default, subtitle support through Universal Subtitles is enabled. You can 
+disable it through Site Setup->Transcode Settings. You can also disable 
+downloads through embedded videos there.
