@@ -48,6 +48,9 @@ sub vcl_recv {
     }
 
     # dont't cache publish view
+    if(req.url ~ "publish"){
+        return(pipe);
+    }
     if(req.url ~ "video_file"){
         return(pipe);
     }
