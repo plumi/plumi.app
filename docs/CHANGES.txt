@@ -1,3 +1,9 @@
+4.5 (2013-01-30) [unweb.me]
+===========================
+ - don't cache publish view [dimo]
+ - pin collective.upload [dimo]
+ - chown tmp dir on install [dimo]
+
 4.5rc1 (2012-12-14) [unweb.me]
 ==============================
 
