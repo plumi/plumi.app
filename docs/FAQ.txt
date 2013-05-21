@@ -1,0 +1,25 @@
+More answers and questions to be added here
+
+Problems with FTP
+================
+Problem:
+Error in logging in ftp, log shows
+Error authenticating to Zope FTP server 127.0.0.1:8021                               with username manager : [Errno 111] Connection refused
+
+Solution:
+Checkout that ZServer FTP has started, on port specified on site.cfg (default is 8021)
+Worker's log (worker.log) should show that it has started
+
+ 2013-05-21 16:36:43 INFO ZServer FTP server started at Tue May 21 16:36:43 2013
+        Hostname: 0.0.0.0
+        Port: 8021
+
+try to telnet to that port and make sure it listens
+
+$telnet localhost 8021
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+220 localhost FTP server (Medusa Async V96471 [experimental]) ready.
+
+check that file parts/ploneftp/config.py has that address for zope_ftp_address
