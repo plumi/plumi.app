@@ -23,3 +23,15 @@ Escape character is '^]'.
 220 localhost FTP server (Medusa Async V96471 [experimental]) ready.
 
 check that file parts/ploneftp/config.py has that address for zope_ftp_address
+
+connection timed out during buildout
+================================
+
+If you get errors like this one
+
+Error: Error downloading extends for URL  http://download.zope.org/zopetoolkit/index/1.0.7/zopeapp-versions.cfg: 
+[Errno socket error] [Errno 110] connection timed out 
+
+don't worry so much, some packages could not be fetched due to network issues or high load on the server they are located. 
+Pypi and zope.org very often have timeout errors. Just rerun the buildout (./bin/buildout -vN) as soon as it fails with similar
+errors!
