@@ -19,7 +19,7 @@ http {
     default_type  application/octet-stream;
 
     #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-    #                  '"$status" $body_bytes_sent "$http_referer" '
+    #                  '$status $body_bytes_sent "$http_referer" '
     #                  '"$http_user_agent" "$http_x_forwarded_for"';
 
     #access_log  logs/access.log  main;
@@ -106,7 +106,7 @@ http {
     #    ssl_session_timeout  5m;
 
     #    ssl_protocols  SSLv2 SSLv3 TLSv1;
-    #    ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
     #    ssl_prefer_server_ciphers   on;
 
     #    location / {
