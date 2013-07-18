@@ -8,26 +8,40 @@ We use and test Plumi mainly in Debian/Ubuntu, using Python 2.7
 Quick installation
 ==================
 This assumes you are on ubuntu/debian and have python 2.7
-#step 1: install the necessary packages
+
+ step 1: install the necessary packages
 #apt-get install build-essential pkg-config git-core python-dev libjpeg62-dev zlib1g-dev libxslt1-dev groff-base
 
-#step 2: get plumi from github and ceate a virtualenv environment
+ step 2: get plumi from github and ceate a virtualenv environment
 $git clone https://github.com/plumi/plumi.app/
 $cd plumi.app
 ~/plumi.app$virtualenv . 
 
-#step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)
+ step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)
 
-#step 4: run the buildout 
+ step 4: run the buildout 
 ~/plumi.app$./bin/python bootstrap.py && ./bin/buildout -v
 
-#step 5: run the buildout for ffmpeg
+ step 5: run the buildout for ffmpeg
 ~/plumi.app$cd ffmpeg
 ~/plumi.app/ffmpeg$../bin/python bootstrap.py && ./bin/buildout -vN
 
-#step 6:
-start supervisord as root, this will start all services as users defined on site.cfg
+ step 6: start supervisord as root, this will start all services as users defined on site.cfg
+#./bin/supervisord
 
+Now check that services have started
+
+root@userx:/home/user/plumi# ./bin/supervisorctl status
+cache                            RUNNING    pid 22650, uptime 0:21:29
+nginx                            RUNNING    pid 22651, uptime 0:21:29
+ploneftp                         RUNNING    pid 22649, uptime 0:21:29
+transcodedaemon                  RUNNING    pid 22612  uptime 0:21:29
+uwsgi                            RUNNING    pid 22646, uptime 0:21:29
+worker                           RUNNING    pid 22647, uptime 0:21:29
+zeo                              RUNNING    pid 22645, uptime 0:21:29
+
+
+I you start plumi as normal user, without changing the default ports, it will not be able to load nginx to port 80 
 
 System dependencies
 ================
