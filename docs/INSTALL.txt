@@ -23,7 +23,7 @@ $cd plumi.app
 
 #step 5: run the buildout for ffmpeg
 ~/plumi.app$cd ffmpeg
-~/plumi.app/ffmpeg$./bin/python bootstrap.py && ./bin/buildout -vN
+~/plumi.app/ffmpeg$../bin/python bootstrap.py && ./bin/buildout -vN
 
 #step 6:
 start supervisord as root, this will start all services as users defined on site.cfg
