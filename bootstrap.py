@@ -28,10 +28,10 @@ parser = OptionParser(
     'This is a custom version of the zc.buildout %prog script.  It is '
     'intended to meet a temporary need if you encounter problems with '
     'the zc.buildout 1.5 release.')
-parser.add_option("-v", "--version", dest="version", default='1.4.4',
+parser.add_option("-v", "--version", dest="version", default='1.7.1',
                           help='Use a specific zc.buildout version.  *This '
                           'bootstrap script defaults to '
-                          '1.4.4, unlike usual buildpout bootstrap scripts.*')
+                          '1.7.1, unlike usual buildpout bootstrap scripts.*')
 parser.add_option("-c", None, action="store", dest="config_file",
                    help=("Specify the path to the buildout configuration "
                          "file to be used."))
