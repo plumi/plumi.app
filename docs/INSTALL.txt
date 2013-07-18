@@ -1,8 +1,35 @@
-A more comprehensive (but not always up to date!) install guide can be found at
+This is the most up to date Plumi installation guide. A user/admin manual can be found at
 http://en.flossmanuals.net/Plumi/Introduction
 
+Environment
+===========
+We use and test Plumi mainly in Debian/Ubuntu, using Python 2.7
 
-Before you start
+Quick installation
+==================
+This assumes you are on ubuntu/debian and have python 2.7
+#step 1: install the necessary packages
+#apt-get install build-essential pkg-config git-core python-dev libjpeg62-dev zlib1g-dev libxslt1-dev groff-base
+
+#step 2: get plumi from github and ceate a virtualenv environment
+$git clone https://github.com/plumi/plumi.app/
+$cd plumi.app
+~/plumi.app$virtualenv . 
+
+#step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)
+
+#step 4: run the buildout 
+~/plumi.app$./bin/python bootstrap.py && ./bin/buildout -v
+
+#step 5: run the buildout for ffmpeg
+~/plumi.app$cd ffmpeg
+~/plumi.app/ffmpeg$./bin/python bootstrap.py && ./bin/buildout -vN
+
+#step 6:
+start supervisord as root, this will start all services as users defined on site.cfg
+
+
+System dependencies
 ================
 
  * install gcc/g++ dev tools
@@ -28,12 +55,7 @@ operating system and those installed by easy_install.
 You will need to have the virtualenv package installed first - in Debian and
 Ubuntu systems you can apt-get install python-virtualenv, then:
 
-  virtualenv -p /usr/bin/python --no-site-packages pyvirt
-  . pyvirt/bin/activate
-  easy_install http://dist.repoze.org/PIL-1.1.6.tar.gz
-
-This will install the virtual env into pyvirt, activate it and then 
-install the (required) Python Imaging Library into the virtual env.
+  virtualenv --no-site-packages plumi.app
 
 
 Initial configuration
@@ -78,13 +100,13 @@ commands. Do it as your regular user for testing/dev builds but make sure you
 are root for production builds:
 
   cd ffmpeg
-  python bootstrap.py
+  python bootstrap.py (or ../bin/python bootstrap.py if you use virtualenv)
   ./bin/buildout
 
 After the ffmpeg buildout is finished you should run the plumi buildout:
 
   cd ..
-  python bootstrap.py 
+  python bootstrap.py (or ./bin/python bootstrap.py if you use virtualenv)
   ./bin/buildout
 
 That should take some time, so feel free to get some cofee or fresh air while

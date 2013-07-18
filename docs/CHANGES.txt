@@ -1,3 +1,6 @@
+4.5.1 (2013-07) [unweb.me]
+ - update versions for core products (nginx, ffmpeg, mediaelementjs, python, Datetime)
+ 
 4.5 (2013-01-30) [unweb.me]
 ===========================
  - don't cache publish view [dimo]
