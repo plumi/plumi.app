@@ -10,6 +10,7 @@ More info
 
 - Check out **http://plumi.org**
 - For the Plumi Manual visit **http://en.flossmanuals.net/Plumi/Introduction**
+- For a demo Plumi site visit **http://demo.plumi.org**
 
 Installation and migration
 =========================
