@@ -14,34 +14,34 @@ Quick installation
 
 This assumes you are on ubuntu/debian and have python 2.7
 
-step 1: install the necessary packages
+step 1: install the necessary packages::
 
     #apt-get install build-essential pkg-config git-core python-dev libjpeg62-dev zlib1g-dev libxslt1-dev groff-base
 
-step 2: get plumi from github and ceate a virtualenv environment
+step 2: get plumi from github and ceate a virtualenv environment::
 
     $git clone https://github.com/plumi/plumi.app/
     $cd plumi.app
     ~/plumi.app$virtualenv . 
 
-step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)
+step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)::
 
     $vi site.cfg
 
-step 4: run the buildout 
+step 4: run the buildout::
 
     ~/plumi.app$./bin/python bootstrap.py && ./bin/buildout -v
 
-step 5: run the buildout for ffmpeg
+step 5: run the buildout for ffmpeg::
 
     ~/plumi.app$cd ffmpeg
     ~/plumi.app/ffmpeg$../bin/python bootstrap.py && ./bin/buildout -vN
 
-step 6: start supervisord as root, this will start all services as users defined on site.cfg
+step 6: start supervisord as root, this will start all services as users defined on site.cfg::
 
     #./bin/supervisord
 
-Now check that services have started
+Now check that services have started::
 
     root@userx:/home/user/plumi# ./bin/supervisorctl status
     cache                            RUNNING    pid 22650, uptime 0:21:29
@@ -80,7 +80,7 @@ it may be worth while creating a python virtual environment for developing
 in - this can avoid problems between python packages installed by your 
 operating system and those installed by easy_install. 
 You will need to have the virtualenv package installed first - in Debian and
-Ubuntu systems you can apt-get install python-virtualenv, then:
+Ubuntu systems you can apt-get install python-virtualenv, then::
 
     virtualenv --no-site-packages plumi.app
 
@@ -115,7 +115,7 @@ At the very least you should change the following:
       (e.g. videos.engagemedia.org)
 
 If you decided not to change the default user for zope, zeo and transcode in 
-site.cfg make sure that it exists in your system. If not, add it:
+site.cfg make sure that it exists in your system. If not, add it::
 
     sudo useradd zope
    
@@ -125,13 +125,13 @@ Install Plumi 4.x
 
 Once you're ready with the initial configuration execute the following two 
 commands. Do it as your regular user for testing/dev builds but make sure you 
-are root for production builds:
+are root for production builds::
 
     cd ffmpeg
     python bootstrap.py (or ../bin/python bootstrap.py if you use virtualenv)
     ./bin/buildout
 
-After the ffmpeg buildout is finished you should run the plumi buildout:
+After the ffmpeg buildout is finished you should run the plumi buildout::
 
     cd ..
     python bootstrap.py (or ./bin/python bootstrap.py if you use virtualenv)
@@ -151,11 +151,11 @@ the async worker instance, the varnish cache server, the uwsgi WSGI web
 server, as well as the externally facing ploneFTP server and the nginx web 
 server in production builds.
 
-Start supervisor like this:
+Start supervisor like this::
 
     ./bin/supervisord
 
-Confirm that zeo, uwsgi and transcodedaemon are up and running:
+Confirm that zeo, uwsgi and transcodedaemon are up and running::
 
     ./bin/supevisorctl status
   
@@ -167,7 +167,7 @@ Nothing to worry about if you're just evaluating Plumi, you can still use it
 without nginx. Just go to port 8000 on localhost to access directly the uwsgi
 web server. 
 
-Run the plumisite command to create a new Plumi site
+Run the plumisite command to create a new Plumi site::
 
     ./bin/plumisite
   
@@ -179,7 +179,7 @@ builds.
 
 If you want to do some development, you can use Paster instead of uwsgi 
 since the latter is more suited for production. Stop uwsgi and start paster 
-as shown below:
+as shown below::
 
     ./bin/supervisorctl stop uwsgi
 
@@ -196,13 +196,13 @@ the same host, port and key there.
 Add a new user to your Plumi site for testing and start publishing videos!
 
 
-In order to shutdown all Plumi related services, use the following command:
+In order to shutdown all Plumi related services, use the following command::
 
     ./bin/supervisorctl shutdown
 
 If you want to ensure that Plumi will start automatically whenever your server
 is turned on, add the following lines to your /etc/rc.local file replacing
-PATH_TO_PLUMI with the actual absolute path of your plumi setup:
+PATH_TO_PLUMI with the actual absolute path of your plumi setup::
 
     PATH_TO_PLUMI/bin/supervisord
 
