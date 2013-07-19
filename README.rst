@@ -15,7 +15,7 @@ More info
 Installation and migration
 =========================
 
-- For installation instructions see docs/INSTALL.txt
+- For installation instructions see docs/INSTALL.rst
 - For migration instructions see docs/MIGRATE.txt
 - Code repository: **https://github.com/plumi/plumi.app**
 
