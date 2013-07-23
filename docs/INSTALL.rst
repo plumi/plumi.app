@@ -53,7 +53,8 @@ Now check that services have started::
     zeo                              RUNNING    pid 22645, uptime 0:21:29
 
 
-I you start plumi as normal user, without changing the default ports, it will not be able to load nginx to port 80 
+If you start plumi as normal user, without changing the default ports, it will not be able to load nginx to port 80, and also start cacher, since default user for cacher is root. 
+Make sure you edit site.cfg and change the users if you have not root priviledges. 
 
 System dependencies
 ===================
