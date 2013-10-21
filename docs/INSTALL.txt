@@ -158,7 +158,7 @@ Start supervisor like this::
 
 Confirm that zeo, uwsgi and transcodedaemon are up and running::
 
-    ./bin/supevisorctl status
+    ./bin/supervisorctl status
   
 If you ran buildout as a regular (non root) user and you did not change the 
 default ports for nginx and ploneftp in site.cfg (www-address & plumiftp-address 
