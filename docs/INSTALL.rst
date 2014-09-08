@@ -12,7 +12,8 @@ Environment
 ===========
 
 We use and test Plumi mainly in Debian 7, using Python 2.7
-Also, Plumi users have reported that they've succesfully installed and run Plumi portals on Mint Linux 17 **http://blog.plumi.org/2014/09/03/installation-on-mint-linux-17/** and FreeBsd 9.1 **http://blog.plumi.org/2014/09/03/plumi-installed-successfully-on-free-bsd-9-1/**
+
+Plumi users have reported that they've succesfully installed and run Plumi portals on Mint Linux 17 **http://blog.plumi.org/2014/09/03/installation-on-mint-linux-17/** and FreeBSD 9.1 **http://blog.plumi.org/2014/09/03/plumi-installed-successfully-on-free-bsd-9-1/**
 
 
 ----------------------
