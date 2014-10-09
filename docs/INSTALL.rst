@@ -1,13 +1,23 @@
 Installation
 ============
 
-This is the most up to date Plumi installation guide. A user/admin manual can be found at
-**http://en.flossmanuals.net/Plumi/Introduction**
+This is the most up to date Plumi installation guide.
+
+A comprehensive Plumi introduction/installation/maintenance/setup guide can be found at **https://trinket.io/mgogoulos/courses/plumi-4-5#/**. 
+
+There is also Plumi's user/admin manual at **http://en.flossmanuals.net/Plumi/Introduction**
+
 
 Environment
 ===========
 
-We use and test Plumi mainly in Debian/Ubuntu, using Python 2.7
+We use and test Plumi mainly in Debian 7, using Python 2.7
+
+Plumi users have reported that they've succesfully installed and run Plumi portals on Mint Linux 17 **http://blog.plumi.org/2014/09/03/installation-on-mint-linux-17/** and FreeBSD 9.1 **http://blog.plumi.org/2014/09/03/plumi-installed-successfully-on-free-bsd-9-1/**
+
+
+----------------------
+
 
 Quick installation
 ==================
