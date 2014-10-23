@@ -6,7 +6,7 @@ mkdir -p /tmp/plumitranscodetmp
 VIDEO_FILE=/tmp/plumitranscodetmp/wget.`date +%s`
 wget "$1" -O $VIDEO_FILE
 chmod 700 $VIDEO_FILE
-ffmpeg -y -i "$VIDEO_FILE" -threads 0 -acodec libvorbis -ac 2 -ab 64k -ar 44100 -b 250k -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" "$2"
+ffmpeg -y -i "$VIDEO_FILE" -threads 0 -acodec libvorbis -ac 2 -ab 64k -ar 44100 -b 500k -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" "$2"
 RET=$?
 rm $VIDEO_FILE
 exit $RET

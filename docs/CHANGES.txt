@@ -1,6 +1,9 @@
 4.5.1 (2013-07) [unweb.me]
  - update versions for core products (nginx, ffmpeg, mediaelementjs, python, Datetime)
- 
+ - add INSTALLATION.rst with markup and updated installation instructions
+ - update zc.buildout version on bootstrap.py
+ - use updated versions of plumi.skin, plumi.content and collective.transcode.star
+
 4.5 (2013-01-30) [unweb.me]
 ===========================
  - don't cache publish view [dimo]

@@ -1,13 +1,23 @@
 Installation
 ============
 
-This is the most up to date Plumi installation guide. A user/admin manual can be found at
-**http://en.flossmanuals.net/Plumi/Introduction**
+This is the most up to date Plumi installation guide.
+
+A comprehensive Plumi introduction/installation/maintenance/setup guide can be found at **https://trinket.io/mgogoulos/courses/plumi-4-5#/**. 
+
+There is also Plumi's user/admin manual at **http://en.flossmanuals.net/Plumi/Introduction**
+
 
 Environment
 ===========
 
-We use and test Plumi mainly in Debian/Ubuntu, using Python 2.7
+We use and test Plumi mainly in Debian 7, using Python 2.7
+
+Plumi users have reported that they've succesfully installed and run Plumi portals on Mint Linux 17 **http://blog.plumi.org/2014/09/03/installation-on-mint-linux-17/** and FreeBSD 9.1 **http://blog.plumi.org/2014/09/03/plumi-installed-successfully-on-free-bsd-9-1/**
+
+
+----------------------
+
 
 Quick installation
 ==================
@@ -53,7 +63,8 @@ Now check that services have started::
     zeo                              RUNNING    pid 22645, uptime 0:21:29
 
 
-I you start plumi as normal user, without changing the default ports, it will not be able to load nginx to port 80 
+If you start plumi as normal user, without changing the default ports, it will not be able to load nginx to port 80, and also start cacher, since default user for cacher is root. 
+Make sure you edit site.cfg and change the users if you have not root priviledges. 
 
 System dependencies
 ===================
@@ -157,7 +168,7 @@ Start supervisor like this::
 
 Confirm that zeo, uwsgi and transcodedaemon are up and running::
 
-    ./bin/supevisorctl status
+    ./bin/supervisorctl status
   
 If you ran buildout as a regular (non root) user and you did not change the 
 default ports for nginx and ploneftp in site.cfg (www-address & plumiftp-address 
