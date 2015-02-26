@@ -12,7 +12,7 @@ user ${site:www-user};
 pid ${buildout:directory}/var/main.pid;
 lock_file ${buildout:directory}/var/main.lock;
 
-worker_processes 2;
+worker_processes 4;
 #on engagemedia.org this is 4
 daemon off;
 
