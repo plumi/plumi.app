@@ -18,10 +18,14 @@
   </type>
 
 
-  <!-- PlumiVideo set to the community_workflow -->
+  <!-- Plumi video types set to the community_workflow -->
   <type type_id="PlumiVideo">
    <bound-workflow workflow_id="plumi_workflow"/>
   </type>
+  <type type_id="PlumiExternalVideo">
+   <bound-workflow workflow_id="plumi_workflow"/>
+  </type>
+
 
   <!-- Call Out worfklow set to the community_workflow -->
   <type type_id="PlumiCallOut">
