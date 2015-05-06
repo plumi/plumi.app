@@ -148,7 +148,7 @@ def setupCollections(portal, logger):
                 saveAssignment(rightColumnInThisContext, commentsCollectionPortlet)
 
         else:
-            type_criterion.setValue("Video")
+            type_criterion.setValue(["Video", "ExternalVideo"])
             sort_crit = fv.addCriterion('effective',"ATSortCriterion")
 
         sort_crit.setReversed(True)
