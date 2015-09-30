@@ -22,17 +22,26 @@ Plumi users have reported that they've succesfully installed and run Plumi porta
 Quick installation
 ==================
 
-This assumes you are on ubuntu/debian and have python 2.7
+This assumes you are on ubuntu/debian
 
 step 1: install the necessary packages::
 
-    #apt-get install build-essential pkg-config git-core python-dev libjpeg62-dev zlib1g-dev libxslt1-dev groff-base
+    #apt-get install build-essential pkg-config git-core python-dev libjpeg62-dev zlib1g-dev libxslt1-dev groff-base libbz2-dev
 
-step 2: get plumi from github and ceate a virtualenv environment::
+You may have to install some more packages if you are building a development environment::
 
-    $git clone https://github.com/plumi/plumi.app/
-    $cd plumi.app
-    ~/plumi.app$virtualenv . 
+    #apt-get install subversion
+
+step 2: get the Plone 4.2 installer from plone.org
+
+step 3: run the installer, and let it build Python
+
+step 2: in the instance directory created by the installer, 
+get plumi from github and ceate a virtualenv environment::
+
+    $rm *.cfg *.py
+    $git clone https://github.com/plumi/plumi.app .
+    $virtualenv . 
 
 step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)::
 
@@ -40,14 +49,16 @@ step 3: edit site.cfg and change users, if necessary (ftp user, cache user, etc)
 
 step 4: run the buildout::
 
-    ~/plumi.app$./bin/python bootstrap.py && ./bin/buildout -v
+    $./bin/buildout -Nv
 
 step 5: run the buildout for ffmpeg::
 
-    ~/plumi.app$cd ffmpeg
-    ~/plumi.app/ffmpeg$../bin/python bootstrap.py && ./bin/buildout -vN
+    $cd ffmpeg
+    $virtualenv .
+    $./bin/pip install zc.buildout
+    $./bin/buildout -Nv
 
-step 6: start supervisord as root, this will start all services as users defined on site.cfg::
+step 6: start supervisord as root, this will start all services as users defined in site.cfg::
 
     #./bin/supervisord
 
