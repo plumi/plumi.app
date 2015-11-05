@@ -25,7 +25,8 @@ worker_rlimit_nofile    20000;  #each connection needs a filehandle (or 2 if you
 
 # Logging
 
-error_log ${buildout:directory}/var/log/main-error.log warn;
+# error_log ${buildout:directory}/var/log/main-error.log warn;
+error_log ${buildout:directory}/var/log/main-error.log debug;
 
 # HTTP server
 
