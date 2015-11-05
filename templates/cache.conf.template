@@ -6,7 +6,7 @@
    Note that cache.conf is generated from cache.conf.template.
  */
 
-/* Configure gunicorn server as back end */
+/* Configure WSGI server as back end */
 backend transform {
      .host = "${site:localhost}";
      .port = "${site:wsgi-port}";
