@@ -34,7 +34,7 @@ if len(argv) > 2:
 else:
     videoserver = 'newvideos.plumi.org'
 
-extension_profiles = ('plonetheme.classic:default', 'plonetheme.sunburst:default', )
+extension_profiles = ('plonetheme.classic:default', 'plonetheme.sunburst:default', 'em.skin:default')
 
 if not app.get(site_id,False):
     addPloneSite(app, site_id, extension_ids=extension_profiles, setup_content=True)
