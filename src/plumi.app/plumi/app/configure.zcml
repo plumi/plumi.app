@@ -3,20 +3,20 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:cmf="http://namespaces.zope.org/cmf"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:browser="http://namespaces.zope.org/browser" 
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plumi">
 
   <include package="plumi.content" />
   <include package="plumi.locales" />
 
-  <include package="archetypes.clippingimage" file="patch.zcml" /> 
-    
+  <include package="archetypes.clippingimage" file="patch.zcml" />
+
   <adapter
       for="Products.CMFDefault.interfaces._content.IFavorite"
       factory=".adapters.FavoriteConversation"
       provides="plone.app.discussion.interfaces.IConversation" />
-      
+
   <cmf:registerDirectory name="plumi_app" />
 
   <!-- Generic Setup Profile -->
@@ -75,6 +75,6 @@
       destination="4.11"
       handler="plumi.app.install.plumi41to411"
       profile="plumi.app:default" />
-      
+
 </configure>
 
