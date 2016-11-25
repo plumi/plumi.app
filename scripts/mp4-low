@@ -1,12 +1,10 @@
 #!/bin/sh
-PATH=.:./bin:$PATH:./ffmpeg/bin:$PATH
-LD_LIBRARY_PATH=./ffmpeg/parts/vorbis-build/lib:./ffmpeg/parts/theora-build/lib:./ffmpeg/parts/ffmpeg-build/lib:./ffmpeg/parts/x264-build/lib:./ffmpeg/parts/faac-build/lib:./ffmpeg/parts/faad-build/lib:./ffmpeg/parts/lame-build/lib:./ffmpeg/parts/vpx-build/lib:./ffmpeg/parts/ogg-build/lib', '--extra-ldflags=-I./ffmpeg/parts/mp4v2-build/lib
-export LD_LIBRARY_PATH
+
 mkdir -p /tmp/plumitranscodetmp
 VIDEO_FILE=/tmp/plumitranscodetmp/wget.`date +%s`
 wget $1 -O $VIDEO_FILE
 chmod 700 $VIDEO_FILE
-ffmpeg -y -i "$VIDEO_FILE" -vf "scale=ceil(a*240)+mod(ceil(a*240)\,2):240" -r 25 -threads 0 -ar 44100 -vcodec libx264 -crf 25 -acodec libfaac -ab 64k -f mp4 "$2"
+ffmpeg -y -i "$VIDEO_FILE" -vf "scale=ceil(a*240)+mod(ceil(a*240)\,2):240" -r 25 -threads 0 -ar 44100 -vcodec libx264 -crf 25 -acodec aac -ab 64k -f mp4 "$2"
 RET=$?
 qt-faststart "$2" "${2}.fst"
 mv "${2}.fst" "$2"
