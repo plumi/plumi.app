@@ -8,11 +8,11 @@
 
 # Process control
 
-user ${site:www-user};
-pid ${buildout:directory}/var/main.pid;
-lock_file ${buildout:directory}/var/main.lock;
+user www-data;
+pid /store/emsite/current/var/main.pid;
+lock_file /store/emsite/current/var/main.lock;
 
-worker_processes 2;
+worker_processes 4;
 #on engagemedia.org this is 4
 daemon off;
 
@@ -25,7 +25,7 @@ worker_rlimit_nofile    20000;  #each connection needs a filehandle (or 2 if you
 
 # Logging
 
-error_log ${buildout:directory}/var/log/main-error.log warn;
+error_log /store/emsite/current/var/log/main-error.log warn;
 
 # HTTP server
 
@@ -34,14 +34,86 @@ http {
     
     # Define Varnish upstream
     upstream cache {
-        server ${site:cache-address};
+        server 127.0.0.1:8099;
     }
-    
-    server {
-        listen ${site:www-address};
-        server_name ${site:www-server-name};
-        access_log ${buildout:directory}/var/log/main-plone-access.log;
 
+    server {
+        listen 443;
+        server_name www.engagemedia.org;
+        ssl                  on;
+#        ssl_certificate      /etc/ssl/certs/www.engagemedia.org.full-bundle;
+#        ssl_certificate_key  /etc/ssl/private/www.engagemedia.org.key;
+        ssl_certificate      /etc/ssl/private/www.engagemedia.org.2016.pem;
+        ssl_certificate_key  /etc/ssl/private/www.engagemedia.org.2016.key;
+
+
+
+proxy_hide_header X-Frame-Options;
+        access_log /store/emsite/current/var/log/main-plone-access.log;
+
+        client_max_body_size 2048M;
+
+        # rewrite to www
+        if ($host != www.engagemedia.org ) {
+            rewrite  ^/(.*)$  https://www.engagemedia.org/$1  permanent;
+        }
+
+        # redirect papuan voices project
+        location /papuanvoices {
+            rewrite (.*)  https://www.engagemedia.org/Projects/papuanvoices/  permanent;
+        }
+
+        # Show status information on /_main-status
+        location = /_main_status_ {
+            stub_status on;
+            allow 127.0.0.1;
+            deny all;
+        }   
+
+#location  ~ /manage(_.+)?$ {
+# deny all;
+#}
+        
+        # Proxy everything to Varnish
+        
+        location / {
+            proxy_pass http://cache/VirtualHostBase/https/www.engagemedia.org:443/plumi/VirtualHostRoot/;
+            proxy_connect_timeout 200;
+            proxy_read_timeout 185;
+        }
+
+        location ~ plumi_uploader$ {
+            # Pass altered request body to this location
+            upload_pass /_upload_media;
+
+            # Store files to this directory
+            upload_store /tmp/plumitmp ;
+            # Allow uploaded files to be read only by user
+            upload_store_access user:rw group:rw all:rw;
+
+            # Set specified fields in request body
+            upload_set_form_field $upload_field_name.name "$upload_file_name";
+            upload_set_form_field $upload_field_name.content_type "$upload_content_type";
+            upload_set_form_field $upload_field_name.path "$upload_tmp_path";
+
+            # Inform backend about hash and size of a file
+            upload_aggregate_form_field "$upload_field_name.md5" "$upload_file_md5";
+            upload_aggregate_form_field "$upload_field_name.size" "$upload_file_size";
+
+            upload_cleanup 400-505;
+        }
+
+       location /_upload_media {
+           proxy_pass http://cache/VirtualHostBase/https/www.engagemedia.org:443/plumi/VirtualHostRoot/$request_uri;
+       }
+    }    
+
+    server {
+        listen 80;
+        server_name www.engagemedia.org;
+        access_log /store/emsite/current/var/log/main-plone-access.log;
+
+proxy_hide_header X-Frame-Options;
         client_max_body_size 2048M;
 
         # Show status information on /_main-status
@@ -51,10 +123,31 @@ http {
             deny all;
         }   
         
+        #rewrite to www
+        if ($host != www.engagemedia.org ) {
+            rewrite  ^/(.*)$  http://www.engagemedia.org/$1  permanent;
+        }
+
+        # redirect to https if logged in
+        if ($http_cookie ~* "__ac=") {
+            rewrite  ^/(.*)$  https://www.engagemedia.org/$1  permanent;
+        }
+
+        # redirect basic forms to https
+        location ~ (login|login_form|register|mail_password_form)$ {
+            rewrite  ^/(.*)$  https://www.engagemedia.org/$1  permanent;
+        }
+
+        # redirect papuan voices project
+        location /papuanvoices {
+            rewrite (.*)  http://www.engagemedia.org/Projects/papuanvoices/  permanent;
+        }
+
+
         # Proxy everything to Varnish
         
         location / {
-            proxy_pass http://cache/VirtualHostBase/http/${site:www-server-name}:80/${site:portal-id}/VirtualHostRoot/;
+            proxy_pass http://cache/VirtualHostBase/http/www.engagemedia.org:80/plumi/VirtualHostRoot/;
             proxy_connect_timeout 200;
             proxy_read_timeout 185;
         }
@@ -81,28 +174,29 @@ http {
         }
 
         location /_upload_media {
-            proxy_pass http://cache/VirtualHostBase/http/${site:www-server-name}:80/${site:portal-id}/VirtualHostRoot/$request_uri;
+            proxy_pass http://cache/VirtualHostBase/http/www.engagemedia.org:80/plumi/VirtualHostRoot/$request_uri;
         }
 
     }
 
     upstream transcoder {
-        server ${site:transcode-host}:${site:transcode-port};
+        server 127.0.0.1:8888;
     }
 
     server {
-        listen ${site:www-address};
-        server_name ${site:www-videoserver-name};
-        access_log ${buildout:directory}/var/log/videoserver-access.log;
+        listen 80;
+        server_name videos.engagemedia.org;
+        access_log /store/emsite/current/var/log/videoserver-access.log;
 
         location / {
+proxy_hide_header X-Frame-Options;
             proxy_pass http://transcoder;
             proxy_connect_timeout 75;
             proxy_read_timeout 185;
         }
 
         location /transcoded {
-            root ${buildout:directory}/;
+            root /store/emsite/current/;
         }
 
         types {
@@ -111,4 +205,23 @@ http {
             image/jpeg jpg;
         }
     }
+
+    server {
+        listen 80;
+        server_name prod-flv.engagemedia.org;
+        access_log /store/emsite/current/var/log/prod-flv.log;
+        location / {
+            root /var/www/stable-flv-files;
+        }
+    }
+
+    server {
+        listen 80;
+        server_name staging.engagemedia.org;
+
+        location / {
+            proxy_pass http://staging.engagemedia.org:9080;
+        }
+    }
+
 }
