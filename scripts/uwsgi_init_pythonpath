@@ -1,0 +1,15 @@
+# Read the uwsgi xml file produced by unweb.recipe.uwsgi
+# and create txt file with the pythonpath
+import re
+
+xml_conf = open('parts/uwsgi/uwsgi.xml').readlines()
+
+init = '[uwsgi]\n'
+for line in xml_conf:
+    m = re.search(r'<pythonpath>(.+?)</pythonpath>', line)
+    if m:
+        init += 'pythonpath = %s\n' % m.group(1)
+
+ini_file = open('parts/uwsgi/uwsgi.txt', 'w')
+ini_file.write(init)
+ini_file.close()
