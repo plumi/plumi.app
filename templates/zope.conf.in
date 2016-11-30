@@ -28,6 +28,8 @@ zserver-threads 2
 
 <environment>
     ZC_ASYNC_UUID ${buildout:directory}/var/instance-uuid.txt
+    PLONE_CSRF_DISABLED true
+    # uploading of videos fail, this should be fixed of course
 </environment>
 
 <zodb_db main>
