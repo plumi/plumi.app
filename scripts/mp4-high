@@ -6,7 +6,7 @@ mkdir -p /tmp/plumitranscodetmp
 VIDEO_FILE=/tmp/plumitranscodetmp/wget.`date +%s`
 wget $1 -O $VIDEO_FILE
 chmod 700 $VIDEO_FILE
-ffmpeg -y -i "$VIDEO_FILE" -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" -threads 0 -r 25 -ar 44100 -vcodec libx264 -crf 22 -acodec libfaac -ab 64k -f mp4 "$2"
+ffmpeg -y -i "$VIDEO_FILE" -vf scale="ceil(a*480)+mod(ceil(a*480)\,2):480" -threads 0 -r 25 -ar 44100 -vcodec libx264 -crf 22 -ab 64k -f mp4 "$2"
 RET=$?
 qt-faststart "$2" "${2}.fst"
 mv "${2}.fst" "$2"
