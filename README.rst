@@ -8,7 +8,7 @@ Plumi enables you to create your own sophisticated video-sharing site. It includ
 
 Plumi demo screenshot:
 
-.. image:: demo.jpg
+.. image:: docs/demo.jpg
 
 More info
 =========
@@ -216,7 +216,7 @@ We are good! Let's open a browser to http://new.plumi.org and see Plumi
 
 Screenshot of an installed Plumi site:
 
-.. image:: plumi-vanilla.jpg
+.. image:: docs/plumi-vanilla.jpg
 
 =============
 Other sources
