@@ -5,6 +5,11 @@ Plumi is a Free Software video-sharing web application based on Plone and produc
 
 Plumi enables you to create your own sophisticated video-sharing site. It includes a beautiful adaptive skin using Diazo, server-side transcoding of most video formats, upload progress bar, thumbnail extraction, HTML5 video playback and embedding, subtitles using Amara, large file uploading via FTP, social media integration, threaded commenting and user feedback forms, customised user profiles and a range of other useful features.
 
+
+Plumi demo screenshot:
+
+.. image:: demo.jpg
+
 More info
 =========
 
@@ -216,6 +221,9 @@ after a few seconds, check that everything is up and running::
 
 We are good! Let's open a browser to http://new.plumi.org and see Plumi
 
+Screenshot of an installed Plumi site:
+
+.. image:: plumi-vanilla.jpg
 
 =============
 Other sources
