@@ -157,13 +157,6 @@ Now install ffmpeg::
     apt-get update; apt-get install ffmpeg -y
 
 
-::
-
-    root@debian:~# apt-get update; apt-get upgrade -y;
-    root@debian:~# apt-get install -y build-essential pkg-config git-core python-dev libssl-dev zlib1g-dev libxslt1-dev libjpeg62-turbo-dev groff-base python-virtualenv vim libpcre3 libpcre3-dev
-    root@debian:~# apt-get update; apt-get upgrade -y
-
-
 Ubuntu 16.04
 ------------
 
