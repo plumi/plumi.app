@@ -123,6 +123,7 @@ If this is a testing installation and we don't have dns yet, we can let the defa
 
 where www.xx.yyy.zzz is your ip address. After the buildout finishes we'll open our browser on http://new.plumi.org and will see the plumi installation
 
+**Make sure you set the same dns entries on /etc/hosts on both plumi server and your local system, if you're going to use dns names that are not resolvable, otherwise plumi won't behave correctly**
 
 *************************
 Step 4: Run the buildout
