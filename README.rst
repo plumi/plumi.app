@@ -215,7 +215,7 @@ after a few seconds, check that everything is up and running::
 
 We have noticed that the worker process does not start properly some times.
 If that's the case, edit file parts/worker/etc/zope.conf and on the zodb_db main
-section make sure the blob-dir is set as the full path on the filesystem.
+section make sure the blob-dir is set as the full path on the filesystem (eg /home/plumi.app/var/blobstorage).
 
 We are good! Let's open a browser to http://new.plumi.org and see Plumi
 
