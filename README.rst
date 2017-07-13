@@ -213,6 +213,10 @@ after a few seconds, check that everything is up and running::
 
 (in case something is not running, check logs on var/log and partrs/transcodedaemon)
 
+We have noticed that the worker process does not start properly some times.
+If that's the case, edit file parts/worker/etc/zope.conf and on the zodb_db main
+section make sure the blob-dir is set as the full path on the filesystem.
+
 We are good! Let's open a browser to http://new.plumi.org and see Plumi
 
 Screenshot of an installed Plumi site:
