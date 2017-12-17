@@ -1,3 +1,9 @@
+December 2017 update
+====================
+
+We are moving tickets from the Plumi tracker (trac.plumi.org) here, for historical reasons.
+
+
 Plumi video sharing system
 ==========================
 
